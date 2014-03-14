@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.saxsys.campus.domain.Slot;
-import de.saxsys.campus.repository.SlotRepository;
+import de.saxsys.campus.repository.SlotManager;
 
 @Named
 @ConversationScoped
@@ -22,11 +22,11 @@ public class AdminViewBean implements Serializable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminViewBean.class);
 
 	@Inject
-	private SlotRepository slotRepo;
+	private SlotManager slotManager;
 
 	@PostConstruct
 	public void init() {
-		slots = slotRepo.findAll();
+		slots = slotManager.allSlots();
 	}
 
 	private List<Slot> slots;

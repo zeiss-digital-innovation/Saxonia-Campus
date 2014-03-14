@@ -17,6 +17,7 @@
         <module>domain</module>
         <module>repository</module>
         <module>jsf</module>
+        <module>rest</module>
         <module>ear</module>
   </modules>
     <build>
