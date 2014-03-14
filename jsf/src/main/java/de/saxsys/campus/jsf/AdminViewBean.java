@@ -21,6 +21,8 @@ public class AdminViewBean implements Serializable {
 	private static final long serialVersionUID = 3238657117255311412L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminViewBean.class);
 
+	private List<Slot> slots;
+
 	@Inject
 	private DbSlotManager slotManager;
 
@@ -29,7 +31,17 @@ public class AdminViewBean implements Serializable {
 		slots = slotManager.allSlots();
 	}
 
-	private List<Slot> slots;
+	public void newSlot() {
+		LOGGER.debug("Create new slot");
+	}
+
+	public void deleteSlot() {
+		LOGGER.debug("Delete slot");
+	}
+
+	public void editSlot() {
+		LOGGER.debug("Edit slot");
+	}
 
 	public List<Slot> getSlots() {
 		return slots;

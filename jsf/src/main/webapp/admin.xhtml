@@ -10,18 +10,27 @@
 <h:body>
 	<header>Saxonia Campus 2014</header>
 	<h2>Admin-View</h2>
-	<p:dataTable id="tblSlots" value="#{adminViewBean.slots}" var="slot">
-		<p:column>
-			<h:outputText value="#{slot.title}" style="margin-right: s2em" />
-			<h:outputText value="#{slot.starttime}">
-				<f:convertDateTime pattern="HH:mm" />
-			</h:outputText>
-			<h:outputText value=" - " />
-			<h:outputText value="#{slot.endtime}">
-				<f:convertDateTime pattern="HH:mm" />
-			</h:outputText>
-		</p:column>
-		<p:column>DEL</p:column>
-	</p:dataTable>
+	<h:form>
+		<p:commandButton id="btnAddSlot" value="Neuer Slot"
+			action="#{adminViewBean.newSlot}" />
+		<p:dataTable id="tblSlots" value="#{adminViewBean.slots}" var="slot">
+			<p:column>
+				<h:outputText value="#{slot.title}" style="margin-right: 2em" />
+				<h:outputText value="#{slot.starttime}">
+					<f:convertDateTime pattern="HH:mm" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{slot.endtime}">
+					<f:convertDateTime pattern="HH:mm" />
+				</h:outputText>
+			</p:column>
+			<p:column>
+				<p:commandButton actionListener="#{adminViewBean.deleteSlot}"
+					icon="ui-icon-trash" title="Slot löschen" />
+				<p:commandButton actionListener="#{adminViewBean.editSlot}"
+					icon="ui-icon-pencil" title="Slot bearbeiten" />
+			</p:column>
+		</p:dataTable>
+	</h:form>
 </h:body>
 </html>
