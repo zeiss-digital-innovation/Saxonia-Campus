@@ -1,22 +1,25 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Login JSF 2.0</title>
-    </h:head>
-    <h:body>
-        <h2>Login</h2>
-        <h:form>
-            <h:panelGrid columns="2">
-                <h:outputLabel id="lblName" for="txtName" value="Username:" />
-                <h:inputText id="txtName" value="#{loginBean.username}" />
-                <h:outputLabel id="lblPassword" for="txtPassword" value="Password:" />
-                <h:inputSecret id="txtPassword" value="#{loginBean.password}" />
-            </h:panelGrid>
-            <h:commandButton id="btnLogin" value="Login" action="#{loginBean.login}" />
-        </h:form>
-    </h:body>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>Saxonia Campus - Login</title>
+</h:head>
+<h:body>
+	<header>Saxonia Campus 2014</header>
+	<h2>Login</h2>
+	<h:form>
+		<p:panelGrid columns="2">
+			<p:outputLabel id="lblName" for="txtName" value="Username:" />
+			<p:inputText id="txtName" value="#{loginBean.username}" />
+
+			<p:outputLabel id="lblPassword" for="txtPassword" value="Password:" />
+			<p:password id="txtPassword" value="#{loginBean.password}" />
+		</p:panelGrid>
+		<p:commandButton id="btnLogin" value="Login"
+			action="#{loginBean.login}" />
+	</h:form>
+</h:body>
 </html>

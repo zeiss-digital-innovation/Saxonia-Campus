@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<title>Saxonia Campus - Admin View</title>
+</h:head>
+<h:body>
+	<header>Saxonia Campus 2014</header>
+	<h2>Admin-View</h2>
+	<p:dataTable id="tblSlots" value="#{adminViewBean.slots}" var="slot">
+		<p:column>
+			<h:outputText value="#{slot.title}" style="margin-right:2em" />
+			<h:outputText value="#{slot.starttime}">
+				<f:convertDateTime pattern="HH:mm" />
+			</h:outputText>
+			<h:outputText value=" - " />
+			<h:outputText value="#{slot.endtime}">
+				<f:convertDateTime pattern="HH:mm" />
+			</h:outputText>
+		</p:column>
+		<p:column>DEL</p:column>
+	</p:dataTable>
+</h:body>
+</html>

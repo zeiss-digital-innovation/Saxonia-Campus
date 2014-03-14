@@ -15,6 +15,6 @@ public class SlotRepository {
     private EntityManager em;
 
     public List<Slot> findAll() {
-        return em.createQuery("select s from Slot s").getResultList();
+        return em.createNamedQuery("Slot.findAll").getResultList();
     }
 }

@@ -12,10 +12,6 @@
     <packaging>jar</packaging>
     <name>Saxonia Campus Domain Classes</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency> 
             <groupId>org.eclipse.persistence</groupId> 
@@ -23,7 +19,6 @@
             <version>2.1.0</version>
             <scope>provided</scope>
         </dependency> 
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
