@@ -8,19 +8,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import de.saxsys.campus.business.DbSlotManager;
 import de.saxsys.campus.domain.Slot;
-import de.saxsys.campus.repository.SlotManager;
 
 @Path("/slots")
 public class SlotResource {
 
 	@Inject
-	private SlotManager slotRepo;
+	private DbSlotManager slotManager;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Slot> getSlots() {
-		return slotRepo.allSlots();
+		return slotManager.allSlots();
 	}
 
 	// TODO implement

@@ -14,8 +14,7 @@
     </properties>
 
     <modules>
-        <module>domain</module>
-        <module>repository</module>
+        <module>business</module>
         <module>jsf</module>
         <module>rest</module>
         <module>ear</module>

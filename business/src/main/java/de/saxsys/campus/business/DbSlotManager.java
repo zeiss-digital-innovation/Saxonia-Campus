@@ -1,4 +1,4 @@
-package de.saxsys.campus.repository;
+package de.saxsys.campus.business;
 
 import java.util.List;
 
@@ -13,19 +13,22 @@ import de.saxsys.campus.domain.Slot;
 @Stateless
 @LocalBean
 @SuppressWarnings("unchecked")
-public class SlotManager {
+public class DbSlotManager implements SlotManager {
 
 	@PersistenceContext
 	private EntityManager em;
 
+	@Override
 	public List<Slot> allSlots() {
 		return em.createNamedQuery("Slot.findAll").getResultList();
 	}
 
+	@Override
 	public void addSlot(final Slot slot) {
 		em.persist(slot);
 	}
 
+	@Override
 	public List<Room> allRooms() {
 		return em.createNamedQuery("Room.findAll").getResultList();
 	}

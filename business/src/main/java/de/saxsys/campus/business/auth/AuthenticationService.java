@@ -1,4 +1,4 @@
-package de.saxsys.campus.backend.auth;
+package de.saxsys.campus.business.auth;
 
 import javax.ejb.Local;
 

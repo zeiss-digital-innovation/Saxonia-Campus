@@ -11,8 +11,8 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.saxsys.campus.business.DbSlotManager;
 import de.saxsys.campus.domain.Slot;
-import de.saxsys.campus.repository.SlotManager;
 
 @Named
 @ConversationScoped
@@ -22,7 +22,7 @@ public class AdminViewBean implements Serializable {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminViewBean.class);
 
 	@Inject
-	private SlotManager slotManager;
+	private DbSlotManager slotManager;
 
 	@PostConstruct
 	public void init() {

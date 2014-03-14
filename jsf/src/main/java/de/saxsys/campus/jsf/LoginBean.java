@@ -11,8 +11,8 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.saxsys.campus.backend.auth.AuthenticationException;
-import de.saxsys.campus.backend.auth.AuthenticationService;
+import de.saxsys.campus.business.auth.AuthenticationException;
+import de.saxsys.campus.business.auth.AuthenticationService;
 
 @Named
 @RequestScoped
