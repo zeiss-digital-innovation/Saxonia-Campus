@@ -32,4 +32,9 @@ public class DbSlotManager implements SlotManager {
 	public List<Room> allRooms() {
 		return em.createNamedQuery("Room.findAll").getResultList();
 	}
+
+	@Override
+	public Room findRoom(int roomId) {
+		return em.find(Room.class, roomId);
+	}
 }

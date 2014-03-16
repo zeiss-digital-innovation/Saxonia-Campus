@@ -3,16 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Saxonia Campus - Admin View</title>
 </h:head>
 <h:body>
 	<header>Saxonia Campus 2014</header>
 	<h2>Admin-View</h2>
-	<h:form>
+	<h:form id="formAdmin">
 		<p:commandButton id="btnAddSlot" value="Neuer Slot"
-			action="#{adminViewBean.newSlot}" />
+			action="#{adminViewBean.newSlot}" update="@form" />
+
 		<p:dataTable id="tblSlots" value="#{adminViewBean.slots}" var="slot">
 			<p:column>
 				<h:outputText value="#{slot.title}" style="margin-right: 2em" />
@@ -31,6 +33,10 @@
 					icon="ui-icon-pencil" title="Slot bearbeiten" />
 			</p:column>
 		</p:dataTable>
+		<h:panelGroup id="detailPane"
+			rendered="#{adminViewBean.slotDetailMode}">
+			<ui:include src="admin.slot.detail.xhtml" />
+		</h:panelGroup>
 	</h:form>
 </h:body>
 </html>

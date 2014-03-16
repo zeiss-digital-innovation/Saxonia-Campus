@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ConversationScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,13 +15,14 @@ import de.saxsys.campus.business.DbSlotManager;
 import de.saxsys.campus.domain.Slot;
 
 @Named
-@ConversationScoped
+@ViewScoped
 public class AdminViewBean implements Serializable {
 
 	private static final long serialVersionUID = 3238657117255311412L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminViewBean.class);
 
 	private List<Slot> slots;
+	private boolean slotDetailMode;
 
 	@Inject
 	private DbSlotManager slotManager;
@@ -33,6 +34,7 @@ public class AdminViewBean implements Serializable {
 
 	public void newSlot() {
 		LOGGER.debug("Create new slot");
+		setSlotDetailMode(true);
 	}
 
 	public void deleteSlot() {
@@ -49,6 +51,14 @@ public class AdminViewBean implements Serializable {
 
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
+	}
+
+	public boolean isSlotDetailMode() {
+		return slotDetailMode;
+	}
+
+	public void setSlotDetailMode(boolean slotDetailMode) {
+		this.slotDetailMode = slotDetailMode;
 	}
 
 }

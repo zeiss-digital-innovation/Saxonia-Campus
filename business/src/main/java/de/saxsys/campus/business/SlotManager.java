@@ -13,4 +13,6 @@ public interface SlotManager {
 
 	List<Slot> allSlots();
 
+	Room findRoom(int roomId);
+
 }
