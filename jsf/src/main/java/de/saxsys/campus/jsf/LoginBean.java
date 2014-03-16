@@ -1,9 +1,11 @@
 package de.saxsys.campus.jsf;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +29,9 @@ public class LoginBean implements Serializable {
 	@Inject
 	private AuthenticationService authService;
 
+	@Inject
+	private UserSessionBean userSessionBean;
+
 	public String getUsername() {
 		return username;
 	}
@@ -44,9 +49,20 @@ public class LoginBean implements Serializable {
 	}
 
 	public String login() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
 			authService.authenticate(username, password);
 			LOGGER.info("User {} successfully logged in.", username);
+
+			userSessionBean.setUsername(username);
+			String originalUri = userSessionBean.getOriginalUri();
+			try {
+				if (null != originalUri) {
+					externalContext.redirect(originalUri);
+				}
+			} catch (IOException e) {
+				LOGGER.error("Cannot redirect to {}.", originalUri, e);
+			}
 		} catch (AuthenticationException e) {
 			LOGGER.error("Invalid credentials.", e);
 			FacesContext.getCurrentInstance().addMessage(
