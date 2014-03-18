@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Saxonia Campus Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="css/saxoniacampus.css" rel="stylesheet" type="text/css"/>
+        <link href="css/libs/jquery.mobile-1.4.1.css" rel="stylesheet" type="text/css"/>
+        <script src="js/libs/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="js/libs/jquery.mobile-1.4.1.js" type="text/javascript"></script>
+        <script src="js/admin.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <header>Saxonia Campus 2014</header>
+    <main id="admin_content">
+        <h2>Admin-View</h2>
+        <div id="admin_menu">
+            <button data-inline="true" data-mini="true" id="new_slot_btn">Neuer Slot</button>
+        </div>
+        <div id="admin_slot_list_container">
+            <ul id="admin_slot_list" data-role="listview" data-split-icon="delete" data-inset="true">
+                <li id="1_slot"><a id="1_edit" class="edit_slot">Slot 1 Titel</a><a class="delete_slot" id="1_delete"></a></li>
+                <li id="2_slot"><a id="2_edit" class="edit_slot">Slot 2 Titel</a><a class="delete_slot" id="2_delete"></a></li>
+                <li id="3_slot"><a id="3_edit" class="edit_slot">Slot 3 Titel</a><a class="delete_slot" id="3_delete"></a></li>
+                <li id="4_slot"><a id="4_edit" class="edit_slot">Slot 4 Titel</a><a class="delete_slot" id="4_delete"></a></li>
+                <li id="5_slot"><a id="5_edit" class="edit_slot">Slot 5 Titel</a><a class="delete_slot" id="5_delete"></a></li>
+                <li id="6_slot"><a id="6_edit" class="edit_slot">Slot 6 Titel</a><a class="delete_slot" id="6_delete"></a></li>
+                <li id="7_slot"><a id="7_edit" class="edit_slot">Slot 7 Titel</a><a class="delete_slot" id="7_delete"></a></li>
+                <li id="8_slot"><a id="8_edit" class="edit_slot">Slot 8 Titel</a><a class="delete_slot" id="8_delete"></a></li>
+                <li id="9_slot"><a id="9_edit" class="edit_slot">Slot 9 Titel</a><a class="delete_slot" id="9_delete"></a></li>
+                <li id="n_slot"><a id="n_edit" class="edit_slot">Slot n Titel</a><a class="delete_slot" id="n_delete"></a></li>
+            </ul>
+        </div>
+        <div id="admin_detail_view">
+            <form>
+                <table>
+                    <tr>
+                        <td>Titel:</td>
+                        <td colspan="3"><input id="title_input" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Inhalt:</td>
+                        <td colspan="3"><textarea id="content_input"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Raum:</td>
+                        <td colspan="3"><input id="room_input" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Start</td>
+                        <td><input id="start_time_input" type="time"/></td>
+                        <td>Speaker</td>
+                        <td><input id="speaker_input" type="text"/></td>
+                    </tr>
+                    <tr>
+                        <td>Ende</td>
+                        <td><input id="end_time_input" type="time"/></td>
+                        <td>TN-Zahl</td>
+                        <td><input id="attendees_input" type="number"/></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3">
+                            <button  style="float: right;" data-mini="true" data-inline="true">Speichern</button>
+                            <button style="float: right;" data-mini="true" data-inline="true" type="reset">Abbrechen</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -2,3 +2,5 @@
 target/
 .project
 .classpath
+web-js/nbproject/private/private.properties
+web-js/nbproject/private/private.xml
