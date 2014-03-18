@@ -42,12 +42,7 @@ public class Room implements Serializable {
 	public Room() {
 	}
 
-	public Room(Integer id) {
-		this.id = id;
-	}
-
-	public Room(Integer id, String roomnumber, int capacity) {
-		this.id = id;
+	public Room(String roomnumber, int capacity) {
 		this.roomnumber = roomnumber;
 		this.capacity = capacity;
 	}
@@ -56,7 +51,7 @@ public class Room implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	protected void setId(Integer id) {
 		this.id = id;
 	}
 

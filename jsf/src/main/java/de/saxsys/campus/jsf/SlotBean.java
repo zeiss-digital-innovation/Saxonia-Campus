@@ -103,7 +103,7 @@ public class SlotBean implements Serializable {
 		return rooms;
 	}
 
-	public String save() {
+	public void save() {
 		LOGGER.debug("Save slot");
 		try {
 			Slot slot = new Slot();
@@ -120,6 +120,7 @@ public class SlotBean implements Serializable {
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Der Slot wurde gespeichert.",
 							null));
+
 		} catch (Exception e) {
 			LOGGER.error("Cannot save slot.", e);
 			FacesContext.getCurrentInstance().addMessage(
@@ -127,6 +128,5 @@ public class SlotBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Der Slot konnte nicht gespeichert werden.", e.getMessage()));
 		}
-		return null;
 	}
 }

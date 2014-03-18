@@ -37,6 +37,11 @@ public class AdminViewBean implements Serializable {
 		setSlotDetailMode(true);
 	}
 
+	public void cancelSlot() {
+		LOGGER.debug("Cancel new slot");
+		setSlotDetailMode(false);
+	}
+
 	public void deleteSlot() {
 		LOGGER.debug("Delete slot");
 	}

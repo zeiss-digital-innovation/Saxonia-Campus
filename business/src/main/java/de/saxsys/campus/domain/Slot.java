@@ -60,12 +60,7 @@ public class Slot implements Serializable {
 	public Slot() {
 	}
 
-	public Slot(Integer id) {
-		this.id = id;
-	}
-
-	public Slot(Integer id, String title, Date starttime, Date endtime) {
-		this.id = id;
+	public Slot(String title, Date starttime, Date endtime) {
 		this.title = title;
 		this.starttime = starttime;
 		this.endtime = endtime;
@@ -75,7 +70,7 @@ public class Slot implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	protected void setId(Integer id) {
 		this.id = id;
 	}
 

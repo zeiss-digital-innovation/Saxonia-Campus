@@ -45,12 +45,7 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(Integer id) {
-		this.id = id;
-	}
-
-	public User(Integer id, String username, String firstname, String lastname) {
-		this.id = id;
+	public User(String username, String firstname, String lastname) {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -60,7 +55,7 @@ public class User implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	protected void setId(Integer id) {
 		this.id = id;
 	}
 

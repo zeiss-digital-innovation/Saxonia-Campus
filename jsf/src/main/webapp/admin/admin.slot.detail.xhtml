@@ -40,7 +40,8 @@
 						value="Verantwortlicher:" />
 					<p:inputText id="txtSpeaker" value="#{slotBean.speaker}" />
 				</p:panelGrid>
-				<p:commandButton id="btnCancel" value="Abbrechen" />
+				<p:commandButton id="btnCancel" value="Abbrechen"
+					action="#{adminViewBean.cancelSlot}" update="@all" />
 				<p:commandButton id="btnSave" value="Speichern"
 					action="#{slotBean.save}" />
 				<p:messages showDetail="false" autoUpdate="true" />
