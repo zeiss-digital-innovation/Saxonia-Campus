@@ -7,12 +7,15 @@ import de.saxsys.campus.domain.Slot;
 
 public interface SlotManager {
 
-	List<Room> allRooms();
+	void addSlot(Slot slot);
 
-	void addSlot(final Slot slot);
+	void updateSlot(Slot slot);
+
+	void deleteSlot(int slotId);
 
 	List<Slot> allSlots();
 
 	Room findRoom(int roomId);
 
+	List<Room> allRooms();
 }

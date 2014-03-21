@@ -29,6 +29,11 @@ public class DbSlotManager implements SlotManager {
 	}
 
 	@Override
+	public void updateSlot(final Slot slot) {
+		em.merge(slot);
+	}
+
+	@Override
 	public List<Room> allRooms() {
 		return em.createNamedQuery("Room.findAll").getResultList();
 	}
@@ -36,5 +41,10 @@ public class DbSlotManager implements SlotManager {
 	@Override
 	public Room findRoom(int roomId) {
 		return em.find(Room.class, roomId);
+	}
+
+	@Override
+	public void deleteSlot(int slotId) {
+		em.remove(em.find(Slot.class, slotId));
 	}
 }
