@@ -8,7 +8,6 @@ import javax.ws.rs.core.UriBuilder;
 import de.saxsys.campus.domain.Slot;
 import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
-import de.saxsys.campus.rest.view.Link;
 import de.saxsys.campus.rest.view.SlotView;
 
 @Singleton
@@ -23,8 +22,8 @@ public class SlotTransformer {
 		sv.setSpeaker(slot.getSpeaker());
 		sv.setSelf(UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
 				.build(slot.getId()));
-		sv.setRoom(new Link("room", UriBuilder.fromUri(baseUri).path(RoomResource.class)
-				.path("{id}").build(slot.getRoom().getId())));
+		sv.setRoom(UriBuilder.fromUri(baseUri).path(RoomResource.class).path("{id}")
+				.build(slot.getRoom().getId()));
 		return sv;
 	}
 

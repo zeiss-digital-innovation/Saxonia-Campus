@@ -1,8 +1,10 @@
 package de.saxsys.campus.rest.view;
 
+import java.net.URI;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
@@ -55,11 +57,12 @@ public class SlotView extends View {
 		this.endtime = endtime;
 	}
 
-	public Link getRoom() {
+	@XmlTransient
+	public URI getRoom() {
 		return getLink(ROOM);
 	}
 
-	public void setRoom(Link room) {
+	public void setRoom(URI room) {
 		putLink(ROOM, room);
 	}
 

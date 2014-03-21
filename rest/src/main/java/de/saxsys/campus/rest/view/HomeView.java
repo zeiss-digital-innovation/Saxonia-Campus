@@ -1,20 +1,25 @@
 package de.saxsys.campus.rest.view;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement
 @XmlType(name = "home")
-public class HomeView {
+public class HomeView extends View {
 
-	private Link slots;
+	private static final long serialVersionUID = 1452787782979995215L;
+	private static final String SLOTS = "slots";
 
-	public void setSlots(Link slots) {
-		this.slots = slots;
+	public void setSlots(URI slots) {
+		putLink(SLOTS, slots);
 	}
 
-	public Link getSlots() {
-		return slots;
+	@XmlTransient
+	public URI getSlots() {
+		return getLink(SLOTS);
 	}
 
 }
