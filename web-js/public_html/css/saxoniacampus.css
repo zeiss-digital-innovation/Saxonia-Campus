@@ -74,7 +74,8 @@ h2 {
     background-color: #fcedd5;
     border-color: coral;
     border-width: 2px;
-    border-style: solid
+    border-style: solid;
+    display: none;
 }
 
 /* definitionen für die Userseite */
