@@ -6,6 +6,14 @@ var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
 }
 
+var fillSlotList = function(){
+  var slots = saxoniaCampusPersistance.slots;  
+  for(var i in slots){
+      var slot = slots[i];
+      saxoniaCampusRenderer.renderUserViewDetailSlot("#user_solot_container", slot);
+  }
+};
+
 var initBookedListview = function(){
     $(".delete_slot").click(function() {
         console.log("delete slot clicked");
@@ -37,7 +45,11 @@ var bookSlot = function(slotID){
 }
 
 $(function() {
-    initBookedListview()
+    fillSlotList();
+    $("#user_solot_container").collapsibleset('refresh');
+    initBookedListview();
+    
+    
     $(".book_slot_btn").click(function(){
         console.log("book-button clicked.");
         console.log("this.id:" + this.id);
