@@ -7,3 +7,10 @@ saxoniaCampusRenderer.renderAdminViewSlot = function(slotListSelector,slot){
     $(slotListSelector).append('<li id="' + slot.id + '_slot">' + slotText 
             + '<a class="delete_slot" id="' + slot.id + '_delete"></a></li>');
 };
+
+saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector,slot){
+    var slotHtml = '<li id="'+slot.id+'_slot"><a>'+slot.title+'<p class="ui-li-aside">'
+            + slot.starttime + " bis " + slot.endtime + '</p></a><a id="'+slot.id
+            +'_delete_slot" class="delete_slot"></a></li>';
+    $(slotListSelector).append(slotHtml);
+};

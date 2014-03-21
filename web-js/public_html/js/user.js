@@ -1,7 +1,5 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/*
+ * Controller javascript für die User-View
  */
 
 var extractSlotId = function(element_id) {
@@ -28,8 +26,11 @@ var initBookedListview = function(){
 }
 
 var bookSlot = function(slotID){
-    var slotHtml = '<li id="'+slotID+'_slot"><a>Slot '+slotID+' Title</a><a id="'+slotID+'_delete_slot" class="delete_slot"></a></li>';
-    $("#user_booked_slot_list").append(slotHtml);
+    var slot = saxoniaCampusPersistance.getSlotById(slotID);
+    saxoniaCampusRenderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
+    
+//    var slotHtml = '<li id="'+slotID+'_slot"><a>Slot '+slotID+' Title</a><a id="'+slotID+'_delete_slot" class="delete_slot"></a></li>';
+//    $("#user_booked_slot_list").append(slotHtml);
     initBookedListview();
     //remove bookbutton
     $("#"+slotID+"_book_btn").toggle();
