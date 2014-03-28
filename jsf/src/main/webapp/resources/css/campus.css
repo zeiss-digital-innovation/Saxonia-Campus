@@ -1,0 +1,5 @@
+.adminTable table, .adminTable tr, .adminTable td {
+    border: none;
+    border-style: hidden !important;
+    vertical-align: top;
+}
