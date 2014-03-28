@@ -11,14 +11,14 @@ import javax.ws.rs.core.UriInfo;
 import com.theoryinpractise.halbuilder.api.Representation;
 
 import de.saxsys.campus.rest.hal.HalMediaTypes;
-import de.saxsys.campus.rest.transform.HomeTransformer;
+import de.saxsys.campus.rest.mapping.HomeMapper;
 
 @Singleton
 @Path("/")
 public class HomeResource {
 
 	@Inject
-	private HomeTransformer homeTransformer;
+	private HomeMapper homeMapper;
 
 	@Context
 	private UriInfo uriInfo;
@@ -26,7 +26,7 @@ public class HomeResource {
 	@GET
 	@Produces(HalMediaTypes.HAL_JSON)
 	public Representation getHome() {
-		return homeTransformer.createRepresentation(uriInfo.getBaseUri());
+		return homeMapper.createRepresentation(uriInfo.getBaseUri());
 	}
 
 }

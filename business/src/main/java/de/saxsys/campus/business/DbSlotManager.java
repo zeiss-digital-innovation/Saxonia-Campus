@@ -29,8 +29,8 @@ public class DbSlotManager implements SlotManager {
 	}
 
 	@Override
-	public void updateSlot(final Slot slot) {
-		em.merge(slot);
+	public Slot updateSlot(final Slot slot) {
+		return em.merge(slot);
 	}
 
 	@Override

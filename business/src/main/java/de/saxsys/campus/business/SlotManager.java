@@ -9,7 +9,7 @@ public interface SlotManager {
 
 	void addSlot(Slot slot);
 
-	void updateSlot(Slot slot);
+	Slot updateSlot(Slot slot);
 
 	void deleteSlot(int slotId);
 

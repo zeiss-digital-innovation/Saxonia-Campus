@@ -1,4 +1,4 @@
-package de.saxsys.campus.rest.transform;
+package de.saxsys.campus.rest.mapping;
 
 import java.net.URI;
 import java.util.Date;
@@ -18,13 +18,13 @@ import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
 
 @Singleton
-public class SlotTransformer {
+public class SlotMapper {
 
 	private static final String SLOTS = "slots";
 	private static final String ROOMS = "rooms";
 
 	@Inject
-	private RoomTransformer roomTransformer;
+	private RoomMapper roomTransformer;
 
 	@Inject
 	private SlotManager slotManager;
@@ -44,9 +44,7 @@ public class SlotTransformer {
 
 	public Representation createRepresentation(URI baseUri, Slot slot) {
 		return representationFactory
-				.newRepresentation(
-						UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
-								.build(slot.getId()))
+				.newRepresentation(createUri(baseUri, slot))
 				.withProperty("id", slot.getId())
 				.withProperty("title", slot.getTitle())
 				.withProperty("description", slot.getDescription())
@@ -57,9 +55,9 @@ public class SlotTransformer {
 						roomTransformer.createRepresentation(baseUri, slot.getRoom()));
 	}
 
-	public Slot toEntity(int id, ReadableRepresentation representation) {
+	public Slot toEntity(Integer id, ReadableRepresentation representation) {
 		Slot slot = new Slot();
-		slot.setId(Integer.valueOf((String) representation.getValue("id")));
+		slot.setId(id);
 		slot.setTitle((String) representation.getValue("title"));
 		slot.setDescription((String) representation.getValue("description"));
 		slot.setStarttime(new Date(Long.parseLong((String) representation.getValue("starttime"))));
@@ -67,5 +65,10 @@ public class SlotTransformer {
 		slot.setSpeaker((String) representation.getValue("speaker"));
 		slot.setRoom(slotManager.findRoom(Integer.valueOf((String) representation.getValue("room"))));
 		return slot;
+	}
+
+	public URI createUri(URI baseUri, Slot slot) {
+		return UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
+				.build(slot.getId());
 	}
 }

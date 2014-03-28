@@ -1,4 +1,4 @@
-package de.saxsys.campus.rest.transform;
+package de.saxsys.campus.rest.mapping;
 
 import java.net.URI;
 import java.util.List;
@@ -14,7 +14,7 @@ import de.saxsys.campus.domain.Room;
 import de.saxsys.campus.rest.resource.RoomResource;
 
 @Singleton
-public class RoomTransformer {
+public class RoomMapper {
 
 	@Inject
 	private RepresentationFactory representationFactory;

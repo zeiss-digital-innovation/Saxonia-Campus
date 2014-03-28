@@ -1,4 +1,4 @@
-package de.saxsys.campus.rest.transform;
+package de.saxsys.campus.rest.mapping;
 
 import java.net.URI;
 
@@ -12,7 +12,7 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import de.saxsys.campus.rest.resource.SlotResource;
 
 @Singleton
-public class HomeTransformer {
+public class HomeMapper {
 
 	private static final String SLOTS = "slots";
 
