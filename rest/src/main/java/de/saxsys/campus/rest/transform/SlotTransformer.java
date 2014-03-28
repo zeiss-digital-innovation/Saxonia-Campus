@@ -14,10 +14,14 @@ import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.domain.Slot;
+import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
 
 @Singleton
 public class SlotTransformer {
+
+	private static final String SLOTS = "slots";
+	private static final String ROOMS = "rooms";
 
 	@Inject
 	private RoomTransformer roomTransformer;
@@ -32,8 +36,9 @@ public class SlotTransformer {
 		Representation r = representationFactory.newRepresentation(UriBuilder.fromUri(baseUri)
 				.path(SlotResource.class).build());
 		for (Slot slot : slots) {
-			r.withRepresentation("slots", createRepresentation(baseUri, slot));
+			r.withRepresentation(SLOTS, createRepresentation(baseUri, slot));
 		}
+		r.withLink(ROOMS, UriBuilder.fromUri(baseUri).path(RoomResource.class).build());
 		return r;
 	}
 
