@@ -1,40 +1,66 @@
 package de.saxsys.campus.rest.transform;
 
 import java.net.URI;
+import java.util.Date;
+import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.UriBuilder;
 
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
+import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.domain.Slot;
-import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
-import de.saxsys.campus.rest.view.SlotView;
 
 @Singleton
 public class SlotTransformer {
 
-	public SlotView transformToView(URI baseUri, Slot slot) {
-		SlotView sv = new SlotView();
-		sv.setTitle(slot.getTitle());
-		sv.setDescription(slot.getDescription());
-		sv.setEndtime(slot.getEndtime());
-		sv.setStarttime(slot.getStarttime());
-		sv.setSpeaker(slot.getSpeaker());
-		sv.setSelf(UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
-				.build(slot.getId()));
-		sv.setRoom(UriBuilder.fromUri(baseUri).path(RoomResource.class).path("{id}")
-				.build(slot.getRoom().getId()));
-		return sv;
+	@Inject
+	private RoomTransformer roomTransformer;
+
+	@Inject
+	private SlotManager slotManager;
+
+	@Inject
+	private RepresentationFactory representationFactory;
+
+	public Representation createRepresentation(URI baseUri, List<Slot> slots) {
+		Representation r = representationFactory.newRepresentation(UriBuilder.fromUri(baseUri)
+				.path(SlotResource.class).build());
+		for (Slot slot : slots) {
+			r.withRepresentation("slots", createRepresentation(baseUri, slot));
+		}
+		return r;
 	}
 
-	public Slot transformToEntity(int id, SlotView sv) {
+	public Representation createRepresentation(URI baseUri, Slot slot) {
+		return representationFactory
+				.newRepresentation(
+						UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
+								.build(slot.getId()))
+				.withProperty("id", slot.getId())
+				.withProperty("title", slot.getTitle())
+				.withProperty("description", slot.getDescription())
+				.withProperty("starttime", slot.getStarttime())
+				.withProperty("endtime", slot.getEndtime())
+				.withProperty("speaker", slot.getSpeaker())
+				.withRepresentation("room",
+						roomTransformer.createRepresentation(baseUri, slot.getRoom()));
+	}
+
+	public Slot toEntity(int id, ReadableRepresentation representation) {
 		Slot slot = new Slot();
-		slot.setId(id);
-		slot.setTitle(sv.getTitle());
-		slot.setDescription(sv.getDescription());
-		slot.setStarttime(sv.getStarttime());
-		slot.setEndtime(sv.getEndtime());
-		slot.setSpeaker(sv.getSpeaker());
+		slot.setId(Integer.valueOf((String) representation.getValue("id")));
+		slot.setTitle((String) representation.getValue("title"));
+		slot.setDescription((String) representation.getValue("description"));
+		slot.setStarttime(new Date(Long.parseLong((String) representation.getValue("starttime"))));
+		slot.setEndtime(new Date(Long.parseLong((String) representation.getValue("endtime"))));
+		slot.setSpeaker((String) representation.getValue("speaker"));
+		slot.setRoom(slotManager.findRoom(Integer.valueOf((String) representation.getValue("room"))));
 		return slot;
 	}
 }

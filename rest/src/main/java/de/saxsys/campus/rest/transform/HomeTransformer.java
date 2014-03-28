@@ -1,21 +1,26 @@
 package de.saxsys.campus.rest.transform;
 
 import java.net.URI;
-import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.UriBuilder;
 
-import de.saxsys.campus.domain.Slot;
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import de.saxsys.campus.rest.resource.SlotResource;
-import de.saxsys.campus.rest.view.HomeView;
 
 @Singleton
 public class HomeTransformer {
 
-	public HomeView createView(URI baseUri, List<Slot> slots) {
-		HomeView hv = new HomeView();
-		hv.setSlots(UriBuilder.fromUri(baseUri).path(SlotResource.class).build());
-		return hv;
+	private static final String SLOTS = "slots";
+
+	@Inject
+	private RepresentationFactory representationFactory;
+
+	public Representation createRepresentation(URI baseUri) {
+		return representationFactory.newRepresentation(baseUri).withLink(SLOTS,
+				UriBuilder.fromUri(baseUri).path(SlotResource.class).build());
 	}
 }

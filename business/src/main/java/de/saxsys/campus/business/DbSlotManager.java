@@ -47,4 +47,9 @@ public class DbSlotManager implements SlotManager {
 	public void deleteSlot(int slotId) {
 		em.remove(em.find(Slot.class, slotId));
 	}
+
+	@Override
+	public Slot findSlot(int slotId) {
+		return em.find(Slot.class, slotId);
+	}
 }

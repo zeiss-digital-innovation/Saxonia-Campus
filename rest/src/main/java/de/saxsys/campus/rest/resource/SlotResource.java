@@ -1,8 +1,5 @@
 package de.saxsys.campus.rest.resource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
@@ -14,14 +11,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
+import com.theoryinpractise.halbuilder.api.Representation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import de.saxsys.campus.business.SlotManager;
-import de.saxsys.campus.domain.Slot;
+import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.transform.SlotTransformer;
-import de.saxsys.campus.rest.view.SlotView;
 
 @Singleton
 @Path("/slots")
@@ -37,21 +36,23 @@ public class SlotResource {
 	private UriInfo uriInfo;
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<SlotView> getSlots() {
-		List<SlotView> slotViews = new ArrayList<>();
-		List<Slot> slots = slotManager.allSlots();
-		for (Slot slot : slots) {
-			slotViews.add(transform(slot));
-		}
-		return slotViews;
+	@Produces(RepresentationFactory.HAL_JSON)
+	public Representation getSlots() {
+		return slotTransformer.createRepresentation(uriInfo.getBaseUri(), slotManager.allSlots());
+	}
+
+	@GET
+	@Path("{id}")
+	@Produces(RepresentationFactory.HAL_JSON)
+	public Representation getSlot(@PathParam("id") int id) {
+		return slotTransformer.createRepresentation(uriInfo.getBaseUri(), slotManager.findSlot(id));
 	}
 
 	@PUT
 	@Path("{id}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void putSlot(@PathParam("id") int id, SlotView slotView) {
-		slotManager.updateSlot(slotTransformer.transformToEntity(id, slotView));
+	@Consumes(HalMediaTypes.HAL_JSON)
+	public void putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
+		slotManager.updateSlot(slotTransformer.toEntity(id, representation));
 	}
 
 	@DELETE
@@ -64,10 +65,4 @@ public class SlotResource {
 		}
 		return Response.ok().build();
 	}
-
-	private SlotView transform(Slot slot) {
-		return slotTransformer.transformToView(uriInfo.getBaseUri(), slot);
-	}
-
-	// TODO implement
 }
