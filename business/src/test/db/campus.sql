@@ -97,7 +97,7 @@ CREATE TABLE `slot` (
 
 LOCK TABLES `slot` WRITE;
 /*!40000 ALTER TABLE `slot` DISABLE KEYS */;
-INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring'),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart'),(3,'JSF vs JavaScript','Vergleich','16:00:00','17:00:00',1,'Stefan Bley, Marco Dierenfeldt'),(5,'Horst','a','01:00:00','02:00:00',2,'q');
+INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring'),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart'),(3,'JSF vs JavaScript','Vergleich','16:00:00','17:00:00',1,'Stefan Bley, Marco Dierenfeldt'),(5,'Kinect V2','Was ist neu?','08:00:00','12:00:00',2,'Marcus Kohnert');
 /*!40000 ALTER TABLE `slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
