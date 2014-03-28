@@ -64,18 +64,22 @@ h2 {
 }
 
 #admin_detail_view {
+    display: none;
+    
     position: absolute;
     padding: 10px;
     top: 200px;
-    height: 350px;
+    height: 380px;
     width: 400px;
     right: 40px;
-    border-radius: 4px;
+    
+    overflow-y: auto;
+    
     background-color: #fcedd5;
+    border-radius: 4px;
     border-color: coral;
     border-width: 2px;
     border-style: solid;
-    display: none;
 }
 
 /* definitionen für die Userseite */

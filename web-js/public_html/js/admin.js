@@ -123,7 +123,7 @@ var updateExistingSlot = function() {
     slot.participants = slotParticipants;
     
     saxoniaCampusPersistance.updateSlot(slot);
-    $('#'+slot.id+'_edit').text(slot.title);
+    $('#'+slot.id+'_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
     initAdminview();
 };
 
