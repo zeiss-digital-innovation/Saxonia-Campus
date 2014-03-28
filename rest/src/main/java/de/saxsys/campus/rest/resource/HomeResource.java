@@ -6,19 +6,16 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import de.saxsys.campus.business.SlotManager;
+import com.theoryinpractise.halbuilder.api.Representation;
+
+import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.transform.HomeTransformer;
-import de.saxsys.campus.rest.view.HomeView;
 
 @Singleton
 @Path("/")
 public class HomeResource {
-
-	@Inject
-	private SlotManager slotManager;
 
 	@Inject
 	private HomeTransformer homeTransformer;
@@ -27,8 +24,9 @@ public class HomeResource {
 	private UriInfo uriInfo;
 
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public HomeView getHome() {
-		return homeTransformer.createView(uriInfo.getBaseUri(), slotManager.allSlots());
+	@Produces(HalMediaTypes.HAL_JSON)
+	public Representation getHome() {
+		return homeTransformer.createRepresentation(uriInfo.getBaseUri());
 	}
+
 }

@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import de.saxsys.campus.rest.hal.HalBuilderMessageBodyReader;
+import de.saxsys.campus.rest.hal.HalBuilderMessageBodyWriter;
 import de.saxsys.campus.rest.resource.HomeResource;
 import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
@@ -19,6 +21,8 @@ public class CampusApplication extends Application {
 		RESOURCES.add(HomeResource.class);
 		RESOURCES.add(SlotResource.class);
 		RESOURCES.add(RoomResource.class);
+		RESOURCES.add(HalBuilderMessageBodyWriter.class);
+		RESOURCES.add(HalBuilderMessageBodyReader.class);
 	}
 
 	@Override
