@@ -1,11 +1,26 @@
 var saxoniaCampusRenderer = {};
 
+saxoniaCampusRenderer.generateInnerSlot = function(slot){
+    var innerSlot = '<a id="' 
+          + slot.id + '_edit" class="edit_slot">'
+          + slot.title + '<p class="ui-li-aside">' + slot.starttime + " bis "
+          + slot.endtime + '</p></a>' + '<a class="delete_slot" id="' 
+          + slot.id + '_delete"></a>';
+  
+    return innerSlot;
+}
+
+saxoniaCampusRenderer.generateAdminViewSlot = function(slot){
+  var innerSlot = saxoniaCampusRenderer.generateInnerSlot(slot);
+  var slotHtml = '<li id="' + slot.id + '_slot">' + innerSlot + '</li>';
+  
+    return slotHtml;
+};
+
 saxoniaCampusRenderer.renderAdminViewSlot = function(slotListSelector, slot) {
-    var slotText = '<a id="' + slot.id + '_edit" class="edit_slot">'
-            + slot.title + '<p class="ui-li-aside">' + slot.starttime + " bis "
-            + slot.endtime + '</p></a>';
-    $(slotListSelector).append('<li id="' + slot.id + '_slot">' + slotText
-            + '<a class="delete_slot" id="' + slot.id + '_delete"></a></li>');
+    var adminViewSlotHtml = saxoniaCampusRenderer.generateAdminViewSlot(slot);
+    
+    $(slotListSelector).append(adminViewSlotHtml);
 };
 
 saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
