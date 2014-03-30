@@ -1,33 +1,24 @@
 package de.saxsys.campus.rest;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+
+import de.saxsys.campus.rest.auth.AuthenticationFilter;
+import de.saxsys.campus.rest.cdi.GlassfishHkCdiBinder;
 import de.saxsys.campus.rest.hal.HalBuilderMessageBodyReader;
 import de.saxsys.campus.rest.hal.HalBuilderMessageBodyWriter;
-import de.saxsys.campus.rest.resource.HomeResource;
-import de.saxsys.campus.rest.resource.RoomResource;
-import de.saxsys.campus.rest.resource.SlotResource;
 
 @ApplicationPath("/")
-public class CampusApplication extends Application {
+public class CampusApplication extends ResourceConfig {
 
-	private static final Set<Class<?>> RESOURCES = new HashSet<>();
-
-	static {
-		RESOURCES.add(HomeResource.class);
-		RESOURCES.add(SlotResource.class);
-		RESOURCES.add(RoomResource.class);
-		RESOURCES.add(HalBuilderMessageBodyWriter.class);
-		RESOURCES.add(HalBuilderMessageBodyReader.class);
+	public CampusApplication() {
+		this.packages("de.saxsys.campus.rest.resource");
+		this.register(HalBuilderMessageBodyReader.class);
+		this.register(HalBuilderMessageBodyWriter.class);
+		this.register(RolesAllowedDynamicFeature.class);
+		this.register(AuthenticationFilter.class);
+		this.register(new GlassfishHkCdiBinder());
 	}
-
-	@Override
-	public Set<Class<?>> getClasses() {
-		return RESOURCES;
-	}
-
 }

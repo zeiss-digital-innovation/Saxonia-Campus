@@ -1,7 +1,7 @@
 package de.saxsys.campus.rest.resource;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -27,7 +27,7 @@ import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 import de.saxsys.campus.rest.mapping.SlotMapper;
 
-@Singleton
+@RequestScoped
 @Path("/slots")
 public class SlotResource {
 
@@ -65,6 +65,7 @@ public class SlotResource {
 	@PUT
 	@Path("{id}")
 	@Consumes(HalMediaTypes.HAL_JSON)
+	// @RolesAllowed("admin")
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
 		Slot slot = slotMapper.toEntity(id, representation);
 		slot = slotManager.updateSlot(slot);
@@ -77,6 +78,7 @@ public class SlotResource {
 	@POST
 	@Consumes(HalMediaTypes.HAL_JSON)
 	@Produces(HalMediaTypes.HAL_JSON)
+	// @RolesAllowed("admin")
 	public Response newSlot(ReadableRepresentation representation) {
 		try {
 			Slot newSlot = slotMapper.toEntity(null, representation);
@@ -91,6 +93,7 @@ public class SlotResource {
 
 	@DELETE
 	@Path("{id}")
+	// @RolesAllowed("admin")
 	public Response deleteSlot(@PathParam("id") int id) {
 		try {
 			slotManager.deleteSlot(id);

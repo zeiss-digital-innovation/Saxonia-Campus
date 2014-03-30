@@ -1,7 +1,7 @@
 package de.saxsys.campus.rest.resource;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -15,7 +15,7 @@ import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.RoomMapper;
 
-@Singleton
+@RequestScoped
 @Path("/rooms")
 public class RoomResource {
 
@@ -35,8 +35,8 @@ public class RoomResource {
 	@Produces(HalMediaTypes.HAL_JSON)
 	public Response getRooms() {
 		return Response
-				.ok(roomMapper.createRepresentation(uriInfo.getBaseUri(),
-						slotManager.allRooms())).cacheControl(defaultCacheControl()).build();
+				.ok(roomMapper.createRepresentation(uriInfo.getBaseUri(), slotManager.allRooms()))
+				.cacheControl(defaultCacheControl()).build();
 	}
 
 	@GET
@@ -44,8 +44,8 @@ public class RoomResource {
 	@Produces(HalMediaTypes.HAL_JSON)
 	public Response getRoom(@PathParam("id") int id) {
 		return Response
-				.ok(roomMapper.createRepresentation(uriInfo.getBaseUri(),
-						slotManager.findRoom(id))).cacheControl(defaultCacheControl()).build();
+				.ok(roomMapper.createRepresentation(uriInfo.getBaseUri(), slotManager.findRoom(id)))
+				.cacheControl(defaultCacheControl()).build();
 	}
 
 	private CacheControl defaultCacheControl() {
