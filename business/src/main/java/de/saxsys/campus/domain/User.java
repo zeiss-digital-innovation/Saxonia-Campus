@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -22,7 +24,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
 		@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
 		@NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username") })
+		@NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+		@NamedQuery(name = "User.findByRole", query = "SELECT u FROM User u WHERE u.role = :role") })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -38,6 +41,10 @@ public class User implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "LASTNAME")
 	private String lastname;
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "ROLE", nullable = false)
+	private Role role;
+
 	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") })
 	@ManyToMany
 	private List<Slot> slotList;
@@ -49,6 +56,7 @@ public class User implements Serializable {
 		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.role = Role.USER;
 	}
 
 	public Integer getId() {
@@ -81,6 +89,14 @@ public class User implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@XmlTransient

@@ -30,8 +30,8 @@ CREATE TABLE `reservation` (
   PRIMARY KEY (`USER_ID`,`SLOT_ID`),
   KEY `SLOT_ID_idx` (`SLOT_ID`),
   KEY `USER_ID_idx` (`USER_ID`),
-  CONSTRAINT `USER_FK` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `SLOT_FK` FOREIGN KEY (`SLOT_ID`) REFERENCES `slot` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `SLOT_FK` FOREIGN KEY (`SLOT_ID`) REFERENCES `slot` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `USER_FK` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -71,6 +71,30 @@ INSERT INTO `room` VALUES (1,'FFP 302',20),(2,'BS UG',30);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `sequence`
+--
+
+DROP TABLE IF EXISTS `sequence`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sequence` (
+  `SEQ_NAME` varchar(50) NOT NULL,
+  `SEQ_COUNT` decimal(38,0) DEFAULT NULL,
+  PRIMARY KEY (`SEQ_NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sequence`
+--
+
+LOCK TABLES `sequence` WRITE;
+/*!40000 ALTER TABLE `sequence` DISABLE KEYS */;
+INSERT INTO `sequence` VALUES ('SEQ_GEN',0);
+/*!40000 ALTER TABLE `sequence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `slot`
 --
 
@@ -88,7 +112,7 @@ CREATE TABLE `slot` (
   PRIMARY KEY (`ID`),
   KEY `ROOM_FK_idx` (`ROOM_ID`),
   CONSTRAINT `ROOM_FK` FOREIGN KEY (`ROOM_ID`) REFERENCES `room` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +121,7 @@ CREATE TABLE `slot` (
 
 LOCK TABLES `slot` WRITE;
 /*!40000 ALTER TABLE `slot` DISABLE KEYS */;
-INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring'),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart'),(3,'JSF vs JavaScript','Vergleich','16:00:00','17:00:00',1,'Stefan Bley, Marco Dierenfeldt'),(5,'Kinect V2','Was ist neu?','08:00:00','12:00:00',2,'Marcus Kohnert');
+INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring'),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart'),(3,'HTML5 vs JSF','Vergleich','08:30:00','17:00:00',1,'Marco Dierenfeldt, Stefan Bley');
 /*!40000 ALTER TABLE `slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,6 +135,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `ID` int(11) NOT NULL,
   `USERNAME` varchar(50) NOT NULL,
+  `ROLE` int(11) NOT NULL,
   `FIRSTNAME` varchar(50) NOT NULL,
   `LASTNAME` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
@@ -124,7 +149,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'stefan.heinze','Stefan','Heinze'),(2,'marco.dierenfeldt','Marco','Dierenfeldt'),(3,'stefan.bley','Stefan','Bley');
+INSERT INTO `user` VALUES (1,'stefan.heinze',0,'Stefan','Heinze'),(2,'marco.dierenfeldt',1,'Marco','Dierenfeldt'),(3,'stefan.bley',1,'Stefan','Bley'),(4,'matthias.baumgart',0,'Matthias','Baumgart');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -137,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-18 18:35:06
+-- Dump completed on 2014-03-30 13:21:32
