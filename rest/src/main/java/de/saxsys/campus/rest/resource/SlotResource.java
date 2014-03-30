@@ -1,5 +1,7 @@
 package de.saxsys.campus.rest.resource;
 
+import java.net.URI;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -69,8 +71,11 @@ public class SlotResource {
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
 		Slot slot = slotMapper.toEntity(id, representation);
 		slot = slotManager.updateSlot(slot);
+		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
+				slot);
 		if (id != slot.getId()) {
-			return Response.created(slotMapper.createUri(uriInfo.getBaseUri(), slot)).build();
+			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
+					.build();
 		}
 		return Response.ok().build();
 	}
@@ -83,7 +88,10 @@ public class SlotResource {
 		try {
 			Slot newSlot = slotMapper.toEntity(null, representation);
 			slotManager.addSlot(newSlot);
-			return Response.created(slotMapper.createUri(uriInfo.getBaseUri(), newSlot)).build();
+			Representation slotRepresentation = slotMapper.createRepresentation(
+					uriInfo.getBaseUri(), newSlot);
+			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
+					.build();
 		} catch (Exception e) {
 			LOGGER.error("Could not add slot.", e);
 			throw new WebApplicationException(Response.status(400)
@@ -102,5 +110,9 @@ public class SlotResource {
 			throw new WebApplicationException(404);
 		}
 		return Response.ok().build();
+	}
+
+	private URI getSelfUri(Representation slotRepresentation) {
+		return URI.create(slotRepresentation.getLinkByRel("self").getHref());
 	}
 }
