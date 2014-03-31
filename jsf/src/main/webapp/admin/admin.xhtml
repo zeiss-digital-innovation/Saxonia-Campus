@@ -30,8 +30,8 @@
 							<p:column>
 								<p:commandButton actionListener="#{adminViewBean.deleteSlot}"
 									icon="ui-icon-trash" title="Slot löschen" />
-								<p:commandButton actionListener="#{adminViewBean.editSlot}"
-									icon="ui-icon-pencil" title="Slot bearbeiten" />
+								<p:commandButton actionListener="#{adminViewBean.editSlot(slot)}"
+									icon="ui-icon-pencil" title="Slot bearbeiten" update="@form" />
 							</p:column>
 						</p:dataTable>
 
