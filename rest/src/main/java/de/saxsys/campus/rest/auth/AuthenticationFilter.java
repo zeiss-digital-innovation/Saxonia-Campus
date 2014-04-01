@@ -2,13 +2,12 @@ package de.saxsys.campus.rest.auth;
 
 import java.io.IOException;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
@@ -18,8 +17,7 @@ import de.saxsys.campus.business.auth.AuthenticationException;
 import de.saxsys.campus.business.auth.AuthenticationService;
 import de.saxsys.campus.domain.User;
 
-@RequestScoped
-@Named
+@Provider
 public class AuthenticationFilter implements ContainerRequestFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
