@@ -1,5 +1,21 @@
-.adminTable table, .adminTable tr, .adminTable td {
-    border: none;
-    border-style: hidden !important;
-    vertical-align: top;
+header {
+	background: #000;
+	color: #FFF;
+	text-align: center;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	padding: 5px;
+	position: absolute;
+}
+
+.content {
+	position: relative;
+	margin-top: 3em;
+}
+
+.adminTable table,.adminTable tr,.adminTable td {
+	border: none;
+	border-style: hidden !important;
+	vertical-align: top;
 }
