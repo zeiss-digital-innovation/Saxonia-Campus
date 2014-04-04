@@ -43,8 +43,9 @@ public class SlotMapper {
 	}
 
 	public Representation createRepresentation(URI baseUri, Slot slot) {
+		final URI slotUri = createUri(baseUri, slot);
 		return representationFactory
-				.newRepresentation(createUri(baseUri, slot))
+				.newRepresentation(slotUri)
 				.withProperty("id", slot.getId())
 				.withProperty("title", slot.getTitle())
 				.withProperty("description", slot.getDescription())
@@ -54,7 +55,8 @@ public class SlotMapper {
 				.withProperty("capacity", slot.getCapacity())
 				.withProperty("participants", slot.getParticipantCount())
 				.withRepresentation("room",
-						roomTransformer.createRepresentation(baseUri, slot.getRoom()));
+						roomTransformer.createRepresentation(baseUri, slot.getRoom()))
+				.withLink("reserve", UriBuilder.fromUri(slotUri).path("/participants").build());
 	}
 
 	public Slot toEntity(Integer id, ReadableRepresentation representation) {
@@ -66,6 +68,7 @@ public class SlotMapper {
 		slot.setEndtime(new Date(Long.parseLong((String) representation.getValue("endtime"))));
 		slot.setSpeaker((String) representation.getValue("speaker"));
 		slot.setRoom(slotManager.findRoom(Integer.valueOf((String) representation.getValue("room"))));
+		slot.setCapacity(Integer.parseInt((String) representation.getValue("capacity")));
 		return slot;
 	}
 

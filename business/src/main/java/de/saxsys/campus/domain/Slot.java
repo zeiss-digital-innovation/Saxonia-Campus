@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -51,7 +52,8 @@ public class Slot implements Serializable {
 	@Column(name = "ENDTIME")
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
-	@ManyToMany(mappedBy = "slotList")
+	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") })
+	@ManyToMany
 	private List<User> participants;
 	@Basic(optional = false)
 	@Column(name = "SPEAKER")
@@ -119,6 +121,10 @@ public class Slot implements Serializable {
 
 	public void setParticipants(List<User> users) {
 		this.participants = users;
+	}
+
+	public void addParticipant(User user) {
+		participants.add(user);
 	}
 
 	@XmlTransient

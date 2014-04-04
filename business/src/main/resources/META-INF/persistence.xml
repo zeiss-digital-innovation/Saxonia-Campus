@@ -11,6 +11,9 @@
 		<properties>
 			<property name="javax.persistence.schema-generation.database.action"
 				value="create" />
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.level.sql" value="DEBUG" />
+			<property name="eclipselink.logging.parameters" value="true" />
 		</properties>
 	</persistence-unit>
 </persistence>
