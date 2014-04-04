@@ -70,7 +70,7 @@ public class SlotResource {
 		if (null == slot) {
 			throw new WebApplicationException(404);
 		}
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot);
+		return createSlotRepresentation(slot);
 	}
 
 	@PUT
@@ -80,8 +80,7 @@ public class SlotResource {
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
 		Slot slot = slotMapper.toEntity(id, representation);
 		slot = slotManager.updateSlot(slot);
-		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
-				slot);
+		Representation slotRepresentation = createSlotRepresentation(slot);
 		if (id != slot.getId()) {
 			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
 					.build();
@@ -97,8 +96,7 @@ public class SlotResource {
 		try {
 			Slot newSlot = slotMapper.toEntity(null, representation);
 			slotManager.addSlot(newSlot);
-			Representation slotRepresentation = slotMapper.createRepresentation(
-					uriInfo.getBaseUri(), newSlot);
+			Representation slotRepresentation = createSlotRepresentation(newSlot);
 			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
 					.build();
 		} catch (Exception e) {
@@ -145,9 +143,7 @@ public class SlotResource {
 		User user = userManager.findUser(authUser.getUsername());
 		slot.addParticipant(user);
 		slotManager.updateSlot(slot);
-		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
-				slot);
-		return Response.ok().entity(slotRepresentation).build();
+		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
 	@DELETE
@@ -162,9 +158,11 @@ public class SlotResource {
 		User user = userManager.findUser(authUser.getUsername());
 		slot.removeParticipant(user);
 		slotManager.updateSlot(slot);
-		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
-				slot);
-		return Response.ok().entity(slotRepresentation).build();
+		return Response.ok().entity(createSlotRepresentation(slot)).build();
+	}
+
+	private Representation createSlotRepresentation(Slot slot) {
+		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true);
 	}
 
 	private URI getSelfUri(Representation slotRepresentation) {

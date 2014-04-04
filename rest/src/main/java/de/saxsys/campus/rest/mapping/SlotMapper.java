@@ -43,15 +43,15 @@ public class SlotMapper {
 		Representation r = representationFactory.newRepresentation(UriBuilder.fromUri(baseUri)
 				.path(SlotResource.class).build());
 		for (Slot slot : slots) {
-			r.withRepresentation(SLOTS, createRepresentation(baseUri, slot));
+			r.withRepresentation(SLOTS, createRepresentation(baseUri, slot, false));
 		}
 		r.withLink(ROOMS, UriBuilder.fromUri(baseUri).path(RoomResource.class).build());
 		return r;
 	}
 
-	public Representation createRepresentation(URI baseUri, Slot slot) {
+	public Representation createRepresentation(URI baseUri, Slot slot, boolean expanded) {
 		final URI slotUri = createUri(baseUri, slot);
-		return representationFactory
+		Representation r = representationFactory
 				.newRepresentation(slotUri)
 				.withProperty("id", slot.getId())
 				.withProperty("title", slot.getTitle())
@@ -62,16 +62,18 @@ public class SlotMapper {
 				.withProperty("capacity", slot.getCapacity())
 				.withRepresentation("room",
 						roomMapper.createRepresentation(baseUri, slot.getRoom()))
-				.withProperty("participants", slot.getParticipantCount())
-				.withLink(REGISTER, createRegisterUri(slotUri))
-				.withLink(UNREGISTER, createRegisterUri(slotUri))
-				.withLink(PARTICIPANTS, UriBuilder.fromUri(slotUri).path("/participants").build());
+				.withProperty("participants", slot.getParticipantCount());
+		if (expanded) {
+			r.withLink(REGISTER, createRegisterUri(slotUri));
+			r.withLink(UNREGISTER, createRegisterUri(slotUri));
+			r.withLink(PARTICIPANTS, UriBuilder.fromUri(slotUri).path("/participants").build());
+		}
+		return r;
 	}
 
 	public Representation createParticipantsRepresentation(URI baseUri, Slot slot, boolean expanded) {
-		final Representation r = participantMapper.createRepresentation(baseUri, slot, expanded);
-		r.withLink(SLOT, createUri(baseUri, slot));
-		return r;
+		return participantMapper.createRepresentation(baseUri, slot, expanded).withLink(SLOT,
+				createUri(baseUri, slot));
 	}
 
 	public Slot toEntity(Integer id, ReadableRepresentation representation) {
