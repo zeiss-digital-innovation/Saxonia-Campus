@@ -5,6 +5,16 @@
 
 module("persistence");
 
+test("Basic auth test des generierten String", function(){
+    var username = "marco.dierenfeldt";
+    var password = "campus";
+    var expectedAuthStr = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    
+    var result = saxoniaCampusUtil.make_base_auth(username,password);
+    
+    equal(result, expectedAuthStr, "Überprüfung ob baseAuth generierung funktioniert.");
+});
+
 test("Initialisierung des Persistenzmoduls", function() {
     var persisitence = saxoniaCampusPersistance;
     var numberOfSlotsExpected = 3;
