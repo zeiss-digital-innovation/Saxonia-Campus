@@ -12,38 +12,38 @@
 			<p:panel header="Slot #{adminViewBean.slotDetailMode}">
 				<p:panelGrid columns="2">
 					<p:outputLabel id="lblTitle" for="txtTitle" value="Titel:" />
-					<p:inputText id="txtTitle" value="#{slotBean.title}" />
+					<p:inputText id="txtTitle" value="#{slotBean.slot.title}" />
 
 					<p:outputLabel id="lblDescription" for="txtDescription"
 						value="Beschreibung:" />
 					<p:inputTextarea id="txtDescription"
-						value="#{slotBean.description}" />
+						value="#{slotBean.slot.description}" />
 
 					<p:outputLabel id="lblRoom" for="selectRoom" value="Raum:" />
-					<p:selectOneMenu id="selectRoom" value="#{slotBean.room}"
+					<p:selectOneMenu id="selectRoom" value="#{slotBean.slot.room}"
 						converter="#{roomConverter}">
-						<f:selectItems value="#{slotBean.rooms}" var="room"
+						<f:selectItems value="#{adminViewBean.rooms}" var="room"
 							itemLabel="#{room.roomnumber}" itemValue="#{room}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel id="lblStart" for="txtStart" value="Start:" />
-					<p:inputMask id="txtStart" value="#{slotBean.startTime}"
+					<p:inputMask id="txtStart" value="#{slotBean.slot.starttime}"
 						mask="99:99">
 						<f:convertDateTime pattern="HH:mm" />
 					</p:inputMask>
 
 					<p:outputLabel id="lblEnd" for="txtEnd" value="Ende:" />
-					<p:inputMask id="txtEnd" value="#{slotBean.endTime}" mask="99:99">
+					<p:inputMask id="txtEnd" value="#{slotBean.slot.endtime}" mask="99:99">
 						<f:convertDateTime pattern="HH:mm" />
 					</p:inputMask>
 					<p:outputLabel id="lblSpeaker" for="txtSpeaker"
 						value="Verantwortlicher:" />
-					<p:inputText id="txtSpeaker" value="#{slotBean.speaker}" />
+					<p:inputText id="txtSpeaker" value="#{slotBean.slot.speaker}" />
 				</p:panelGrid>
 				<p:commandButton id="btnCancel" value="Abbrechen"
 					action="#{adminViewBean.cancelSlot}" update="@all" />
 				<p:commandButton id="btnSave" value="Speichern"
-					action="#{slotBean.save}" />
+					action="#{slotBean.save}" update="@all" />
 				<p:messages showDetail="false" autoUpdate="true" />
 			</p:panel>
 		</h:form>

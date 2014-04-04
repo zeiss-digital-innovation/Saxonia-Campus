@@ -12,6 +12,15 @@
 	<packaging>war</packaging>
 	<name>Saxonia Campus JSF</name>
 
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
