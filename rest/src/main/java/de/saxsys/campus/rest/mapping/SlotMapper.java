@@ -20,11 +20,17 @@ import de.saxsys.campus.rest.resource.SlotResource;
 @Singleton
 public class SlotMapper {
 
+	private static final String SLOT = "slot";
 	private static final String SLOTS = "slots";
 	private static final String ROOMS = "rooms";
+	private static final String RESERVE = "reserve";
+	private static final String PARTICIPANTS = "participants";
 
 	@Inject
-	private RoomMapper roomTransformer;
+	private RoomMapper roomMapper;
+
+	@Inject
+	private ParticipantMapper participantMapper;
 
 	@Inject
 	private SlotManager slotManager;
@@ -53,10 +59,11 @@ public class SlotMapper {
 				.withProperty("endtime", slot.getEndtime())
 				.withProperty("speaker", slot.getSpeaker())
 				.withProperty("capacity", slot.getCapacity())
-				.withProperty("participants", slot.getParticipantCount())
 				.withRepresentation("room",
-						roomTransformer.createRepresentation(baseUri, slot.getRoom()))
-				.withLink("reserve", UriBuilder.fromUri(slotUri).path("/participants").build());
+						roomMapper.createRepresentation(baseUri, slot.getRoom()))
+				.withProperty("participants", slot.getParticipantCount())
+				.withLink(RESERVE, UriBuilder.fromUri(slotUri).path("/participants").build())
+				.withLink(PARTICIPANTS, UriBuilder.fromUri(slotUri).path("/participants").build());
 	}
 
 	public Slot toEntity(Integer id, ReadableRepresentation representation) {
@@ -75,5 +82,11 @@ public class SlotMapper {
 	public URI createUri(URI baseUri, Slot slot) {
 		return UriBuilder.fromUri(baseUri).path(SlotResource.class).path("{id}")
 				.build(slot.getId());
+	}
+
+	public Representation createParticipantsRepresentation(URI baseUri, Slot slot, boolean expanded) {
+		final Representation r = participantMapper.createRepresentation(baseUri, slot, expanded);
+		r.withLink(SLOT, createUri(baseUri, slot));
+		return r;
 	}
 }

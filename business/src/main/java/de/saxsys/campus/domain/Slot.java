@@ -52,7 +52,7 @@ public class Slot implements Serializable {
 	@Column(name = "ENDTIME")
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
-	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
 	@ManyToMany
 	private List<User> participants;
 	@Basic(optional = false)

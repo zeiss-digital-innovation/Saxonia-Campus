@@ -138,6 +138,18 @@ public class SlotResource {
 		return Response.ok().entity(slotRepresentation).build();
 	}
 
+	@GET
+	@Path("{id}/participants")
+	public Response getParticipants(@PathParam("id") int id) {
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			throw new WebApplicationException(404);
+		}
+		Representation participantsRepresentation = slotMapper.createParticipantsRepresentation(
+				uriInfo.getBaseUri(), slot, true);
+		return Response.ok().entity(participantsRepresentation).build();
+	}
+
 	private URI getSelfUri(Representation slotRepresentation) {
 		return URI.create(slotRepresentation.getLinkByRel("self").getHref());
 	}
