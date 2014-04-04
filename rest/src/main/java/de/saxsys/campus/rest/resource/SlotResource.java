@@ -121,9 +121,21 @@ public class SlotResource {
 		return Response.ok().build();
 	}
 
-	@PUT
+	@GET
 	@Path("{id}/participants")
-	public Response reserve(@PathParam("id") int id) {
+	public Response getParticipants(@PathParam("id") int id) {
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			throw new WebApplicationException(404);
+		}
+		Representation participantsRepresentation = slotMapper.createParticipantsRepresentation(
+				uriInfo.getBaseUri(), slot, true);
+		return Response.ok().entity(participantsRepresentation).build();
+	}
+
+	@PUT
+	@Path("{id}/participants/user")
+	public Response register(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
 			LOGGER.error("Could not reserve slot.");
@@ -138,16 +150,21 @@ public class SlotResource {
 		return Response.ok().entity(slotRepresentation).build();
 	}
 
-	@GET
-	@Path("{id}/participants")
-	public Response getParticipants(@PathParam("id") int id) {
+	@DELETE
+	@Path("{id}/participants/user")
+	public Response unregister(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
+			LOGGER.error("Could not cancel reservation for slot.");
 			throw new WebApplicationException(404);
 		}
-		Representation participantsRepresentation = slotMapper.createParticipantsRepresentation(
-				uriInfo.getBaseUri(), slot, true);
-		return Response.ok().entity(participantsRepresentation).build();
+		User authUser = authContext.getUser();
+		User user = userManager.findUser(authUser.getUsername());
+		slot.removeParticipant(user);
+		slotManager.updateSlot(slot);
+		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
+				slot);
+		return Response.ok().entity(slotRepresentation).build();
 	}
 
 	private URI getSelfUri(Representation slotRepresentation) {

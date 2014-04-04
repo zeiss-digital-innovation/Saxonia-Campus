@@ -127,6 +127,10 @@ public class Slot implements Serializable {
 		participants.add(user);
 	}
 
+	public void removeParticipant(User user) {
+		participants.remove(user);
+	}
+
 	@XmlTransient
 	public int getParticipantCount() {
 		return participants.size();

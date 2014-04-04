@@ -23,7 +23,8 @@ public class SlotMapper {
 	private static final String SLOT = "slot";
 	private static final String SLOTS = "slots";
 	private static final String ROOMS = "rooms";
-	private static final String RESERVE = "reserve";
+	private static final String REGISTER = "register";
+	private static final String UNREGISTER = "unregister";
 	private static final String PARTICIPANTS = "participants";
 
 	@Inject
@@ -62,8 +63,15 @@ public class SlotMapper {
 				.withRepresentation("room",
 						roomMapper.createRepresentation(baseUri, slot.getRoom()))
 				.withProperty("participants", slot.getParticipantCount())
-				.withLink(RESERVE, UriBuilder.fromUri(slotUri).path("/participants").build())
+				.withLink(REGISTER, createRegisterUri(slotUri))
+				.withLink(UNREGISTER, createRegisterUri(slotUri))
 				.withLink(PARTICIPANTS, UriBuilder.fromUri(slotUri).path("/participants").build());
+	}
+
+	public Representation createParticipantsRepresentation(URI baseUri, Slot slot, boolean expanded) {
+		final Representation r = participantMapper.createRepresentation(baseUri, slot, expanded);
+		r.withLink(SLOT, createUri(baseUri, slot));
+		return r;
 	}
 
 	public Slot toEntity(Integer id, ReadableRepresentation representation) {
@@ -84,9 +92,7 @@ public class SlotMapper {
 				.build(slot.getId());
 	}
 
-	public Representation createParticipantsRepresentation(URI baseUri, Slot slot, boolean expanded) {
-		final Representation r = participantMapper.createRepresentation(baseUri, slot, expanded);
-		r.withLink(SLOT, createUri(baseUri, slot));
-		return r;
+	private URI createRegisterUri(final URI slotUri) {
+		return UriBuilder.fromUri(slotUri).path("/participants/user").build();
 	}
 }
