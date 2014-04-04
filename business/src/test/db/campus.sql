@@ -41,6 +41,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+INSERT INTO `reservation` VALUES (1,1);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,10 +110,11 @@ CREATE TABLE `slot` (
   `ENDTIME` time NOT NULL,
   `ROOM_ID` int(11) NOT NULL,
   `SPEAKER` varchar(255) NOT NULL,
+  `CAPACITY` int(11) NOT NULL DEFAULT '20',
   PRIMARY KEY (`ID`),
   KEY `ROOM_FK_idx` (`ROOM_ID`),
   CONSTRAINT `ROOM_FK` FOREIGN KEY (`ROOM_ID`) REFERENCES `room` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +123,7 @@ CREATE TABLE `slot` (
 
 LOCK TABLES `slot` WRITE;
 /*!40000 ALTER TABLE `slot` DISABLE KEYS */;
-INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring'),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart'),(3,'HTML5 vs JSF','Vergleich','08:30:00','17:00:00',1,'Marco Dierenfeldt, Stefan Bley');
+INSERT INTO `slot` VALUES (1,'Java 8 Lambdas','Workshop','09:30:00','10:30:00',1,'Stefan Saring',8),(2,'Neo4J','Vortrag zu APIs und Cypher','09:30:00','12:00:00',2,'Matthias Baumgart',12),(3,'HTML5 vs JSF','Vergleich','08:30:00','17:00:00',1,'Marco Dierenfeldt, Stefan Bley',10);
 /*!40000 ALTER TABLE `slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-30 13:21:32
+-- Dump completed on 2014-04-04 12:53:57

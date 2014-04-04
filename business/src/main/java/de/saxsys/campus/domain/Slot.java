@@ -59,6 +59,9 @@ public class Slot implements Serializable {
 	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private Room room;
+	@Basic(optional = false)
+	@Column(name = "CAPACITY")
+	private int capacity;
 
 	public Slot() {
 	}
@@ -137,6 +140,14 @@ public class Slot implements Serializable {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
 	@Override

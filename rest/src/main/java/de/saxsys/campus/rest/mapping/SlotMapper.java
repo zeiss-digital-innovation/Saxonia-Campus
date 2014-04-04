@@ -51,6 +51,8 @@ public class SlotMapper {
 				.withProperty("starttime", slot.getStarttime())
 				.withProperty("endtime", slot.getEndtime())
 				.withProperty("speaker", slot.getSpeaker())
+				.withProperty("capacity", slot.getCapacity())
+				.withProperty("participants", slot.getParticipantCount())
 				.withRepresentation("room",
 						roomTransformer.createRepresentation(baseUri, slot.getRoom()));
 	}
