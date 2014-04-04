@@ -128,6 +128,7 @@ var updateExistingSlot = function() {
 };
 
 $(function() {
+    saxoniaCampusPersistance.init();
     fillSlotList();
     initAdminview();
 
