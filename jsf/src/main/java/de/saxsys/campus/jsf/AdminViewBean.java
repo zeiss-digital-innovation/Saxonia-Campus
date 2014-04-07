@@ -44,12 +44,12 @@ public class AdminViewBean implements Serializable {
 
 	public void newSlot() {
 		LOGGER.debug("Create new slot");
-		setSlotDetailMode(true);
 		slotBean.setSlot(new Slot());
+		setSlotDetailMode(true);
 	}
 
 	public void cancelSlot() {
-		LOGGER.debug("Cancel new slot");
+		LOGGER.debug("Cancel new/edit slot");
 		setSlotDetailMode(false);
 	}
 
@@ -59,8 +59,8 @@ public class AdminViewBean implements Serializable {
 
 	public void editSlot(Slot slot) {
 		LOGGER.debug("Edit slot");
-		setSlotDetailMode(true);
 		slotBean.setSlot(slot);
+		setSlotDetailMode(true);
 	}
 
 	public List<Slot> getSlots() {

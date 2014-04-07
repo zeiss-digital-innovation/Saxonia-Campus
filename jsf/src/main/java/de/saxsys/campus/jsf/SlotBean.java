@@ -2,7 +2,7 @@ package de.saxsys.campus.jsf;
 
 import java.io.Serializable;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.domain.Slot;
 
 @Named
-@Stateless
+@SessionScoped
 public class SlotBean implements Serializable {
 
 	private static final long serialVersionUID = -7322019173114315205L;

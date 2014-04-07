@@ -18,6 +18,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,29 +35,42 @@ import javax.xml.bind.annotation.XmlTransient;
 		@NamedQuery(name = "Slot.findByEndtime", query = "SELECT s FROM Slot s WHERE s.endtime = :endtime") })
 public class Slot implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Basic(optional = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Integer id;
+	
+	@Size(min = 1, message = "Bitte einen Titel angeben!")
 	@Basic(optional = false)
 	@Column(name = "TITLE")
 	private String title;
+	
 	@Column(name = "DESCRIPTION")
 	private String description;
+	
+	@NotNull(message = "Bitte eine Startzeit angeben!")
 	@Basic(optional = false)
 	@Column(name = "STARTTIME")
 	@Temporal(TemporalType.TIME)
 	private Date starttime;
+	
+	@NotNull(message = "Bitte eine Endzeit angeben!")
 	@Basic(optional = false)
 	@Column(name = "ENDTIME")
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
+	
 	@ManyToMany(mappedBy = "slotList")
 	private List<User> participants;
+	
+	@Size(min = 1, message = "Bitte einen Verantwortlichen angeben!")
 	@Basic(optional = false)
 	@Column(name = "SPEAKER")
 	private String speaker;
+	
+	@NotNull
 	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private Room room;
