@@ -14,7 +14,7 @@ header {
 	margin-top: 3em;
 }
 
-.adminTable table,.adminTable tr,.adminTable td {
+.tbl table,.tbl tr,.tbl td {
 	border: none;
 	border-style: hidden !important;
 	vertical-align: top;

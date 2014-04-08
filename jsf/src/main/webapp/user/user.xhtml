@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/templates/template.xhtml">
+	<ui:define name="content">
+	<h2>User-View</h2>
+	
+	<h:form>
+	<p:accordionPanel value="#{userViewBean.slots}" var="slot">
+		<p:tab title="#{slot.title}">
+			<p:panelGrid styleClass="tbl">
+				<p:row>
+				<p:column colspan="2">
+					<h:outputText value="Beschreibung: #{slot.description}"/>				
+				</p:column>
+				<p:column><p:commandButton value="Buchen" /></p:column>				
+				</p:row>
+
+				<p:row>
+					<p:column><h:outputText value="Raum: #{slot.room.roomnumber}" /></p:column>
+					<p:column><h:outputText value="Speaker: #{slot.speaker}" /></p:column>
+					<!-- FIXME should show current available seats and not the initial capacity! -->
+					<p:column><h:outputText value="Freie Plätze: #{slot.capacity}" /></p:column>				
+				</p:row>
+			</p:panelGrid>
+		</p:tab>
+	</p:accordionPanel>
+	</h:form>
+	
+	</ui:define>
+</ui:composition>
