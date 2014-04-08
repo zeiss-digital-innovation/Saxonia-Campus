@@ -11,7 +11,7 @@
 			<p:panelGrid columns="2" styleClass="adminTable">
 				<p:column>
 					<p:commandButton id="btnAddSlot" value="Neuer Slot"
-						action="#{adminViewBean.newSlot}" update="@form" />
+						action="#{adminViewBean.newSlot}" update="@form" disabled="#{adminViewBean.slotDetailMode}" />
 					<p:dataTable id="tblSlots" value="#{adminViewBean.slots}"
 						var="slot">
 						<p:column>
@@ -28,9 +28,9 @@
 						</p:column>
 						<p:column>
 							<p:commandButton actionListener="#{adminViewBean.deleteSlot}"
-								icon="ui-icon-trash" title="Slot löschen" />
+								icon="ui-icon-trash" title="Slot löschen" disabled="#{adminViewBean.slotDetailMode}" />
 							<p:commandButton actionListener="#{adminViewBean.editSlot(slot)}"
-								icon="ui-icon-pencil" title="Slot bearbeiten" update=":formAdmin" />
+								icon="ui-icon-pencil" title="Slot bearbeiten" update=":formAdmin" disabled="#{adminViewBean.slotDetailMode}" />
 						</p:column>
 					</p:dataTable>
 
