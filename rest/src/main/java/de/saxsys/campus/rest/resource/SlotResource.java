@@ -24,7 +24,10 @@ import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
 
 import de.saxsys.campus.business.SlotManager;
+import de.saxsys.campus.business.UserManager;
 import de.saxsys.campus.domain.Slot;
+import de.saxsys.campus.domain.User;
+import de.saxsys.campus.rest.auth.AuthenticationContext;
 import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 import de.saxsys.campus.rest.mapping.SlotMapper;
@@ -39,6 +42,9 @@ public class SlotResource {
 	private SlotManager slotManager;
 
 	@Inject
+	private UserManager userManager;
+
+	@Inject
 	private SlotMapper slotMapper;
 
 	@Inject
@@ -46,6 +52,9 @@ public class SlotResource {
 
 	@Context
 	private UriInfo uriInfo;
+
+	@Inject
+	private AuthenticationContext authContext;
 
 	@GET
 	@Produces(HalMediaTypes.HAL_JSON)
@@ -61,7 +70,7 @@ public class SlotResource {
 		if (null == slot) {
 			throw new WebApplicationException(404);
 		}
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot);
+		return createSlotRepresentation(slot);
 	}
 
 	@PUT
@@ -71,8 +80,7 @@ public class SlotResource {
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
 		Slot slot = slotMapper.toEntity(id, representation);
 		slot = slotManager.updateSlot(slot);
-		Representation slotRepresentation = slotMapper.createRepresentation(uriInfo.getBaseUri(),
-				slot);
+		Representation slotRepresentation = createSlotRepresentation(slot);
 		if (id != slot.getId()) {
 			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
 					.build();
@@ -88,8 +96,7 @@ public class SlotResource {
 		try {
 			Slot newSlot = slotMapper.toEntity(null, representation);
 			slotManager.addSlot(newSlot);
-			Representation slotRepresentation = slotMapper.createRepresentation(
-					uriInfo.getBaseUri(), newSlot);
+			Representation slotRepresentation = createSlotRepresentation(newSlot);
 			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
 					.build();
 		} catch (Exception e) {
@@ -110,6 +117,52 @@ public class SlotResource {
 			throw new WebApplicationException(404);
 		}
 		return Response.ok().build();
+	}
+
+	@GET
+	@Path("{id}/participants")
+	public Response getParticipants(@PathParam("id") int id) {
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			throw new WebApplicationException(404);
+		}
+		Representation participantsRepresentation = slotMapper.createParticipantsRepresentation(
+				uriInfo.getBaseUri(), slot, true);
+		return Response.ok().entity(participantsRepresentation).build();
+	}
+
+	@PUT
+	@Path("{id}/participants/user")
+	public Response register(@PathParam("id") int id) {
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			LOGGER.error("Could not reserve slot.");
+			throw new WebApplicationException(404);
+		}
+		User authUser = authContext.getUser();
+		User user = userManager.findUser(authUser.getUsername());
+		slot.addParticipant(user);
+		slotManager.updateSlot(slot);
+		return Response.ok().entity(createSlotRepresentation(slot)).build();
+	}
+
+	@DELETE
+	@Path("{id}/participants/user")
+	public Response unregister(@PathParam("id") int id) {
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			LOGGER.error("Could not cancel reservation for slot.");
+			throw new WebApplicationException(404);
+		}
+		User authUser = authContext.getUser();
+		User user = userManager.findUser(authUser.getUsername());
+		slot.removeParticipant(user);
+		slotManager.updateSlot(slot);
+		return Response.ok().entity(createSlotRepresentation(slot)).build();
+	}
+
+	private Representation createSlotRepresentation(Slot slot) {
+		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true);
 	}
 
 	private URI getSelfUri(Representation slotRepresentation) {

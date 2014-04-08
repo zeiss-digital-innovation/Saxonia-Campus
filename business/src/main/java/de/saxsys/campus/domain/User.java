@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -45,8 +43,7 @@ public class User implements Serializable {
 	@Column(name = "ROLE", nullable = false)
 	private Role role;
 
-	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") })
-	@ManyToMany
+	@ManyToMany(mappedBy = "participants")
 	private List<Slot> slotList;
 
 	public User() {

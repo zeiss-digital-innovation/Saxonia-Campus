@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -62,7 +63,8 @@ public class Slot implements Serializable {
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
 	
-	@ManyToMany(mappedBy = "slotList")
+	@ManyToMany
+	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
 	private List<User> participants;
 	
 	@Size(min = 1, message = "Bitte einen Verantwortlichen angeben!")
@@ -74,6 +76,9 @@ public class Slot implements Serializable {
 	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private Room room;
+	@Basic(optional = false)
+	@Column(name = "CAPACITY")
+	private int capacity;
 
 	public Slot() {
 	}
@@ -133,6 +138,14 @@ public class Slot implements Serializable {
 		this.participants = users;
 	}
 
+	public void addParticipant(User user) {
+		participants.add(user);
+	}
+
+	public void removeParticipant(User user) {
+		participants.remove(user);
+	}
+
 	@XmlTransient
 	public int getParticipantCount() {
 		return participants.size();
@@ -152,6 +165,14 @@ public class Slot implements Serializable {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
 
 	@Override
