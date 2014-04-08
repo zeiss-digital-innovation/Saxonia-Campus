@@ -27,8 +27,18 @@
 							</h:outputText>
 						</p:column>
 						<p:column>
-							<p:commandButton actionListener="#{adminViewBean.deleteSlot}"
-								icon="ui-icon-trash" title="Slot löschen" disabled="#{adminViewBean.slotDetailMode}" />
+							<p:commandButton actionListener="#{adminViewBean.deleteSlot(slot)}"
+								icon="ui-icon-trash" title="Slot löschen" update="@all" disabled="#{adminViewBean.slotDetailMode}">
+								<p:confirm header="Slot löschen"
+									message="Bist du dir sicher, dass du den Slot #{slot.title} permanent löschen möchtest?"
+									icon="ui-icon-alert" /> 
+							</p:commandButton>
+
+							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+								<p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+
 							<p:commandButton actionListener="#{adminViewBean.editSlot(slot)}"
 								icon="ui-icon-pencil" title="Slot bearbeiten" update=":formAdmin" disabled="#{adminViewBean.slotDetailMode}" />
 						</p:column>

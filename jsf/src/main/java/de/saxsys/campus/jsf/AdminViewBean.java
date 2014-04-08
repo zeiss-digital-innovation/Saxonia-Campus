@@ -53,12 +53,14 @@ public class AdminViewBean implements Serializable {
 		setSlotDetailMode(false);
 	}
 
-	public void deleteSlot() {
-		LOGGER.debug("Delete slot");
+	public void deleteSlot(Slot slot) {
+		LOGGER.debug("Delete slot: " + slot.getTitle());
+		slotManager.deleteSlot(slot.getId());
+		slots = slotManager.allSlots();
 	}
 
 	public void editSlot(Slot slot) {
-		LOGGER.debug("Edit slot");
+		LOGGER.debug("Edit slot: " + slot.getTitle());
 		slotBean.setSlot(slot);
 		setSlotDetailMode(true);
 	}
