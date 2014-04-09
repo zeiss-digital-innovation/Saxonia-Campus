@@ -9,6 +9,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import de.saxsys.campus.jsf.UserSessionBean;
 
-//@WebFilter(urlPatterns = "/admin/*")
+@WebFilter(urlPatterns = {"/admin/*", "/user/*"})
 public class AuthFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class);

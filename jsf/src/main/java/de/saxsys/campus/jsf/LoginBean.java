@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import de.saxsys.campus.business.auth.AuthenticationException;
 import de.saxsys.campus.business.auth.AuthenticationService;
+import de.saxsys.campus.domain.User;
 
 @Named
 @RequestScoped
@@ -51,14 +52,27 @@ public class LoginBean implements Serializable {
 	public String login() {
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			authService.authenticate(username, password);
-			LOGGER.info("User {} successfully logged in.", username);
+			User user = authService.authenticate(username, password);
+			LOGGER.info("User {} successfully logged in.", user.getUsername());
 
-			userSessionBean.setUsername(username);
+			userSessionBean.setUser(user);
 			String originalUri = userSessionBean.getOriginalUri();
 			try {
 				if (null != originalUri) {
+					LOGGER.debug("Redirect to originalURI: " + originalUri);
+					// TODO check whether user is allowed to go to this page
 					externalContext.redirect(originalUri);
+				} else {
+					LOGGER.debug("Try to find right url");
+					switch (user.getRole()) {
+					case ADMIN:
+						externalContext.redirect("/jsf/admin/admin.xhtml");
+						break;
+					case USER:
+					default:
+						externalContext.redirect("/jsf/user/user.xhtml");
+						break;
+					}
 				}
 			} catch (IOException e) {
 				LOGGER.error("Cannot redirect to {}.", originalUri, e);

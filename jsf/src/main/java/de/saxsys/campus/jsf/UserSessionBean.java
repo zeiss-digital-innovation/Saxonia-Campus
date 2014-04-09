@@ -5,25 +5,28 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+import de.saxsys.campus.domain.User;
+
 @Named
 @SessionScoped
 public class UserSessionBean implements Serializable {
 
 	private static final long serialVersionUID = -1265509912375246082L;
 
-	private String username;
+	private User user;
 	private String originalUri;
 
-	public String getUsername() {
-		return username;
+
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public boolean isLoggedIn() {
-		return null != username;
+		return null != getUser();
 	}
 
 	public void setOriginalUri(String originalUri) {
@@ -32,5 +35,9 @@ public class UserSessionBean implements Serializable {
 
 	public String getOriginalUri() {
 		return originalUri;
+	}
+	
+	public void logout() {
+		user = null;
 	}
 }
