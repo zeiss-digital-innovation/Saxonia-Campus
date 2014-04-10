@@ -150,6 +150,10 @@ public class Slot implements Serializable {
 	public int getParticipantCount() {
 		return participants.size();
 	}
+	
+	public int getAvailableCapacity() {
+		return capacity - getParticipantCount();
+	}
 
 	public String getSpeaker() {
 		return speaker;

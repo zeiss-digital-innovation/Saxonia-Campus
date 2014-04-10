@@ -21,8 +21,7 @@
 				<p:row>
 					<p:column><h:outputText value="Raum: #{slot.room.roomnumber}" /></p:column>
 					<p:column><h:outputText value="Speaker: #{slot.speaker}" /></p:column>
-					<!-- FIXME should show current available seats and not the initial capacity! -->
-					<p:column><h:outputText value="Freie Plätze: #{slot.capacity}" /></p:column>				
+					<p:column><h:outputText value="Freie Plätze: #{slot.availableCapacity}" /></p:column>				
 				</p:row>
 			</p:panelGrid>
 		</p:tab>
