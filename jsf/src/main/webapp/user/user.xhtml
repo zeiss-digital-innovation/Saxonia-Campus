@@ -8,6 +8,9 @@
 	<h2>User-View</h2>
 	
 	<h:form>
+	<p:panelGrid styleClass="tbl" columns="2">
+
+	<p:column>
 	<p:accordionPanel value="#{userViewBean.slots}" var="slot">
 		<p:tab title="#{slot.title}">
 			<p:panelGrid styleClass="tbl">
@@ -15,7 +18,10 @@
 				<p:column colspan="2">
 					<h:outputText value="Beschreibung: #{slot.description}"/>				
 				</p:column>
-				<p:column><p:commandButton value="Buchen" /></p:column>				
+				<p:column>
+					<p:commandButton value="Buchen" disabled="#{!userViewBean.isBookable(slot)}" 
+						update="@all" action="#{userViewBean.createReservation(slot)}" />
+				</p:column>				
 				</p:row>
 
 				<p:row>
@@ -26,6 +32,17 @@
 			</p:panelGrid>
 		</p:tab>
 	</p:accordionPanel>
+	</p:column>
+	
+	<p:column>
+	<p:dataTable value="#{userViewBean.bookedSlots}" var="slot">
+	<p:column>
+		<h:outputText value="#{slot.title}" />
+		</p:column>
+	</p:dataTable>
+	</p:column>
+	
+	</p:panelGrid>
 	</h:form>
 	
 	</ui:define>
