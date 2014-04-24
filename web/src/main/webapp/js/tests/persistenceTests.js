@@ -18,7 +18,10 @@ test("Basic auth test des generierten String", function(){
 test("Initialisierung des Persistenzmoduls", function() {
     var persisitence = saxoniaCampusPersistance;
     var numberOfSlotsExpected = 3;
-
+    var authString = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    
+    $.cookie("id",authString);
+    
     persisitence.init();
 
     // there are only 3 slots, but the length attribute gives back 4 
