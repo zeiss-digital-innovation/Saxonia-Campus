@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -46,7 +48,6 @@ public class UserViewBean implements Serializable {
 	}
 
 	public List<Slot> getSlots() {
-		LOGGER.debug("Get slots");
 		return slots;
 	}
 
@@ -62,9 +63,35 @@ public class UserViewBean implements Serializable {
 	}
 
 	public void createReservation(Slot slot) {
-		Slot reservedSlot = reservationManager.createReservation(currentUser, slot);
-		slots = slotManager.allSlots();
-		bookedSlots.add(reservedSlot);
+		LOGGER.debug("Create reservation for slot {} ", slot.getTitle());
+		try {
+			Slot reservedSlot = reservationManager.createReservation(currentUser, slot);
+			bookedSlots.add(reservedSlot);
+			LOGGER.info("Reservation for slot {} saved.", slot.getTitle());
+		} catch (Exception e) {
+			LOGGER.error("Cannot create reservation.", e);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Die Anmeldung für den Slot konnte nicht gespeichert werden.", e
+									.getMessage()));
+		}
+	}
+
+	public void deleteReservation(Slot slot) {
+		LOGGER.debug("Cancel reservation for slot {} ", slot.getTitle());
+		try {
+			reservationManager.cancelReservation(currentUser, slot);
+			bookedSlots.remove(slot);
+			LOGGER.info("Reservation for slot {} cancelled.", slot.getTitle());
+		} catch (Exception e) {
+			LOGGER.error("Cannot cancel reservation.", e);
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Die Anmeldung für den Slot konnte nicht storniert werden.", e
+									.getMessage()));
+		}
 	}
 
 	public boolean isBookable(Slot slot) {
