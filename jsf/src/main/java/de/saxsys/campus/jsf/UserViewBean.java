@@ -28,16 +28,16 @@ public class UserViewBean implements Serializable {
 	private User currentUser;
 	/** Slots booked by the user in the current context. */
 	private List<Slot> bookedSlots;
-	
+
 	@Inject
 	private SlotManager slotManager;
-	
+
 	@Inject
 	private ReservationManager reservationManager;
-	
+
 	@Inject
 	private UserSessionBean userSessionBean;
-	
+
 	@PostConstruct
 	public void init() {
 		slots = slotManager.allSlots();
@@ -53,31 +53,31 @@ public class UserViewBean implements Serializable {
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
-	
+
 	public List<Slot> getBookedSlots() {
 		if (currentUser == null) {
-			return Collections.<Slot>emptyList();
+			return Collections.<Slot> emptyList();
 		}
-		LOGGER.debug("Test: " + currentUser.getSlotList().get(0).getTitle());
 		return currentUser.getSlotList();
 	}
-	
+
 	public void createReservation(Slot slot) {
 		Slot reservedSlot = reservationManager.createReservation(currentUser, slot);
 		slots = slotManager.allSlots();
 		bookedSlots.add(reservedSlot);
 	}
-	
+
 	public boolean isBookable(Slot slot) {
 		return slot.getAvailableCapacity() > 0 && isNotBookedByCurrentUser(slot);
 	}
 
 	private boolean isNotBookedByCurrentUser(Slot slot) {
-		// FIXME workaround for no user is logged in; this function is called although just the login page is rendered.
+		// FIXME workaround for no user is logged in; this function is called
+		// although just the login page is rendered.
 		if (currentUser == null) {
 			return false;
 		}
 		return !currentUser.getSlotList().contains(slot);
 	}
-	
+
 }
