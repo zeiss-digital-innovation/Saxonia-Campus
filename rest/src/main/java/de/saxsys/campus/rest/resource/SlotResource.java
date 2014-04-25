@@ -2,6 +2,9 @@ package de.saxsys.campus.rest.resource;
 
 import java.net.URI;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -15,6 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -34,6 +38,7 @@ import de.saxsys.campus.rest.mapping.SlotMapper;
 
 @RequestScoped
 @Path("/slots")
+@DeclareRoles({ "admin", "user" })
 public class SlotResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SlotResource.class);
@@ -53,11 +58,15 @@ public class SlotResource {
 	@Context
 	private UriInfo uriInfo;
 
+	@Context
+	private SecurityContext securityContext;
+
 	@Inject
 	private AuthenticationContext authContext;
 
 	@GET
 	@Produces(HalMediaTypes.HAL_JSON)
+	@RolesAllowed("user")
 	public Representation getSlots() {
 		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slotManager.allSlots());
 	}
@@ -65,7 +74,11 @@ public class SlotResource {
 	@GET
 	@Path("{id}")
 	@Produces(HalMediaTypes.HAL_JSON)
+	@PermitAll
 	public Representation getSlot(@PathParam("id") int id) {
+		// FIXME
+		LOGGER.info("Scheme: {}", securityContext.getAuthenticationScheme());
+		LOGGER.info("Principal: {}", securityContext.getUserPrincipal());
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
 			throw new WebApplicationException(404);
