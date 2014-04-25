@@ -24,6 +24,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import de.saxsys.campus.domain.annotation.ValidDateRange;
+
+@ValidDateRange(starttime = "starttime", endtime = "endtime")
 @Entity
 @Table(name = "slot")
 @XmlRootElement
@@ -36,49 +39,50 @@ import javax.xml.bind.annotation.XmlTransient;
 		@NamedQuery(name = "Slot.findByEndtime", query = "SELECT s FROM Slot s WHERE s.endtime = :endtime") })
 public class Slot implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Basic(optional = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Integer id;
-	
+
 	@Size(min = 1, message = "Bitte einen Titel angeben!")
 	@Basic(optional = false)
 	@Column(name = "TITLE")
 	private String title;
-	
+
 	@Column(name = "DESCRIPTION")
 	private String description;
-	
+
 	@NotNull(message = "Bitte eine Startzeit angeben!")
 	@Basic(optional = false)
 	@Column(name = "STARTTIME")
 	@Temporal(TemporalType.TIME)
 	private Date starttime;
-	
+
 	@NotNull(message = "Bitte eine Endzeit angeben!")
 	@Basic(optional = false)
 	@Column(name = "ENDTIME")
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
-	
-	@ManyToMany
-	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
-	private List<User> participants;
-	
+
 	@Size(min = 1, message = "Bitte einen Verantwortlichen angeben!")
 	@Basic(optional = false)
 	@Column(name = "SPEAKER")
 	private String speaker;
-	
+
+	@Basic(optional = false)
+	@Column(name = "CAPACITY")
+	private int capacity;
+
 	@NotNull
 	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private Room room;
-	@Basic(optional = false)
-	@Column(name = "CAPACITY")
-	private int capacity;
+
+	@ManyToMany
+	@JoinTable(name = "reservation", joinColumns = { @JoinColumn(name = "SLOT_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "USER_ID", referencedColumnName = "ID") })
+	private List<User> participants;
 
 	public Slot() {
 	}
@@ -150,7 +154,7 @@ public class Slot implements Serializable {
 	public int getParticipantCount() {
 		return participants.size();
 	}
-	
+
 	public int getAvailableCapacity() {
 		return capacity - getParticipantCount();
 	}
