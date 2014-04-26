@@ -1,12 +1,16 @@
 package de.saxsys.campus.rest.auth;
 
 import java.io.IOException;
+import java.security.Principal;
 
+import javax.annotation.Priority;
 import javax.inject.Inject;
+import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
 import org.glassfish.jersey.internal.util.Base64;
@@ -17,10 +21,12 @@ import com.theoryinpractise.halbuilder.api.Representation;
 
 import de.saxsys.campus.business.auth.AuthenticationException;
 import de.saxsys.campus.business.auth.AuthenticationService;
+import de.saxsys.campus.domain.Role;
 import de.saxsys.campus.domain.User;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 
 @Provider
+@Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
@@ -29,16 +35,40 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	private AuthenticationService authService;
 
 	@Inject
-	private AuthenticationContext authContext;
-
-	@Inject
 	private ErrorMapper errorMapper;
 
 	@Override
-	public void filter(ContainerRequestContext requestContext) throws IOException {
+	public void filter(final ContainerRequestContext requestContext) throws IOException {
 		if (authenticationRequired(requestContext)) {
 			final User user = authenticate(requestContext);
-			authContext.setUser(user);
+			requestContext.setSecurityContext(new SecurityContext() {
+
+				@Override
+				public boolean isUserInRole(String role) {
+					return user.getRole().equals(Role.valueOf(role.toUpperCase()));
+				}
+
+				@Override
+				public boolean isSecure() {
+					return requestContext.getSecurityContext().isSecure();
+				}
+
+				@Override
+				public Principal getUserPrincipal() {
+					return new Principal() {
+
+						@Override
+						public String getName() {
+							return user.getUsername();
+						}
+					};
+				}
+
+				@Override
+				public String getAuthenticationScheme() {
+					return requestContext.getSecurityContext().getAuthenticationScheme();
+				}
+			});
 		}
 	}
 
