@@ -22,7 +22,7 @@ public class DbReservationManager implements ReservationManager {
 
 	@Override
 	public Slot createReservation(@NotNull User user, @NotNull Slot slot) {
-		if (slot.getAvailableCapacity() > 0) {
+		if (!slot.isBookedOut()) {
 			slot.addParticipant(user);
 			return slotManager.updateSlot(slot);
 		}
@@ -37,7 +37,7 @@ public class DbReservationManager implements ReservationManager {
 	}
 
 	@Override
-	public List<Slot> getReservations(User user) {
+	public List<Slot> getReservations(@NotNull User user) {
 		return user.getSlotList();
 	}
 

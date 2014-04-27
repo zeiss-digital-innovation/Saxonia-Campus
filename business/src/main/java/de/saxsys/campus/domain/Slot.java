@@ -133,6 +133,14 @@ public class Slot implements Serializable {
 		this.endtime = endtime;
 	}
 
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
 	@XmlTransient
 	public List<User> getParticipants() {
 		return participants;
@@ -144,10 +152,12 @@ public class Slot implements Serializable {
 
 	public void addParticipant(User user) {
 		participants.add(user);
+		user.getSlotList().add(this);
 	}
 
 	public void removeParticipant(User user) {
 		participants.remove(user);
+		user.getSlotList().remove(this);
 	}
 
 	@XmlTransient
@@ -157,6 +167,10 @@ public class Slot implements Serializable {
 
 	public int getAvailableCapacity() {
 		return capacity - getParticipantCount();
+	}
+
+	public boolean isBookedOut() {
+		return getAvailableCapacity() < 1;
 	}
 
 	public String getSpeaker() {
@@ -173,14 +187,6 @@ public class Slot implements Serializable {
 
 	public void setRoom(Room room) {
 		this.room = room;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
 	}
 
 	@Override

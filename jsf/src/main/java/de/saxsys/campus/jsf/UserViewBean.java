@@ -1,7 +1,6 @@
 package de.saxsys.campus.jsf;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,8 +27,6 @@ public class UserViewBean implements Serializable {
 
 	private List<Slot> slots;
 	private User currentUser;
-	/** Slots booked by the user in the current context. */
-	private List<Slot> bookedSlots;
 
 	@Inject
 	private SlotManager slotManager;
@@ -42,9 +39,10 @@ public class UserViewBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		slots = slotManager.allSlots();
 		currentUser = userSessionBean.getUser();
-		bookedSlots = reservationManager.getReservations(currentUser);
+		if (null != currentUser) {
+			slots = slotManager.allSlots();
+		}
 	}
 
 	public List<Slot> getSlots() {
@@ -56,17 +54,13 @@ public class UserViewBean implements Serializable {
 	}
 
 	public List<Slot> getBookedSlots() {
-		if (currentUser == null) {
-			return Collections.<Slot> emptyList();
-		}
 		return currentUser.getSlotList();
 	}
 
 	public void createReservation(Slot slot) {
 		LOGGER.debug("Create reservation for slot {} ", slot.getTitle());
 		try {
-			Slot reservedSlot = reservationManager.createReservation(currentUser, slot);
-			bookedSlots.add(reservedSlot);
+			reservationManager.createReservation(currentUser, slot);
 			LOGGER.info("Reservation for slot {} saved.", slot.getTitle());
 		} catch (Exception e) {
 			LOGGER.error("Cannot create reservation.", e);
@@ -82,7 +76,6 @@ public class UserViewBean implements Serializable {
 		LOGGER.debug("Cancel reservation for slot {} ", slot.getTitle());
 		try {
 			reservationManager.cancelReservation(currentUser, slot);
-			bookedSlots.remove(slot);
 			LOGGER.info("Reservation for slot {} cancelled.", slot.getTitle());
 		} catch (Exception e) {
 			LOGGER.error("Cannot cancel reservation.", e);
@@ -95,15 +88,10 @@ public class UserViewBean implements Serializable {
 	}
 
 	public boolean isBookable(Slot slot) {
-		return slot.getAvailableCapacity() > 0 && isNotBookedByCurrentUser(slot);
+		return !slot.isBookedOut() && isNotBookedByCurrentUser(slot);
 	}
 
 	private boolean isNotBookedByCurrentUser(Slot slot) {
-		// FIXME workaround for no user is logged in; this function is called
-		// although just the login page is rendered.
-		if (currentUser == null) {
-			return false;
-		}
 		return !currentUser.getSlotList().contains(slot);
 	}
 

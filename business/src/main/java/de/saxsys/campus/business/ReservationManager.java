@@ -13,5 +13,5 @@ public interface ReservationManager {
 
 	void cancelReservation(@NotNull User user, @NotNull Slot slot);
 
-	List<Slot> getReservations(User user);
+	List<Slot> getReservations(@NotNull User user);
 }
