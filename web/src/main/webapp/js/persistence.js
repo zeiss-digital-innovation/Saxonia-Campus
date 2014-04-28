@@ -4,13 +4,13 @@
  * POST
  * 
  {
-  "description" : "Workshop x",
-  "endtime" : 34200000,
-  "speaker" : "Speaker x",
-  "starttime" : 30600000,
-  "title" : "Title x",
-  "room" : 2
-}
+ "description" : "Workshop x",
+ "endtime" : 34200000,
+ "speaker" : "Speaker x",
+ "starttime" : 30600000,
+ "title" : "Title x",
+ "room" : 2
+ }
  */
 
 var REST_SERVICE_BASE_URL = "http://nb087:8080/rest/";
@@ -37,32 +37,34 @@ saxoniaCampusPersistance.initSlots = function() {
     var authString = $.cookie("id");
     console.log("authstring" + authString);
 
+    saxoniaCampusPersistance.slots = [];
+
     $.ajax
             ({
                 type: "GET",
                 url: REST_SERVICE_SLOTS_URL,
                 dataType: 'json',
                 async: false,
-                data: '{}',
+                data: '',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', authString);
                 },
                 success: function(data) {
                     console.log('slots load successfull');
                     slotsWrapper = data;
+                    for (var i in slotsWrapper._embedded['slots']) {
+                        var currentSlot = slotsWrapper._embedded['slots'][i];
+
+                        saxoniaCampusPersistance.slots[currentSlot.id] =
+                                saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
+                    }
                 },
                 error: function() {
                     console.log('error occured!');
                 }
             });
 
-    saxoniaCampusPersistance.slots = [];
-    for (var i in slotsWrapper._embedded['slots']) {
-        var currentSlot = slotsWrapper._embedded['slots'][i];
 
-        saxoniaCampusPersistance.slots[currentSlot.id] =
-                saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
-    }
 };
 
 saxoniaCampusPersistance.initRooms = function() {
