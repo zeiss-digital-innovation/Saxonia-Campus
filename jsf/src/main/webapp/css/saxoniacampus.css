@@ -1,0 +1,115 @@
+/*
+Style Informationen für das SaxoniaCampus Portal
+*/
+/* 
+    Created on : 07.03.2014, 22:25:36
+    Author     : marco.dierenfeldt
+*/
+
+/* Allgemeine definitionen für alle Seiten */
+
+header {
+    padding: 10px;
+    font-weight: bold;
+    color: white;
+    text-shadow: none;
+    text-align: center;
+    font-size: 2em;
+    background-color: black;
+}
+
+h2 {
+    text-align: center;
+}
+
+#error_output {
+    color: crimson;
+    background-color: #ffcccc;
+}
+
+/* definitionen für die Loginseite */
+.login_dialog {
+    background-color: #e6e6e6;
+    width: 80%;
+    margin-left:auto; margin-right:auto;
+}
+
+.login_dialog h2{
+    background-color: #666;
+    text-shadow: none;
+    color: #e6e6e6;
+}
+
+.login_dialog_content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* definitionen für die Adminseite */
+#admin_menu {
+    position:absolute;
+    top: 140px;
+    height: 50px;
+    width: 400px;
+    left: 40px;
+}
+
+#admin_slot_list_container {
+    position: absolute;
+    top: 200px;
+    bottom: 40px;
+    width: 400px;
+    left: 40px;
+    overflow: auto;
+}
+
+#admin_detail_view {
+    position: absolute;
+    padding: 10px;
+    top: 200px;
+    height: 350px;
+    width: 400px;
+    right: 40px;
+    border-radius: 4px;
+    background-color: #fcedd5;
+    border-color: coral;
+    border-width: 2px;
+    border-style: solid;
+    display: none;
+}
+
+/* definitionen für die Userseite */
+#slot_overview_label {
+    position: absolute;
+    top: 140px;
+    height: 18px;
+    left: 40px;
+}
+
+#slot_overview_list {
+    position: absolute;
+    top: 160px;
+    bottom: 40px;
+    width: 400px;
+    left: 40px;
+    overflow: auto;
+}
+#booked_slots_label {
+    position: absolute;
+    top: 140px;
+    height: 18px;
+    left: 500px;
+}
+#booked_slots_list {
+    position: absolute;
+    top: 160px;
+    height: 360px;
+    width: 300px;
+    left: 500px;
+    overflow: auto;
+    border-radius: 4px;
+    background-color: #d5fcdb;
+    border-color: green;
+    border-width: 2px;
+    border-style: solid;
+}

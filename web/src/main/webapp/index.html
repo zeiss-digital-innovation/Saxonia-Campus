@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Saxonia Campus Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="css/saxoniacampus.css" rel="stylesheet" type="text/css"/>
+        <link href="css/libs/jquery.mobile-1.4.1.css" rel="stylesheet" type="text/css"/>
+        <script src="js/libs/jquery-1.10.2.js" type="text/javascript"></script>
+        <script src="js/libs/jquery.mobile-1.4.1.js" type="text/javascript"></script>
+        <script src="js/libs/jquery.cookie.js" type="text/javascript"></script>
+        <script src="js/utility.js" type="text/javascript"></script>
+        <script src="js/login_page.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <header>Saxonia Campus 2014</header>
+    <main>
+        <div class="login_dialog">
+            <h2>Login Dialog</h2>
+            <div class="login_dialog_content">
+                <form>
+                    <div class="ui-field-contain">
+                        <label for="username">Benutzername:</label><input id="username" name="username" type="text"/>
+                        <label for="password">Passwort: </label><input id="password" name="password" type="password"/>
+                    </div>
+                    <button id="cancel_btn" data-inline="true" data-mini="true" type="reset">Abbrechen</button>
+                    <button id="login_btn" data-inline="true" data-mini="true" type="button">Anmelden</button>
+                </form>
+                <div id="error_output"></div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
