@@ -19,6 +19,7 @@ public class UserMapper {
 	private RepresentationFactory representationFactory;
 
 	public Representation createRepresentation(URI baseUri, User user) {
+		// FIXME Path current [SB]
 		return representationFactory
 				.newRepresentation(
 						UriBuilder.fromUri(baseUri).path(UserResource.class).path("current")

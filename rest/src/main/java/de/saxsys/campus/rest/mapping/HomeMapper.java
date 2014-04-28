@@ -29,5 +29,6 @@ public class HomeMapper {
 						CURRENTUSER,
 						UriBuilder.fromUri(baseUri).path(UserResource.class).path("current")
 								.build());
+		// FIXME Path current [SB]
 	}
 }

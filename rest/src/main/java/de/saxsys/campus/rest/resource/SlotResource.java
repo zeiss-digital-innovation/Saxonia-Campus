@@ -124,6 +124,7 @@ public class SlotResource {
 
 	@GET
 	@Path("{id}/participants")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response getParticipants(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
@@ -136,6 +137,7 @@ public class SlotResource {
 
 	@PUT
 	@Path("{id}/participants/user")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response register(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
@@ -150,6 +152,7 @@ public class SlotResource {
 
 	@DELETE
 	@Path("{id}/participants/user")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response unregister(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
