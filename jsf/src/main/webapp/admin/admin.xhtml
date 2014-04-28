@@ -8,7 +8,7 @@
 			<p:panelGrid columns="2">
 				<p:column>
 					<p:commandButton id="btnAddSlot" value="Neuer Slot" action="#{adminViewBean.newSlot}"
-						update="@form" disabled="#{adminViewBean.slotDetailMode}" />
+						process="@this" update="@form" disabled="#{adminViewBean.slotDetailMode}" />
 					<p:dataTable id="tblSlots" value="#{adminViewBean.slots}" var="slot">
 						<f:facet name="header">
 							<h:outputText value="Alle Slots" />
@@ -26,22 +26,24 @@
 							</h:outputText>
 						</p:column>
 						<p:column>
-							<p:commandButton actionListener="#{adminViewBean.deleteSlot(slot)}" icon="ui-icon-trash"
-								title="Slot löschen" update="@all" disabled="#{adminViewBean.slotDetailMode}">
+							<p:commandButton id="btnDelete" title="Slot löschen" icon="ui-icon-trash"
+								disabled="#{adminViewBean.slotDetailMode}"
+								actionListener="#{adminViewBean.deleteSlot(slot)}" process="@this" update="@form">
 								<p:confirm header="Slot löschen"
 									message="Bist du dir sicher, dass du den Slot #{slot.title} permanent löschen möchtest?"
 									icon="ui-icon-alert" />
 							</p:commandButton>
 
 							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-								<p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no"
-									icon="ui-icon-close" />
-								<p:commandButton value="OK" type="button" styleClass="ui-confirmdialog-yes"
+								<p:commandButton id="btnCancel" value="Abbrechen" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton id="btnOk" value="OK" type="button" styleClass="ui-confirmdialog-yes"
 									icon="ui-icon-check" />
 							</p:confirmDialog>
 
-							<p:commandButton actionListener="#{adminViewBean.editSlot(slot)}" icon="ui-icon-pencil"
-								title="Slot bearbeiten" update="@form" disabled="#{adminViewBean.slotDetailMode}" />
+							<p:commandButton id="btnEdit" title="Slot bearbeiten" icon="ui-icon-pencil"
+								disabled="#{adminViewBean.slotDetailMode}" actionListener="#{adminViewBean.editSlot(slot)}"
+								process="@this" update="@form" />
 						</p:column>
 					</p:dataTable>
 					<p:messages id="messages" showDetail="false" autoUpdate="true" for="tblSlots" closable="true" />

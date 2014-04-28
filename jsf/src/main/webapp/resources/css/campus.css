@@ -1,15 +1,20 @@
 body {
 	margin: 0px;
+	font-family: sans-serif;
 }
 
 header {
-	background: #000;
-	color: #FFF;
+	padding: 10px;
+	font-weight: bold;
+	color: white;
+	text-shadow: none;
 	text-align: center;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	padding: 5px;
+	font-size: 2em;
+	background-color: black;
+}
+
+h2 {
+	text-align: center;
 }
 
 .content {
@@ -19,6 +24,18 @@ header {
 	margin-right: 8pt;
 }
 
-.ui-panelgrid table, .ui-panelgrid tr, .ui-panelgrid td {
+button#formAdmin\:btnAddSlot {
+	margin-bottom: 8pt;
+}
+
+.ui-panelgrid table,.ui-panelgrid tr,.ui-panelgrid td {
 	border-style: hidden !important;
+}
+
+.ui-accordion-header a {
+	text-decoration: none;
+}
+
+.verticalAlignTop {
+	vertical-align: top;
 }

@@ -2,7 +2,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
-	<h:form>
+	
+	<h:form id="formSlotDetail">
 		<p:panel header="Slot">
 
 			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
@@ -33,10 +34,12 @@
 				<p:outputLabel id="lblSpeaker" for="txtSpeaker" value="Verantwortlicher:" />
 				<p:inputText id="txtSpeaker" value="#{slotBean.slot.speaker}" />
 			</p:panelGrid>
-
-			<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}"
-				update="@all" immediate="true" />
-			<p:commandButton id="btnSave" value="Speichern" action="#{slotBean.save}" update="@all" />
+			<f:facet name="footer">
+				<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}"
+					immediate="true" process="@this" update=":formAdmin" partialSubmit="true" />
+				<p:commandButton id="btnSave" value="Speichern" action="#{slotBean.save}" process="@form"
+					update=":formAdmin" />
+			</f:facet>
 		</p:panel>
 	</h:form>
 </ui:composition>
