@@ -28,6 +28,9 @@ public class SlotBean implements Serializable {
 	@Inject
 	private SlotManager slotManager;
 
+	@Inject
+	private AdminViewBean adminViewBean;
+
 	private Slot slot;
 
 	public Slot getSlot() {
@@ -48,6 +51,7 @@ public class SlotBean implements Serializable {
 			}
 
 			LOGGER.info("Slot {} saved.", slot.getTitle());
+			adminViewBean.refreshSlots();
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO, "Der Slot wurde gespeichert.",
@@ -55,30 +59,31 @@ public class SlotBean implements Serializable {
 
 		} catch (Exception e) {
 			LOGGER.error("Cannot save slot.", e);
+			displayErrorMessage(e);
+		}
+	}
 
-			/*
-			 * XXX Cross-parameter Constraints (JSR303) werden von JSF nicht
-			 * ausgewertet. Deswegen prüfen wir hier, ob es beim Speichern in
-			 * die Datenbank eine ConstraintsViolationException gab und holen
-			 * uns die genaue Fehlermeldung.
-			 */
-			final ConstraintViolationException cve = ExceptionUtil
-					.getConstraintViolationException(e);
-			if (null != cve) {
-				final Set<ConstraintViolation<?>> constraintViolations = cve
-						.getConstraintViolations();
-				for (ConstraintViolation<?> constraintViolation : constraintViolations) {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, constraintViolation
-									.getMessage(), null));
-				}
-			} else {
+	private void displayErrorMessage(Exception e) {
+		/*
+		 * XXX Cross-parameter Constraints (JSR303) werden von JSF nicht
+		 * ausgewertet. Deswegen prüfen wir hier, ob es beim Speichern in die
+		 * Datenbank eine ConstraintsViolationException gab und holen uns die
+		 * genaue Fehlermeldung.
+		 */
+		final ConstraintViolationException cve = ExceptionUtil.getConstraintViolationException(e);
+		if (null != cve) {
+			final Set<ConstraintViolation<?>> constraintViolations = cve.getConstraintViolations();
+			for (ConstraintViolation<?> constraintViolation : constraintViolations) {
 				FacesContext.getCurrentInstance().addMessage(
 						null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR,
-								"Der Slot konnte nicht gespeichert werden.", e.getMessage()));
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, constraintViolation
+								.getMessage(), null));
 			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Der Slot konnte nicht gespeichert werden.", e.getMessage()));
 		}
 	}
 }

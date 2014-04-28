@@ -10,17 +10,27 @@
 	<h:head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
-		
-		<title>Saxonia Campus</title>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{resource['images/favicon.ico']}" />
 		<h:outputStylesheet library="css" name="campus.css" />
+
+		<title>Saxonia Campus</title>
 	</h:head>
 
 	<h:body>
 		<header>Saxonia Campus 2014</header>
+		<h:form>
+			<p:menubar>
+				<f:facet name="options">
+					<p:commandButton type="button" value="Logout"
+						icon="ui-icon-extlink" action="#{logoutBean.logout}"
+						rendered="#{userSessionBean.loggedIn}" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
 		<div class="content">
-		<ui:insert name="content">
-		</ui:insert>
+			<ui:insert name="content">
+			</ui:insert>
 		</div>
 	</h:body>
 

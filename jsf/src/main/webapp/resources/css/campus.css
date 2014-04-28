@@ -1,3 +1,7 @@
+body {
+	margin: 0px;
+}
+
 header {
 	background: #000;
 	color: #FFF;
@@ -6,16 +10,15 @@ header {
 	right: 0px;
 	top: 0px;
 	padding: 5px;
-	position: absolute;
 }
 
 .content {
 	position: relative;
-	margin-top: 3em;
+	margin-top: 8pt;
+	margin-left: 8pt;
+	margin-right: 8pt;
 }
 
-.tbl table,.tbl tr,.tbl td {
-	border: none;
+.ui-panelgrid table, .ui-panelgrid tr, .ui-panelgrid td {
 	border-style: hidden !important;
-	vertical-align: top;
 }

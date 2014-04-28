@@ -1,14 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 	<h:form>
 		<p:panel header="Slot">
-		
-			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"  />
-		
+
+			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+
 			<p:panelGrid columns="2">
 				<p:outputLabel id="lblTitle" for="txtTitle" value="Titel:" />
 				<p:inputText id="txtTitle" value="#{slotBean.slot.title}" />
@@ -18,7 +16,8 @@
 
 				<p:outputLabel id="lblRoom" for="selectRoom" value="Raum:" />
 				<p:selectOneMenu id="selectRoom" value="#{slotBean.slot.room}" converter="#{roomConverter}">
-					<f:selectItems value="#{adminViewBean.rooms}" var="room" itemLabel="#{room.roomnumber}" itemValue="#{room}" />
+					<f:selectItems value="#{adminViewBean.rooms}" var="room" itemLabel="#{room.roomnumber}"
+						itemValue="#{room}" />
 				</p:selectOneMenu>
 
 				<p:outputLabel id="lblStart" for="txtStart" value="Start:" />
@@ -27,17 +26,16 @@
 				</p:inputMask>
 
 				<p:outputLabel id="lblEnd" for="txtEnd" value="Ende:" />
-				<p:inputMask id="txtEnd" value="#{slotBean.slot.endtime}"
-					mask="99:99">
+				<p:inputMask id="txtEnd" value="#{slotBean.slot.endtime}" mask="99:99">
 					<f:convertDateTime pattern="HH:mm" />
 				</p:inputMask>
-				
-				<p:outputLabel id="lblSpeaker" for="txtSpeaker"
-					value="Verantwortlicher:" />
+
+				<p:outputLabel id="lblSpeaker" for="txtSpeaker" value="Verantwortlicher:" />
 				<p:inputText id="txtSpeaker" value="#{slotBean.slot.speaker}" />
 			</p:panelGrid>
-			
-			<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}" update=":formAdmin" immediate="true" />
+
+			<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}"
+				update="@all" immediate="true" />
 			<p:commandButton id="btnSave" value="Speichern" action="#{slotBean.save}" update="@all" />
 		</p:panel>
 	</h:form>
