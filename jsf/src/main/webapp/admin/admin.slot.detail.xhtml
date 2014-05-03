@@ -33,6 +33,9 @@
 
 				<p:outputLabel id="lblSpeaker" for="txtSpeaker" value="Verantwortlicher:" />
 				<p:inputText id="txtSpeaker" value="#{slotBean.slot.speaker}" />
+				
+				<p:outputLabel id="lblCapacity" for="txtCapacity" value="Kapazität:" />
+				<p:inputText id="txtCapacity" value="#{slotBean.slot.capacity}" />
 			</p:panelGrid>
 			<f:facet name="footer">
 				<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}"
