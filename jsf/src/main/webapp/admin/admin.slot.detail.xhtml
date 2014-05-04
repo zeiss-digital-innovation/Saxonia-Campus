@@ -31,10 +31,12 @@
 					mask="99:99">
 					<f:convertDateTime pattern="HH:mm" />
 				</p:inputMask>
+				
 				<p:outputLabel id="lblSpeaker" for="txtSpeaker"
 					value="Verantwortlicher:" />
 				<p:inputText id="txtSpeaker" value="#{slotBean.slot.speaker}" />
 			</p:panelGrid>
+			
 			<p:commandButton id="btnCancel" value="Abbrechen" action="#{adminViewBean.cancelSlot}" update=":formAdmin" immediate="true" />
 			<p:commandButton id="btnSave" value="Speichern" action="#{slotBean.save}" update="@all" />
 		</p:panel>

@@ -5,45 +5,94 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/resources/templates/template.xhtml">
 	<ui:define name="content">
-	<h2>User-View</h2>
-	
-	<h:form>
-	<p:panelGrid styleClass="tbl" columns="2">
+		<h2>User-View</h2>
 
-	<p:column>
-	<p:accordionPanel value="#{userViewBean.slots}" var="slot">
-		<p:tab title="#{slot.title}">
-			<p:panelGrid styleClass="tbl">
-				<p:row>
-				<p:column colspan="2">
-					<h:outputText value="Beschreibung: #{slot.description}"/>				
-				</p:column>
+		<h:form>
+			<p:panelGrid columns="2" styleClass="tbl">
 				<p:column>
-					<p:commandButton value="Buchen" disabled="#{!userViewBean.isBookable(slot)}" 
-						update="@all" action="#{userViewBean.createReservation(slot)}" />
-				</p:column>				
-				</p:row>
+					<!-- available slots -->
+					<p:accordionPanel value="#{userViewBean.slots}" var="slot">
+						<p:tab>
+							<f:facet name="title">
+								<h:panelGroup layout="block"
+									style="text-align: left; float: left;">
+									<h:outputText value="#{slot.title}" />
+								</h:panelGroup>
+								<h:panelGroup layout="block" style="text-align: right;">
+									<h:outputText value="#{slot.starttime}">
+										<f:convertDateTime pattern="HH:mm" />
+									</h:outputText>
+									<h:outputText value=" - " />
+									<h:outputText value="#{slot.endtime}">
+										<f:convertDateTime pattern="HH:mm" />
+									</h:outputText>
+								</h:panelGroup>
+							</f:facet>
+							<p:panelGrid columns="2">
+								<p:panelGrid columns="2">
+									<h:outputLabel value="Beschreibung: " />
+									<h:outputText value="#{slot.description}" />
 
-				<p:row>
-					<p:column><h:outputText value="Raum: #{slot.room.roomnumber}" /></p:column>
-					<p:column><h:outputText value="Speaker: #{slot.speaker}" /></p:column>
-					<p:column><h:outputText value="Freie Plätze: #{slot.availableCapacity}" /></p:column>				
-				</p:row>
+									<h:outputLabel value="Raum: " />
+									<h:outputText value="#{slot.room.roomnumber}" />
+
+									<h:outputLabel value="Verantwortlicher: " />
+									<h:outputText value="#{slot.speaker}" />
+								</p:panelGrid>
+								<p:panelGrid>
+									<p:row>
+										<p:column>
+											<h:outputLabel value="Freie Plätze: " />
+										</p:column>
+										<p:column>
+											<h:panelGroup>
+												<h:outputText value="#{slot.availableCapacity}" />
+											</h:panelGroup>
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column colspan="2">
+											<p:commandButton value="Anmelden"
+												disabled="#{!userViewBean.isBookable(slot)}" update="@all"
+												action="#{userViewBean.createReservation(slot)}" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:panelGrid>
+						</p:tab>
+					</p:accordionPanel>
+				</p:column>
+
+				<p:column>
+					<!-- reservations for the current user -->
+					<p:dataTable value="#{userViewBean.bookedSlots}" var="slot">
+						<f:facet name="header">
+							<h:outputText value="Gebuchte Slots" />
+						</f:facet>
+						<p:column>
+							<h:outputText value="#{slot.title}" />
+						</p:column>
+						<p:column>
+							<h:outputText value="#{slot.starttime}">
+								<f:convertDateTime pattern="HH:mm" />
+							</h:outputText>
+							<h:outputText value=" - " />
+							<h:outputText value="#{slot.endtime}">
+								<f:convertDateTime pattern="HH:mm" />
+							</h:outputText>
+						</p:column>
+						<p:column>
+							<p:commandButton action="#{userViewBean.deleteReservation(slot)}"
+								icon="ui-icon-cancel" title="Anmeldung stornieren" update="@all" />
+						</p:column>
+					</p:dataTable>
+				</p:column>
+
 			</p:panelGrid>
-		</p:tab>
-	</p:accordionPanel>
-	</p:column>
-	
-	<p:column>
-	<p:dataTable value="#{userViewBean.bookedSlots}" var="slot">
-	<p:column>
-		<h:outputText value="#{slot.title}" />
-		</p:column>
-	</p:dataTable>
-	</p:column>
-	
-	</p:panelGrid>
-	</h:form>
-	
+
+			<p:messages id="messages" showDetail="false" autoUpdate="true"
+				closable="true" />
+		</h:form>
+
 	</ui:define>
 </ui:composition>

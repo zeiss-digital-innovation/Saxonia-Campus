@@ -11,9 +11,13 @@
 			<p:panelGrid columns="2" styleClass="tbl">
 				<p:column>
 					<p:commandButton id="btnAddSlot" value="Neuer Slot"
-						action="#{adminViewBean.newSlot}" update="@form" disabled="#{adminViewBean.slotDetailMode}" />
+						action="#{adminViewBean.newSlot}" update="@form"
+						disabled="#{adminViewBean.slotDetailMode}" />
 					<p:dataTable id="tblSlots" value="#{adminViewBean.slots}"
 						var="slot">
+						<f:facet name="header">
+							<h:outputText value="Alle Slots" />
+						</f:facet>
 						<p:column>
 							<h:outputText value="#{slot.title}" />
 						</p:column>
@@ -27,20 +31,26 @@
 							</h:outputText>
 						</p:column>
 						<p:column>
-							<p:commandButton actionListener="#{adminViewBean.deleteSlot(slot)}"
-								icon="ui-icon-trash" title="Slot löschen" update="@all" disabled="#{adminViewBean.slotDetailMode}">
+							<p:commandButton
+								actionListener="#{adminViewBean.deleteSlot(slot)}"
+								icon="ui-icon-trash" title="Slot löschen" update="@all"
+								disabled="#{adminViewBean.slotDetailMode}">
 								<p:confirm header="Slot löschen"
 									message="Bist du dir sicher, dass du den Slot #{slot.title} permanent löschen möchtest?"
-									icon="ui-icon-alert" /> 
+									icon="ui-icon-alert" />
 							</p:commandButton>
 
-							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-								<p:commandButton value="Ok" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-								<p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Abbrechen" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton value="OK" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 							</p:confirmDialog>
 
 							<p:commandButton actionListener="#{adminViewBean.editSlot(slot)}"
-								icon="ui-icon-pencil" title="Slot bearbeiten" update=":formAdmin" disabled="#{adminViewBean.slotDetailMode}" />
+								icon="ui-icon-pencil" title="Slot bearbeiten"
+								update=":formAdmin" disabled="#{adminViewBean.slotDetailMode}" />
 						</p:column>
 					</p:dataTable>
 
