@@ -1,9 +1,11 @@
+var USERS_CURRENT = "http://"+location.host+"/rest/users/current";
+
 
 $(function() {
     $("#login_btn").click(function() {
         console.log("LoginButton clicked");
-        var userview_user = "user";
-        var adminview_user = "admin";
+        var userview_user = "marco.dierenfeldt";
+        var adminview_user = "stefan.bley";
         var username = $("#username")[0].value;
         var password = $("#password")[0].value;
 
@@ -11,14 +13,13 @@ $(function() {
         console.log("password: " + password);
 
         var authString = saxoniaCampusUtil.make_base_auth(username, password);
-
+        var serverUrl = "http://"+location.host+"/rest/";
         $.ajax
                 ({
                     type: "GET",
-                    url: "http://nb087:8080/rest/",
+                    url: serverUrl,
                     dataType: 'json',
                     async: false,
-                    data: '{}',
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('Authorization', authString);
                     },
