@@ -5,14 +5,14 @@
 
 var saxoniaCampusRestApi = {};
 
-saxoniaCampusRestApi.BASE_URL = "http://"+location.host+"/rest/";
+saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";
 saxoniaCampusRestApi.CURRENT_USER_URL = "";
 saxoniaCampusRestApi.SLOTS_URL = "";
 saxoniaCampusRestApi.ROOMS_URL = "";
-saxoniaCampusRestApi.BASE_URL = "http://"+location.host+"/rest/";
+saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";
 
 saxoniaCampusRestApi.AUTH_STRING = "";
-saxoniaCampusRestApi.authenticate = function(success_function,fail_function){
+saxoniaCampusRestApi.authenticate = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
@@ -36,7 +36,7 @@ saxoniaCampusRestApi.authenticate = function(success_function,fail_function){
             });
 };
 
-saxoniaCampusRestApi.getCurrentUser = function (success_function, fail_function){
+saxoniaCampusRestApi.getCurrentUser = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
@@ -58,7 +58,7 @@ saxoniaCampusRestApi.getCurrentUser = function (success_function, fail_function)
             });
 };
 
-saxoniaCampusRestApi.getSlots = function (success_function, fail_function){
+saxoniaCampusRestApi.getSlots = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
@@ -81,7 +81,7 @@ saxoniaCampusRestApi.getSlots = function (success_function, fail_function){
             });
 };
 
-saxoniaCampusRestApi.getRooms = function (success_function, fail_function){
+saxoniaCampusRestApi.getRooms = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
@@ -99,6 +99,36 @@ saxoniaCampusRestApi.getRooms = function (success_function, fail_function){
                 error: function(err) {
                     console.log('getRooms error occured!');
                     fail_function(err);
+                }
+            });
+};
+
+saxoniaCampusRestApi.addSlot = function(slot, success_function, fail_function) {
+    var slot_json = JSON.stringify(slot);
+    $.ajax
+            ({
+                type: "POST",
+                url: saxoniaCampusRestApi.SLOTS_URL,
+                dataType: 'hal+json',
+                async: true,
+                data: slot_json,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Accept', 'application/hal+json');
+                    xhr.setRequestHeader('Content-Type', 'application/hal+json');
+                },
+                success: function(data) {
+                    console.log('addSlot successfull');
+                    success_function(data);
+                },
+                error: function(err) {
+                    if (err.status === 201) {
+                        console.log('addSlot completed');
+                        success_function(err);
+                    } else {
+                        console.log('addSlot error occured!');
+                        fail_function(err);
+                    }
                 }
             });
 };

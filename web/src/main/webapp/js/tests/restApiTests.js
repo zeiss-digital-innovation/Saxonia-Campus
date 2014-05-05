@@ -2,6 +2,8 @@
  *This QUnit Tests test the REST-API of the Campus Application.
  */
 
+var createdSlot = {};
+
 module("API");
 
 asyncTest("Testen der Authentisierung.", function() {
@@ -47,14 +49,14 @@ asyncTest("Teste getCurrentUser", function() {
 });
 
 asyncTest("Teste getSlots", function() {
-    var expectedSlotslength = 3;
-    var expectedRoomsUrl = "http://"+location.host+"/rest/rooms";
+    var expectedSlotslength = 19;
+    var expectedRoomsUrl = "http://" + location.host + "/rest/rooms";
 
     saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
     saxoniaCampusRestApi.authenticate(function() {
         var onSuccess = function(slots) {
             ok(true, "getSlots successfull");
-            equal(slots.length, expectedSlotslength, "Es werden 5 Slots zurückgeliefert.")
+            equal(slots.length, expectedSlotslength, "Es werden 19 Slots zurückgeliefert.")
             notEqual(saxoniaCampusRestApi.ROOMS_URL, undefined, "ROOMS_URL ist definiert.");
             equal(saxoniaCampusRestApi.ROOMS_URL, expectedRoomsUrl, "Rooms Url http://HOSTNAME:PORT/rest/romms");
             start();
@@ -86,8 +88,41 @@ asyncTest("Teste getRooms", function() {
             };
 
             saxoniaCampusRestApi.getRooms(onSuccess, onFail);
-        }, function() {});
+        }, function() {
+        });
     },
             function() {
             });
+});
+
+asyncTest("Anlegen eines neuen Slots", function() {
+    saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    var slot = {
+        "capacity": 8,
+        "description": "Neuer Slot",
+        "endtime": 34200000,
+        "speaker": "Marco Dierenfeldt",
+        "starttime": 30600000,
+        "title": "Neues Thema 1",
+        "room": 1
+    };
+    saxoniaCampusRestApi.authenticate(function() {
+        var onSuccess = function(data) {
+            ok(true, "addSlot successfull");
+            console.log(data);
+            createdSlot = JSON.parse(data.responseText);
+            console.log(createdSlot);
+            start();
+        };
+        var onFail = function(err) {
+            ok(false, "addSlot failed");
+            console.log(err);
+            start();
+        };
+
+        saxoniaCampusRestApi.addSlot(slot, onSuccess, onFail);
+    }, function() {
+    });
+
+
 });
