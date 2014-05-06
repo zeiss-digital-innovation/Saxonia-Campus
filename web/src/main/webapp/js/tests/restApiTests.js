@@ -73,13 +73,14 @@ asyncTest("Teste getSlots", function() {
 });
 
 asyncTest("Teste getRooms", function() {
-    var expectedSlotslength = 3;
+    var expectedRoomslength = 2;
 
     saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
     saxoniaCampusRestApi.authenticate(function() {
         saxoniaCampusRestApi.getSlots(function() {
-            var onSuccess = function(slots) {
+            var onSuccess = function(rooms) {
                 ok(true, "getRooms successfull");
+                equal(rooms.length, expectedRoomslength, "Es wird erwartet, dass zwei Räume zurückgegeben werden.")
                 start();
             };
             var onFail = function() {
@@ -146,7 +147,67 @@ asyncTest("Löschen eines Slots", function() {
     }
 });
 
-asyncTest("Auflisten der verfügbaren Räume", function() {
+asyncTest("Auflisten der Teilnehmer eines Slots", function() {
     saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
-    ok(fail,"Dummy-Assert");
-});
+    saxoniaCampusRestApi.SLOTS_URL = saxoniaCampusRestApi.BASE_URL + "slots";
+    var dummySlot ={id:1};
+    var expectedParticipantCount = 3;
+    
+    var onSuccess = function(data) {
+            ok(true, "getParticipants successfull");
+            console.log(data);
+            equal(data.length,expectedParticipantCount,"Es wird ein Array mit 3 Teilnehmern erwartet.");
+            start();
+        };
+        var onFail = function(err) {
+            ok(false, "getParticipants failed");
+            console.log(err);
+            start();
+        };
+
+        saxoniaCampusRestApi.getParticipants(dummySlot, onSuccess, onFail);
+});    
+
+asyncTest("Hinzufügen eines Teilnehmers zu einem Slot", function() {
+    saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    saxoniaCampusRestApi.SLOTS_URL = saxoniaCampusRestApi.BASE_URL + "slots";
+    var dummySlot ={id:2};
+    var expectedParticipantCount = 1;
+    
+    var onSuccess = function(data) {
+            ok(true, "addParticipants successfull");
+            console.log(data);
+            var slot = createdSlot = JSON.parse(data.responseText);
+            equal(slot.participants,expectedParticipantCount, "Nach hinzufügen ein Teilnemer im Slot");
+            start();
+        };
+        var onFail = function(err) {
+            ok(false, "addParticipants failed");
+            console.log(err);
+            start();
+        };
+
+        saxoniaCampusRestApi.addParticipant(dummySlot, onSuccess, onFail);
+});    
+
+asyncTest("Löschen eines Teilnehmers aus einem Slot", function() {
+    saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    saxoniaCampusRestApi.SLOTS_URL = saxoniaCampusRestApi.BASE_URL + "slots";
+    var dummySlot ={id:2};
+    var expectedParticipantCount = 0;
+    
+    var onSuccess = function(data) {
+            ok(true, "delParticipant successfull");
+            console.log(data);
+            var slot = createdSlot = JSON.parse(data.responseText);
+            equal(slot.participants,expectedParticipantCount, "Nach hinzufügen ein Teilnemer im Slot");
+            start();
+        };
+        var onFail = function(err) {
+            ok(false, "delParticipant failed");
+            console.log(err);
+            start();
+        };
+
+        saxoniaCampusRestApi.delParticipant(dummySlot, onSuccess, onFail);
+});    

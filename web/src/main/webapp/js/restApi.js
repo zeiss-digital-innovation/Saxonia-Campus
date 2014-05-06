@@ -94,7 +94,7 @@ saxoniaCampusRestApi.getRooms = function(success_function, fail_function) {
                 },
                 success: function(data) {
                     console.log('getRooms successfull');
-                    success_function(data);
+                    success_function(data._embedded.rooms);
                 },
                 error: function(err) {
                     console.log('getRooms error occured!');
@@ -134,7 +134,7 @@ saxoniaCampusRestApi.addSlot = function(slot, success_function, fail_function) {
 };
 
 saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function) {
-    var delete_url = saxoniaCampusRestApi.SLOTS_URL+"/"+slot.id;
+    var delete_url = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id;
 
     $.ajax
             ({
@@ -153,11 +153,96 @@ saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function
                     success_function(data);
                 },
                 error: function(err) {
-                     if (err.status === 200) {
+                    if (err.status === 200) {
                         console.log('deleteSlot completed');
                         success_function(err);
                     } else {
                         console.log('deleteSlot error occured!');
+                        fail_function(err);
+                    }
+                }
+            });
+};
+
+saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_function) {
+    var participantsUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants";
+    $.ajax
+            ({
+                type: "GET",
+                url: participantsUrl,
+                dataType: 'json',
+                async: true,
+                data: '',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Accept', 'application/hal+json');
+                    xhr.setRequestHeader('Content-Type', 'application/hal+json');
+                },
+                success: function(data) {
+                    console.log('getParticipants successfull');
+                    success_function(data._embedded.participants);
+                },
+                error: function(err) {
+                    console.log('getParticipants error occured!');
+                    fail_function(err);
+                }
+            });
+};
+
+saxoniaCampusRestApi.addParticipant = function(slot, success_function, fail_function) {
+    var participantsUserUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants/user";
+    $.ajax
+            ({
+                type: "PUT",
+                url: participantsUserUrl,
+                dataType: 'hal+json',
+                async: true,
+                data: '',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Accept', 'application/hal+json');
+                    xhr.setRequestHeader('Content-Type', 'application/hal+json');
+                },
+                success: function(data) {
+                    console.log('addParticipant successfull');
+                    success_function(data);
+                },
+                error: function(err) {
+                    if (err.status === 200) {
+                        console.log('addParticipant completed');
+                        success_function(err);
+                    } else {
+                        console.log('addParticipant error occured!');
+                        fail_function(err);
+                    }
+                }
+            });
+};
+
+saxoniaCampusRestApi.delParticipant = function(slot, success_function, fail_function) {
+    var participantsUserUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants/user";
+    $.ajax
+            ({
+                type: "DELETE",
+                url: participantsUserUrl,
+                dataType: 'hal+json',
+                async: true,
+                data: '',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Accept', 'application/hal+json');
+                    xhr.setRequestHeader('Content-Type', 'application/hal+json');
+                },
+                success: function(data) {
+                    console.log('delParticipant successfull');
+                    success_function(data);
+                },
+                error: function(err) {
+                    if (err.status === 200) {
+                        console.log('delParticipant completed');
+                        success_function(err);
+                    } else {
+                        console.log('delParticipant error occured!');
                         fail_function(err);
                     }
                 }
