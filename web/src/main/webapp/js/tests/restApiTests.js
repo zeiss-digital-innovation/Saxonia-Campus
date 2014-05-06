@@ -2,7 +2,7 @@
  *This QUnit Tests test the REST-API of the Campus Application.
  */
 
-var createdSlot = {};
+var createdSlot = undefined;
 
 module("API");
 
@@ -49,14 +49,14 @@ asyncTest("Teste getCurrentUser", function() {
 });
 
 asyncTest("Teste getSlots", function() {
-    var expectedSlotslength = 19;
+    var expectedSlotslength = 20;
     var expectedRoomsUrl = "http://" + location.host + "/rest/rooms";
 
     saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
     saxoniaCampusRestApi.authenticate(function() {
         var onSuccess = function(slots) {
             ok(true, "getSlots successfull");
-            equal(slots.length, expectedSlotslength, "Es werden 19 Slots zurückgeliefert.")
+            equal(slots.length, expectedSlotslength, "Es werden 20 Slots zurückgeliefert.")
             notEqual(saxoniaCampusRestApi.ROOMS_URL, undefined, "ROOMS_URL ist definiert.");
             equal(saxoniaCampusRestApi.ROOMS_URL, expectedRoomsUrl, "Rooms Url http://HOSTNAME:PORT/rest/romms");
             start();
@@ -123,6 +123,30 @@ asyncTest("Anlegen eines neuen Slots", function() {
         saxoniaCampusRestApi.addSlot(slot, onSuccess, onFail);
     }, function() {
     });
+});
 
+asyncTest("Löschen eines Slots", function() {
+    saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    if (createdSlot !== undefined) {
+        var onSuccess = function(data) {
+            ok(true, "delete slot successfull");
+            console.log(data);
+            start();
+        };
+        var onFail = function(err) {
+            ok(false, "delete slot failed");
+            console.log(err);
+            start();
+        };
 
+        saxoniaCampusRestApi.deleteSlot(createdSlot, onSuccess, onFail);
+    } else {
+        ok(false, "Kein slot generiert. createdSlot == undefined");
+        start();
+    }
+});
+
+asyncTest("Auflisten der verfügbaren Räume", function() {
+    saxoniaCampusRestApi.AUTH_STRING = "Basic bWFyY28uZGllcmVuZmVsZHQ6Y2FtcHVz";
+    ok(fail,"Dummy-Assert");
 });

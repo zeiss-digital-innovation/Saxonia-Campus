@@ -132,3 +132,34 @@ saxoniaCampusRestApi.addSlot = function(slot, success_function, fail_function) {
                 }
             });
 };
+
+saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function) {
+    var delete_url = saxoniaCampusRestApi.SLOTS_URL+"/"+slot.id;
+
+    $.ajax
+            ({
+                type: "DELETE",
+                url: delete_url,
+                dataType: 'hal+json',
+                async: true,
+                data: {},
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Accept', 'application/hal+json');
+                    xhr.setRequestHeader('Content-Type', 'application/hal+json');
+                },
+                success: function(data) {
+                    console.log('delete slot successfull');
+                    success_function(data);
+                },
+                error: function(err) {
+                     if (err.status === 200) {
+                        console.log('deleteSlot completed');
+                        success_function(err);
+                    } else {
+                        console.log('deleteSlot error occured!');
+                        fail_function(err);
+                    }
+                }
+            });
+};
