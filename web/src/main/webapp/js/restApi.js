@@ -12,6 +12,9 @@ saxoniaCampusRestApi.ROOMS_URL = "";
 saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";
 
 saxoniaCampusRestApi.AUTH_STRING = "";
+saxoniaCampusRestApi.ADMIN_ROLE = "ADMIN";
+saxoniaCampusRestApi.USER_ROLE = "USER";
+
 saxoniaCampusRestApi.authenticate = function(success_function, fail_function) {
     $.ajax
             ({
