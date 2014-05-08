@@ -13,9 +13,9 @@
  }
  */
 
-var REST_SERVICE_BASE_URL = "http://nb087:8080/rest/";
-var REST_SERVICE_SLOTS_URL = "http://nb087:8080/rest/slots";
-var REST_SERVICE_ROOMS_URL = "http://nb087:8080/rest/rooms";
+var REST_SERVICE_BASE_URL = "http://"+location.host+"/rest/";
+var REST_SERVICE_SLOTS_URL = "http://"+location.host+"/rest/slots";
+var REST_SERVICE_ROOMS_URL = "http://"+location.host+"/rest/rooms";
 
 
 var Slot = function(slotID, slotTitle) {
