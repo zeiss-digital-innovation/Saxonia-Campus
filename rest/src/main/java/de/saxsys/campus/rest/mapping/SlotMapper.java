@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
@@ -39,17 +40,20 @@ public class SlotMapper {
 	@Inject
 	private RepresentationFactory representationFactory;
 
-	public Representation createRepresentation(URI baseUri, List<Slot> slots) {
-		Representation r = representationFactory.newRepresentation(UriBuilder.fromUri(baseUri)
-				.path(SlotResource.class).build());
-		for (Slot slot : slots) {
-			r.withRepresentation(SLOTS, createRepresentation(baseUri, slot, false));
+	public Representation createRepresentation(UriInfo uriInfo, List<Slot> slots, boolean forUser) {
+		Representation r = representationFactory.newRepresentation(uriInfo.getRequestUri());
+		if (!forUser) {
+			r.withLink(ROOMS, uriInfo.getBaseUriBuilder().path(RoomResource.class).build());
 		}
-		r.withLink(ROOMS, UriBuilder.fromUri(baseUri).path(RoomResource.class).build());
+		for (Slot slot : slots) {
+			r.withRepresentation(SLOTS,
+					createRepresentation(uriInfo.getBaseUri(), slot, false, forUser));
+		}
 		return r;
 	}
 
-	public Representation createRepresentation(URI baseUri, Slot slot, boolean expanded) {
+	public Representation createRepresentation(URI baseUri, Slot slot, boolean expanded,
+			boolean withUnregister) {
 		final URI slotUri = createUri(baseUri, slot);
 		Representation r = representationFactory
 				.newRepresentation(slotUri)
@@ -65,8 +69,10 @@ public class SlotMapper {
 				.withProperty("participants", slot.getParticipantCount());
 		if (expanded) {
 			r.withLink(REGISTER, createRegisterUri(slotUri));
-			r.withLink(UNREGISTER, createRegisterUri(slotUri));
 			r.withLink(PARTICIPANTS, UriBuilder.fromUri(slotUri).path("/participants").build());
+		}
+		if (withUnregister) {
+			r.withLink(UNREGISTER, createRegisterUri(slotUri));
 		}
 		return r;
 	}

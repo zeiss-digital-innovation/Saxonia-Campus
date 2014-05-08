@@ -8,6 +8,7 @@ import javax.ws.rs.ext.Provider;
 
 import com.theoryinpractise.halbuilder.api.Representation;
 
+import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 
 @Provider
@@ -27,7 +28,8 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 		}
 
 		representation = errorMapper.createRepresentation("Server Error", exception);
-		return Response.fromResponse(originalResponse).entity(representation).build();
+		return Response.fromResponse(originalResponse).entity(representation)
+				.type(HalMediaTypes.HAL_JSON_TYPE).build();
 	}
 
 }
