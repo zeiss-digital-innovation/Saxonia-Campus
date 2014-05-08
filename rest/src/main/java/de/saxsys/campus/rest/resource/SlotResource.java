@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -60,8 +61,12 @@ public class SlotResource {
 
 	@GET
 	@Produces(HalMediaTypes.HAL_JSON)
-	public Representation getSlots() {
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slotManager.allSlots());
+	public Representation getSlots(@QueryParam("currentUser") boolean forCurrentUser) {
+		if (forCurrentUser) {
+			return slotMapper.createRepresentation(uriInfo, getCurrentUser().getSlotList(), true);
+		} else {
+			return slotMapper.createRepresentation(uriInfo, slotManager.allSlots(), false);
+		}
 	}
 
 	@GET
@@ -144,10 +149,14 @@ public class SlotResource {
 			LOGGER.error("Could not reserve slot.");
 			throw new WebApplicationException(404);
 		}
-		User user = userManager.findUser(securityContext.getUserPrincipal().getName());
+		User user = getCurrentUser();
 		slot.addParticipant(user);
 		slotManager.updateSlot(slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
+	}
+
+	private User getCurrentUser() {
+		return userManager.findUser(securityContext.getUserPrincipal().getName());
 	}
 
 	@DELETE
@@ -159,14 +168,14 @@ public class SlotResource {
 			LOGGER.error("Could not cancel reservation for slot.");
 			throw new WebApplicationException(404);
 		}
-		User user = userManager.findUser(securityContext.getUserPrincipal().getName());
+		User user = getCurrentUser();
 		slot.removeParticipant(user);
 		slotManager.updateSlot(slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
 	private Representation createSlotRepresentation(Slot slot) {
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true);
+		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true, true);
 	}
 
 	private URI getSelfUri(Representation slotRepresentation) {

@@ -8,7 +8,6 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import de.saxsys.campus.rest.auth.AuthenticationFilter;
 import de.saxsys.campus.rest.hal.HalBuilderMessageBodyReader;
 import de.saxsys.campus.rest.hal.HalBuilderMessageBodyWriter;
-import de.saxsys.campus.rest.hal.MediaTypeInterceptor;
 import de.saxsys.campus.rest.mapping.exception.DefaultExceptionMapper;
 import de.saxsys.campus.rest.mapping.exception.WebApplicationExceptionMapper;
 
@@ -21,7 +20,6 @@ public class CampusApplication extends ResourceConfig {
 		register(HalBuilderMessageBodyWriter.class);
 		register(RolesAllowedDynamicFeature.class);
 		register(AuthenticationFilter.class);
-		register(MediaTypeInterceptor.class);
 		register(WebApplicationExceptionMapper.class);
 		register(DefaultExceptionMapper.class);
 	}
