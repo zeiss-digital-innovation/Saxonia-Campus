@@ -35,7 +35,8 @@ saxoniaCampusUtil.convertRestSlotToViewSlot = function(restSlot) {
     slot.starttime = saxoniaCampusUtil.convertMillisToTimeStr(restSlot.starttime);
     slot.endtime = saxoniaCampusUtil.convertMillisToTimeStr(restSlot.endtime);
     slot.speaker = restSlot.speaker;
-    slot.participants = room.capacity;
+    slot.capacity = restSlot.capacity;
+    slot.participants = restSlot.participants;
 
     return slot;
 };

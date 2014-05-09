@@ -18,6 +18,10 @@ var fillSlotList = function() {
 
 var fillRooms = function() {
     var rooms = saxoniaCampusPersistance.rooms;
+    for (var i in rooms) {
+        var room = rooms[i];
+        saxoniaCampusRenderer.renderRoomOption("#room_select", room);
+    }
 };
 
 var authAdminPage = function() {
@@ -75,6 +79,10 @@ var initAdminview = function() {
 
         console.log("slotID: " + slotID);
         console.log("slotSelector: " + slotSelector);
+        
+        saxoniaCampusRestApi.deleteSlot(
+                saxoniaCampusPersistance.getSlotById(slotID),
+                function (){},function (){});
 
         $(slotSelector).remove();
         $("#admin_slot_list").listview("refresh");
@@ -104,7 +112,9 @@ var initAdminview = function() {
         $("#content_input").val(slot.description);
 
         console.log("slot.room: " + slot.room);
-        $("#room_input").val(slot.room);
+        console.log("slot.roomId: " + slot.roomId);
+        $("#room_select option").removeAttr('selected').filter('[value=' + slot.roomId + ']').attr('selected', true);
+        $("#room_select").selectmenu("refresh");
 
         console.log("slot.starttime: " + slot.starttime);
         $("#start_time_input").val(slot.starttime);
@@ -115,14 +125,15 @@ var initAdminview = function() {
         console.log("slot.speaker: " + slot.speaker);
         $("#speaker_input").val(slot.speaker);
 
-        console.log("slot.participants: " + slot.participants);
-        $("#attendees_input").val(slot.participants);
+        console.log("slot.capacity: " + slot.capacity);
+        $("#capacity_input").val(slot.capacity);
 
         console.log("show detail view.");
         $("#admin_detail_view").show();
     });
 
     $("#admin_slot_list").listview('refresh');
+    $("#room_select").selectmenu("refresh");
 };
 
 var saveNewSlot = function() {
@@ -132,7 +143,7 @@ var saveNewSlot = function() {
     var slotStarttime = $("#start_time_input").val();
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
-    var capacity = $("#attendees_input").val();
+    var capacity = $("#capacity_input").val();
 
     var newSlot = new SaveSlot(slotTitle);
     newSlot.description = slotDescription;
@@ -171,26 +182,30 @@ var updateExistingSlot = function() {
     var slotStarttime = $("#start_time_input").val();
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
-    var slotCapacity = $("#attendees_input").val();
+    var slotCapacity = $("#capacity_input").val();
 
     var slot = new updateSlot(slotID, slotTitle);
     slot.description = slotDescription;
     slot.room = slotRoom;
-//    slot.starttime = slotStarttime;
-//    slot.endtime = slotEndtime;
     slot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
     slot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
     slot.capacity = slotCapacity;
-
+    
+    var jsonSlot = new Slot(slotID, slotTitle);
+    jsonSlot.description = slotDescription;
+    jsonSlot.room = slotRoom;
+    jsonSlot.starttime = slotStarttime;
+    jsonSlot.endtime = slotEndtime;
+    jsonSlot.speaker = slotSpeaker;
+    jsonSlot.capacity = slotCapacity;
 
     var success = function(data) {
         console.log("Slot updated successfully.");
         console.log(data);
-        var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
-        
-        saxoniaCampusPersistance.updateSlot(slot);
-        $('#' + slot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
+
+        saxoniaCampusPersistance.updateSlot(jsonSlot);
+        $('#' + jsonSlot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(jsonSlot));
         initAdminview();
     };
     var fail = function(err) {
@@ -206,10 +221,6 @@ var updateExistingSlot = function() {
 
 $(function() {
     authAdminPage();
-//
-//    fillSlotList();
-//    fillRooms();
-//    initAdminview();
 
     // click new slot button
     $("#new_slot_btn").click(function() {

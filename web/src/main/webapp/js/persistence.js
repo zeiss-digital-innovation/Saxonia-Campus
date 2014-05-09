@@ -78,6 +78,7 @@ saxoniaCampusPersistance.initRooms = function() {
     var roomsWrapper;
     var authString = $.cookie("id");
     console.log("authstring" + authString);
+    saxoniaCampusPersistance.rooms = [];
     $.ajax
             ({
                 type: "GET",
@@ -90,13 +91,12 @@ saxoniaCampusPersistance.initRooms = function() {
                 },
                 success: function(data) {
                     console.log('slots load successfull');
-                    roomsWrapper = data;
+                    saxoniaCampusPersistance.rooms = data._embedded.rooms;
                 },
                 error: function() {
                     console.log('error occured!');
                 }
             });
-    saxoniaCampusPersistance.rooms = [];
 };
 
 saxoniaCampusPersistance.init = function() {
