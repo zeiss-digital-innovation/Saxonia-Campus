@@ -67,7 +67,7 @@ saxoniaCampusRestApi.getSlots = function(success_function, fail_function) {
                 type: "GET",
                 url: saxoniaCampusRestApi.SLOTS_URL,
                 dataType: 'json',
-                async: true,
+                async: false,
                 data: '',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);

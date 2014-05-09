@@ -13,9 +13,9 @@
  }
  */
 
-var REST_SERVICE_BASE_URL = "http://"+location.host+"/rest/";
-var REST_SERVICE_SLOTS_URL = "http://"+location.host+"/rest/slots";
-var REST_SERVICE_ROOMS_URL = "http://"+location.host+"/rest/rooms";
+var REST_SERVICE_BASE_URL = "http://" + location.host + "/rest/";
+var REST_SERVICE_SLOTS_URL = "http://" + location.host + "/rest/slots";
+var REST_SERVICE_ROOMS_URL = "http://" + location.host + "/rest/rooms";
 
 
 var Slot = function(slotID, slotTitle) {
@@ -23,47 +23,44 @@ var Slot = function(slotID, slotTitle) {
     this.title = slotTitle;
     this.description = "Bitte Inhalt eingeben.";
     this.room = "FFP 911";
-    this.roomId = 1;
     this.starttime = "07:00";
     this.endtime = "16:30";
     this.speaker = "Marco Dierenfeldt";
     this.participants = 20;
 };
 
+var SaveSlot = function(slotTitle) {
+    this.title = slotTitle;
+    this.description = "Bitte Inhalt eingeben.";
+    this.room = 1;
+    this.starttime = "07:00";
+    this.endtime = "16:30";
+    this.speaker = "Marco Dierenfeldt";
+};
+
 var saxoniaCampusPersistance = {};
 
 saxoniaCampusPersistance.initSlots = function() {
-    var slotsWrapper;
+//    var slotsWrapper;
     var authString = $.cookie("id");
     console.log("authstring" + authString);
 
     saxoniaCampusPersistance.slots = [];
+    var success = function(data) {
+        console.log('slots load successfull');
+//        slotsWrapper = data;
+        for (var i in data) {
+            var currentSlot = data[i];
 
-    $.ajax
-            ({
-                type: "GET",
-                url: REST_SERVICE_SLOTS_URL,
-                dataType: 'json',
-                async: false,
-                data: '',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', authString);
-                },
-                success: function(data) {
-                    console.log('slots load successfull');
-                    slotsWrapper = data;
-                    for (var i in slotsWrapper._embedded['slots']) {
-                        var currentSlot = slotsWrapper._embedded['slots'][i];
+            saxoniaCampusPersistance.slots[currentSlot.id] =
+                    saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
+        }
+    };
+    var error = function(data) {
+        console.log('error occured!');
+    };
 
-                        saxoniaCampusPersistance.slots[currentSlot.id] =
-                                saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
-                    }
-                },
-                error: function() {
-                    console.log('error occured!');
-                }
-            });
-
+    saxoniaCampusRestApi.getSlots(success, error);
 
 };
 

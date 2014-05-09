@@ -14,7 +14,10 @@ var fillSlotList = function() {
         var slot = slots[i];
         saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", slot);
     }
+};
 
+var fillRooms = function() {
+    var rooms = saxoniaCampusPersistance.rooms;
 };
 
 var authAdminPage = function() {
@@ -23,6 +26,8 @@ var authAdminPage = function() {
     if (authString === undefined) {
         console.error("Cookie konnte nicht gefunden werden.");
         $(location).attr('href', 'index.html');
+    } else {
+        saxoniaCampusRestApi.AUTH_STRING = authString;
     }
 
     var error = function(data) {
@@ -35,21 +40,26 @@ var authAdminPage = function() {
         console.log(data);
         userRole = data.role;
 
-        if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-            $(location).attr('href', 'user.html');
+        if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
+            saxoniaCampusPersistance.init();
+            fillSlotList();
+            fillRooms();
+            initAdminview();
+            return;
         } else {
-            console.error("Fehler beim verarbeiten der Benutzerinformationen!");
+            if (userRole === saxoniaCampusRestApi.USER_ROLE) {
+                $(location).attr('href', 'login.html');
+            } else {
+                console.log('error occured!');
+                console.error("Falsche Benutzerrolle.");
+                $(location).attr('href', 'index.html');
+            }
         }
     };
 
     var auth_success = function(data) {
-        console.log('Server-login successfull');
-        $.cookie("id", authString);
-
         saxoniaCampusRestApi.getCurrentUser(user_success, error)
     };
-
-
 
     saxoniaCampusRestApi.authenticate(auth_success, error);
 };
@@ -116,29 +126,41 @@ var initAdminview = function() {
 };
 
 var saveNewSlot = function() {
-    var slotID = saxoniaCampusPersistance.getNextAvailableSlotId();
     var slotTitle = $("#title_input").val();
     var slotDescription = $("#content_input").val();
-    var slotRoom = $("#room_input").val();
+    var slotRoom = $("#room_select").val();
     var slotStarttime = $("#start_time_input").val();
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
-    var slotParticipants = $("#attendees_input").val();
+    var capacity = $("#attendees_input").val();
 
-    var newSlot = new Slot(slotID, slotTitle);
+    var newSlot = new SaveSlot(slotTitle);
     newSlot.description = slotDescription;
     newSlot.room = slotRoom;
-    newSlot.starttime = slotStarttime;
-    newSlot.endtime = slotEndtime;
+    newSlot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
+    newSlot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
     newSlot.speaker = slotSpeaker;
-    newSlot.participants = slotParticipants;
+    newSlot.capacity = capacity;
 
-    saxoniaCampusPersistance.addNewSlot(newSlot);
-
-    //insert new slot into slotlist
-    saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", newSlot);
-    initAdminview();
-}
+    
+    var success = function(data){
+        console.log("newSlot added successfully.");
+        console.log(data);
+        var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
+        saxoniaCampusPersistance.addNewSlot(jsonSlot); 
+        //insert new slot into slotlist
+        saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
+        initAdminview();
+    };
+    var fail = function(err) {
+        console.error("adding newSlot failed.");
+        console.error(err);
+    };
+    
+    saxoniaCampusRestApi.addSlot(newSlot, success, fail);
+    
+   
+};
 
 var updateExistingSlot = function() {
     console.log("update existing Slot");
@@ -158,6 +180,9 @@ var updateExistingSlot = function() {
     slot.endtime = slotEndtime;
     slot.speaker = slotSpeaker;
     slot.participants = slotParticipants;
+    
+     
+
 
     saxoniaCampusPersistance.updateSlot(slot);
     $('#' + slot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
@@ -165,10 +190,11 @@ var updateExistingSlot = function() {
 };
 
 $(function() {
-
-    saxoniaCampusPersistance.init();
-    fillSlotList();
-    initAdminview();
+    authAdminPage();
+//
+//    fillSlotList();
+//    fillRooms();
+//    initAdminview();
 
     // click new slot button
     $("#new_slot_btn").click(function() {

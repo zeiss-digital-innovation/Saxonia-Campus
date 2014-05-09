@@ -12,6 +12,17 @@ saxoniaCampusUtil.convertMillisToTimeStr = function(millis) {
     return timeStr;
 };
 
+saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr){
+    var date = new Date();
+    var splittetStr = timeStr.split(':');
+    var hours = splittetStr[0];
+    var minutes = splittetStr[1]
+    
+    date.setHours(parseInt(hours));
+    date.setMinutes(parseInt(minutes));
+    return date.getTime();
+};
+
 saxoniaCampusUtil.convertRestSlotToViewSlot = function(restSlot) {
     var slotId = restSlot.id;
     var slotTitle = restSlot.title;
@@ -27,6 +38,12 @@ saxoniaCampusUtil.convertRestSlotToViewSlot = function(restSlot) {
     slot.participants = room.capacity;
 
     return slot;
+};
+
+saxoniaCampusUtil.convertJsonSlotToViewSlot = function(jsonSlot){
+    var newSlot = JSON.parse(jsonSlot);
+    
+    return saxoniaCampusUtil.convertRestSlotToViewSlot(newSlot);
 };
 
 saxoniaCampusUtil.getRoomFromRestSlot = function(restSlot) {
