@@ -8,52 +8,50 @@ var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
 }
 
-var fillSlotList = function(){
-  var slots = saxoniaCampusPersistance.slots;  
-  for(var i in slots){
-      var slot = slots[i];
-      saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", slot);
-  }
-  
+var fillSlotList = function() {
+    var slots = saxoniaCampusPersistance.slots;
+    for (var i in slots) {
+        var slot = slots[i];
+        saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", slot);
+    }
+
 };
 
-var authAdminpage = function(){
-        var authString = $.cookie("id");
-  
-  
-        var error = function(data) {
-            console.log('error occured!');
-            $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!")
-        };
+var authAdminPage = function() {
+    var authString = $.cookie("id");
 
-        //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
-        //wird die seiner Rolle entsprechende Seite geladen.
-        var user_success = function(data) {
-            console.log(data);
-            userRole = data.role;
+    if (authString === undefined) {
+        console.error("Cookie konnte nicht gefunden werden.");
+        $(location).attr('href', 'index.html');
+    }
 
-            if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-                $(location).attr('href', 'admin.html');
-            } else {
-                if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-                    $(location).attr('href', 'user.html');
-                } else {
-                    console.log('error occured!');
-                    $("#error_output").html("Fehler beim verarbeiten der Benutzerinformationen!")
-                }
-            }
-        };
+    var error = function(data) {
+        $(location).attr('href', 'index.html');
+    };
 
-        var auth_success = function(data) {
-            console.log('Server-login successfull');
-            $.cookie("id", authString);
+    //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
+    //wird die seiner Rolle entsprechende Seite geladen.
+    var user_success = function(data) {
+        console.log(data);
+        userRole = data.role;
 
-            saxoniaCampusRestApi.getCurrentUser(user_success, error)
-        };
+        if (userRole === saxoniaCampusRestApi.USER_ROLE) {
+            $(location).attr('href', 'user.html');
+        } else {
+            console.error("Fehler beim verarbeiten der Benutzerinformationen!");
+        }
+    };
+
+    var auth_success = function(data) {
+        console.log('Server-login successfull');
+        $.cookie("id", authString);
+
+        saxoniaCampusRestApi.getCurrentUser(user_success, error)
+    };
 
 
 
-        saxoniaCampusRestApi.authenticate(auth_success, error);  
+    saxoniaCampusRestApi.authenticate(auth_success, error);
 };
 
 var initAdminview = function() {
@@ -82,7 +80,7 @@ var initAdminview = function() {
         console.log("slotID: " + slotID);
 
         currentSlotInWork = slotID;
-                
+
         console.log("get slot-data from persistence");
         var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
@@ -152,7 +150,7 @@ var updateExistingSlot = function() {
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
     var slotParticipants = $("#attendees_input").val();
-    
+
     var slot = new Slot(slotID, slotTitle);
     slot.description = slotDescription;
     slot.room = slotRoom;
@@ -160,14 +158,14 @@ var updateExistingSlot = function() {
     slot.endtime = slotEndtime;
     slot.speaker = slotSpeaker;
     slot.participants = slotParticipants;
-    
+
     saxoniaCampusPersistance.updateSlot(slot);
-    $('#'+slot.id+'_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
+    $('#' + slot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
     initAdminview();
 };
 
 $(function() {
-    
+
     saxoniaCampusPersistance.init();
     fillSlotList();
     initAdminview();
@@ -190,9 +188,9 @@ $(function() {
         $("#cancel_btn").click();
         currentSlotInWork = -1;
     });
-    
+
     // click cancel button
-    $("#cancel_btn").click(function(){
+    $("#cancel_btn").click(function() {
         currentSlotInWork = -1;
         $("#admin_detail_view").hide();
     });
