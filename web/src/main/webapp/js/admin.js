@@ -17,6 +17,45 @@ var fillSlotList = function(){
   
 };
 
+var authAdminpage = function(){
+        var authString = $.cookie("id");
+  
+  
+        var error = function(data) {
+            console.log('error occured!');
+            $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!")
+        };
+
+        //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
+        //wird die seiner Rolle entsprechende Seite geladen.
+        var user_success = function(data) {
+            console.log(data);
+            userRole = data.role;
+
+            if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
+                $(location).attr('href', 'admin.html');
+            } else {
+                if (userRole === saxoniaCampusRestApi.USER_ROLE) {
+                    $(location).attr('href', 'user.html');
+                } else {
+                    console.log('error occured!');
+                    $("#error_output").html("Fehler beim verarbeiten der Benutzerinformationen!")
+                }
+            }
+        };
+
+        var auth_success = function(data) {
+            console.log('Server-login successfull');
+            $.cookie("id", authString);
+
+            saxoniaCampusRestApi.getCurrentUser(user_success, error)
+        };
+
+
+
+        saxoniaCampusRestApi.authenticate(auth_success, error);  
+};
+
 var initAdminview = function() {
     //deleteButton am Slot wurde geklickt
     $(".delete_slot").click(function() {
@@ -128,6 +167,7 @@ var updateExistingSlot = function() {
 };
 
 $(function() {
+    
     saxoniaCampusPersistance.init();
     fillSlotList();
     initAdminview();
