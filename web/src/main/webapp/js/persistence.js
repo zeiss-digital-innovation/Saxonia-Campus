@@ -22,11 +22,21 @@ var Slot = function(slotID, slotTitle) {
     this.id = slotID;
     this.title = slotTitle;
     this.description = "Bitte Inhalt eingeben.";
-    this.room = "FFP 911";
+    this.room = 1;
     this.starttime = "07:00";
     this.endtime = "16:30";
     this.speaker = "Marco Dierenfeldt";
     this.participants = 20;
+};
+
+var updateSlot = function(slotID, slotTitle) {
+    this.id = slotID;
+    this.title = slotTitle;
+    this.description = "Bitte Inhalt eingeben.";
+    this.room = 1;
+    this.starttime = "07:00";
+    this.endtime = "16:30";
+    this.speaker = "Marco Dierenfeldt";
 };
 
 var SaveSlot = function(slotTitle) {

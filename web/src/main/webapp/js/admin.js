@@ -58,7 +58,7 @@ var authAdminPage = function() {
     };
 
     var auth_success = function(data) {
-        saxoniaCampusRestApi.getCurrentUser(user_success, error)
+        saxoniaCampusRestApi.getCurrentUser(user_success, error);
     };
 
     saxoniaCampusRestApi.authenticate(auth_success, error);
@@ -142,12 +142,12 @@ var saveNewSlot = function() {
     newSlot.speaker = slotSpeaker;
     newSlot.capacity = capacity;
 
-    
-    var success = function(data){
+
+    var success = function(data) {
         console.log("newSlot added successfully.");
         console.log(data);
         var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
-        saxoniaCampusPersistance.addNewSlot(jsonSlot); 
+        saxoniaCampusPersistance.addNewSlot(jsonSlot);
         //insert new slot into slotlist
         saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
         initAdminview();
@@ -156,10 +156,10 @@ var saveNewSlot = function() {
         console.error("adding newSlot failed.");
         console.error(err);
     };
-    
+
     saxoniaCampusRestApi.addSlot(newSlot, success, fail);
-    
-   
+
+
 };
 
 var updateExistingSlot = function() {
@@ -167,26 +167,41 @@ var updateExistingSlot = function() {
     var slotID = currentSlotInWork;
     var slotTitle = $("#title_input").val();
     var slotDescription = $("#content_input").val();
-    var slotRoom = $("#room_input").val();
+    var slotRoom = $("#room_select").val();
     var slotStarttime = $("#start_time_input").val();
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
-    var slotParticipants = $("#attendees_input").val();
+    var slotCapacity = $("#attendees_input").val();
 
-    var slot = new Slot(slotID, slotTitle);
+    var slot = new updateSlot(slotID, slotTitle);
     slot.description = slotDescription;
     slot.room = slotRoom;
-    slot.starttime = slotStarttime;
-    slot.endtime = slotEndtime;
+//    slot.starttime = slotStarttime;
+//    slot.endtime = slotEndtime;
+    slot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
+    slot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
-    slot.participants = slotParticipants;
-    
-     
+    slot.capacity = slotCapacity;
 
 
-    saxoniaCampusPersistance.updateSlot(slot);
-    $('#' + slot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
-    initAdminview();
+    var success = function(data) {
+        console.log("Slot updated successfully.");
+        console.log(data);
+        var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
+        
+        saxoniaCampusPersistance.updateSlot(slot);
+        $('#' + slot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(slot));
+        initAdminview();
+    };
+    var fail = function(err) {
+        console.error("updating Slot failed.");
+        console.error(err);
+    };
+
+    saxoniaCampusRestApi.updateSlot(slot, success, fail);
+
+
+
 };
 
 $(function() {
