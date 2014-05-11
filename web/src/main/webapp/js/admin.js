@@ -52,7 +52,7 @@ var authAdminPage = function() {
             return;
         } else {
             if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-                $(location).attr('href', 'login.html');
+                $(location).attr('href', 'index.html');
             } else {
                 console.log('error occured!');
                 console.error("Falsche Benutzerrolle.");
