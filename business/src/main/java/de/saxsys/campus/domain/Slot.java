@@ -46,12 +46,14 @@ public class Slot implements Serializable {
 	@Column(name = "ID")
 	private Integer id;
 
-	@Size(min = 1, message = "Bitte einen Titel angeben!")
+	@NotNull(message = "Bitte einen Titel angeben!")
+	@Size(max = 255, message = "Titel ist zu lang.")
 	@Basic(optional = false)
 	@Column(name = "TITLE")
 	private String title;
 
 	@Column(name = "DESCRIPTION")
+	@Size(max = 1023, message = "Beschreibung ist zu lang.")
 	private String description;
 
 	@NotNull(message = "Bitte eine Startzeit angeben!")
@@ -66,7 +68,8 @@ public class Slot implements Serializable {
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
 
-	@Size(min = 1, message = "Bitte einen Verantwortlichen angeben!")
+	@NotNull(message = "Bitte einen Verantwortlichen angeben!")
+	@Size(max = 255, message = "Verantwortlicher ist zu lang.")
 	@Basic(optional = false)
 	@Column(name = "SPEAKER")
 	private String speaker;
