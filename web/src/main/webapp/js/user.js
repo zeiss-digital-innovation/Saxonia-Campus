@@ -33,12 +33,14 @@ var authUserPage = function() {
     //wird die seiner Rolle entsprechende Seite geladen.
     var user_success = function(data) {
         console.log(data);
-        userRole = data.role;
+        var userRole = data.role;
+        var userSlots = [1,2,45];
 
         if (userRole === saxoniaCampusRestApi.USER_ROLE) {
             saxoniaCampusPersistance.init();
             fillSlotList();
             $("#user_solot_container").collapsibleset('refresh');
+            fillBookedListview(userSlots);
             initBookedListview();
 
             $(".book_slot_btn").click(function() {
@@ -46,9 +48,18 @@ var authUserPage = function() {
                 console.log("this.id:" + this.id);
 
                 var slotID = extractSlotId(this.id);
+                var slot = saxoniaCampusPersistance.slots[slotID];
 
-                console.log("slotID: " + slotID);
-                bookSlot(slotID);
+                var success = function(data) {
+                    console.log("slotID: " + slotID);
+                    bookSlot(slotID);
+                };
+                var fail = function(err){
+                    console.log("Fehler beim buchen eines Slots");
+                };
+                
+                saxoniaCampusRestApi.addParticipant(slot,success,fail);
+
             });
 
             return;
@@ -70,9 +81,15 @@ var authUserPage = function() {
 
     saxoniaCampusRestApi.authenticate(auth_success, error);
 };
+var fillBookedListview = function(userSlotIDs){
+    for(var i in userSlotIDs){
+        bookSlot(userSlotIDs[i]);
+    };
+};
 
 var initBookedListview = function() {
-    $(".delete_slot").click(function() {
+    $(".delete_slot").click(function(event) {
+        event.stopImmediatePropagation();
         console.log("delete slot clicked");
         console.log("this.id:" + this.id);
 
@@ -82,9 +99,17 @@ var initBookedListview = function() {
         console.log("slotID: " + slotID);
         console.log("slotSelector: " + slotSelector);
 
-        $(slotSelector).remove();
-        $("#user_booked_slot_list").listview("refresh");
-        $("#" + slotID + "_book_btn").toggle();
+        var slot = saxoniaCampusPersistance.slots[slotID];
+        var success = function(data) {
+            $(slotSelector).remove();
+            $("#user_booked_slot_list").listview("refresh");
+            $("#" + slotID + "_book_btn").toggle();
+        }
+        var fail = function(err) {
+            console.log("Fehler beim entfernen eines Teilnehmers.");
+        }
+
+        saxoniaCampusRestApi.delParticipant(slot, success, fail);
     });
 
     $("#user_booked_slot_list").listview("refresh");
