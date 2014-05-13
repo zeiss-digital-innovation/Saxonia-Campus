@@ -1,6 +1,7 @@
 package de.saxsys.campus.rest.mapping;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,7 +34,8 @@ public class UserMapper {
 								.path(UserResource.class, "getCurrentUser").build())
 				.withProperty("id", user.getId()).withProperty("username", user.getUsername())
 				.withProperty("role", user.getRole());
-		for (Slot slot : user.getSlotList()) {
+		final List<Slot> slots = user.getSlotList();
+		for (Slot slot : slots) {
 			r.withRepresentation(SLOTS, createSlotRepresentation(baseUri, slot));
 		}
 		r.withLink(SLOTS,
