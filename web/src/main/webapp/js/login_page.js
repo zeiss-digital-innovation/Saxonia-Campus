@@ -1,11 +1,10 @@
-var USERS_CURRENT = "http://"+location.host+"/rest/users/current";
+var USERS_CURRENT = "http://" + location.host + "/rest/users/current";
 
 
 $(function() {
     $("#login_btn").click(function() {
         console.log("LoginButton clicked");
-        var userview_user = "marco.dierenfeldt";
-        var adminview_user = "stefan.bley";
+
         var username = $("#username")[0].value;
         var password = $("#password")[0].value;
 
@@ -13,36 +12,41 @@ $(function() {
         console.log("password: " + password);
 
         var authString = saxoniaCampusUtil.make_base_auth(username, password);
-        var serverUrl = "http://"+location.host+"/rest/";
-        $.ajax
-                ({
-                    type: "GET",
-                    url: serverUrl,
-                    dataType: 'json',
-                    async: false,
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('Authorization', authString);
-                    },
-                    success: function() {
-                        console.log('Server-login successfull');
-                        $.cookie("id",authString);
-                        
-                        if (username === userview_user) {
-                            console.log("Userview wird geladen");
-                            $(location).attr('href', 'user.html');
-                        } else if (username === adminview_user) {
-                            console.log("Adminview wird geladen");
-                            $(location).attr('href', 'admin.html');
-                        } else {
-                            console.log("User unbekannt.");
-                            $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort.")
-                        }
-                    },
-                    error: function() {
-                        console.log('error occured!');
-                            $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!")
-                    }
-                });
+        saxoniaCampusRestApi.AUTH_STRING = authString;
+
+        var error = function(data) {
+            console.log('error occured!');
+            $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!")
+        };
+
+        //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
+        //wird die seiner Rolle entsprechende Seite geladen.
+        var user_success = function(data) {
+            console.log(data);
+            userRole = data.role;
+
+            if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
+                $(location).attr('href', 'admin.html');
+            } else {
+                if (userRole === saxoniaCampusRestApi.USER_ROLE) {
+                    $(location).attr('href', 'user.html');
+                } else {
+                    console.log('error occured!');
+                    $("#error_output").html("Fehler beim verarbeiten der Benutzerinformationen!")
+                }
+            }
+        };
+
+        var auth_success = function(data) {
+            console.log('Server-login successfull');
+            $.cookie("id", authString);
+
+            saxoniaCampusRestApi.getCurrentUser(user_success, error)
+        };
+
+
+
+        saxoniaCampusRestApi.authenticate(auth_success, error);
     });
 
     $("#cancel_btn").click(function() {

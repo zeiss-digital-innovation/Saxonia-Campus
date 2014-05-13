@@ -23,6 +23,12 @@ saxoniaCampusRenderer.renderAdminViewSlot = function(slotListSelector, slot) {
     $(slotListSelector).append(adminViewSlotHtml);
 };
 
+saxoniaCampusRenderer.renderRoomOption = function(roomSelectSelector, room){
+    var option = '<option value="'+room.id+'">'+room.roomnumber+'</option>'
+    
+    $(roomSelectSelector).append(option);
+};
+
 saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
     var slotHtml = '<li id="' + slot.id + '_slot"><a>' + slot.title + '<p class="ui-li-aside">'
             + slot.starttime + " bis " + slot.endtime + '</p></a><a id="' + slot.id

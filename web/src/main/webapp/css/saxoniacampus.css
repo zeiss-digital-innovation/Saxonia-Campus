@@ -98,12 +98,14 @@ h2 {
     left: 40px;
     overflow: auto;
 }
+
 #booked_slots_label {
     position: absolute;
     top: 140px;
     height: 18px;
     left: 500px;
 }
+
 #booked_slots_list {
     position: absolute;
     top: 160px;
