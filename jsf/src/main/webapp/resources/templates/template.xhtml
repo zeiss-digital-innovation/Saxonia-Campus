@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<f:view xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}" />
-		
-		<title>Saxonia Campus</title>
 		<h:outputStylesheet library="css" name="campus.css" />
+
+		<title>Saxonia Campus</title>
 	</h:head>
 
 	<h:body>
 		<header>Saxonia Campus 2014</header>
+		<h:form id="formMenuBar">
+			<p:menubar>
+				<f:facet name="options">
+					<p:commandButton id="btnLogout" value="Logout" icon="ui-icon-extlink"
+						action="#{logoutBean.logout}" rendered="#{userSessionBean.loggedIn}" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
 		<div class="content">
-		<ui:insert name="content">
-		</ui:insert>
+			<ui:insert name="content">
+			</ui:insert>
 		</div>
 	</h:body>
 

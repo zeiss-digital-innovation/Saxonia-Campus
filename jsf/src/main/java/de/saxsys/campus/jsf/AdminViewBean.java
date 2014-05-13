@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,23 +30,25 @@ public class AdminViewBean implements Serializable {
 
 	@Inject
 	private SlotManager slotManager;
-	
+
 	@Inject
 	private SlotBean slotBean;
 
 	@PostConstruct
 	public void init() {
-		slots = slotManager.allSlots();
+		refreshSlots();
 		rooms = slotManager.allRooms();
-	}
-	
-	public List<Room> getRooms() {
-		return rooms;
 	}
 
 	public void newSlot() {
 		LOGGER.debug("Create new slot");
 		slotBean.setSlot(new Slot());
+		setSlotDetailMode(true);
+	}
+
+	public void editSlot(Slot slot) {
+		LOGGER.debug("Edit slot: " + slot.getTitle());
+		slotBean.setSlot(slot);
 		setSlotDetailMode(true);
 	}
 
@@ -55,14 +59,21 @@ public class AdminViewBean implements Serializable {
 
 	public void deleteSlot(Slot slot) {
 		LOGGER.debug("Delete slot: " + slot.getTitle());
-		slotManager.deleteSlot(slot.getId());
-		slots = slotManager.allSlots();
+		try {
+			slotManager.deleteSlot(slot.getId());
+			FacesContext.getCurrentInstance().addMessage("tblSlots",
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Der Slot wurde gelöscht.", null));
+			refreshSlots();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(
+					"tblSlots",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Der Slot konnte nicht gelöscht werden.", null));
+		}
 	}
 
-	public void editSlot(Slot slot) {
-		LOGGER.debug("Edit slot: " + slot.getTitle());
-		slotBean.setSlot(slot);
-		setSlotDetailMode(true);
+	List<Slot> refreshSlots() {
+		return slots = slotManager.allSlots();
 	}
 
 	public List<Slot> getSlots() {
@@ -71,6 +82,10 @@ public class AdminViewBean implements Serializable {
 
 	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
+	}
+
+	public List<Room> getRooms() {
+		return rooms;
 	}
 
 	public boolean isSlotDetailMode() {

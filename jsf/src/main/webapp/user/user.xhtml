@@ -1,21 +1,17 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	template="/resources/templates/template.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/resources/templates/template.xhtml">
 	<ui:define name="content">
 		<h2>User-View</h2>
 
-		<h:form>
-			<p:panelGrid columns="2" styleClass="tbl">
+		<h:form id="formUser">
+			<p:panelGrid columns="2" columnClasses="verticalAlignTop, verticalAlignTop">
 				<p:column>
 					<!-- available slots -->
-					<p:accordionPanel value="#{userViewBean.slots}" var="slot">
+					<p:accordionPanel id="accSlots" value="#{userViewBean.slots}" var="slot">
 						<p:tab>
 							<f:facet name="title">
-								<h:panelGroup layout="block"
-									style="text-align: left; float: left;">
+								<h:panelGroup layout="block" style="text-align: left; float: left;">
 									<h:outputText value="#{slot.title}" />
 								</h:panelGroup>
 								<h:panelGroup layout="block" style="text-align: right;">
@@ -52,8 +48,8 @@
 									</p:row>
 									<p:row>
 										<p:column colspan="2">
-											<p:commandButton value="Anmelden"
-												disabled="#{!userViewBean.isBookable(slot)}" update="@all"
+											<p:commandButton id="btnRegister" value="Anmelden"
+												disabled="#{!userViewBean.isBookable(slot)}" process="@this accSlots" update="@form"
 												action="#{userViewBean.createReservation(slot)}" />
 										</p:column>
 									</p:row>
@@ -65,7 +61,7 @@
 
 				<p:column>
 					<!-- reservations for the current user -->
-					<p:dataTable value="#{userViewBean.bookedSlots}" var="slot">
+					<p:dataTable id="tblBookedSlots" value="#{userViewBean.bookedSlots}" var="slot">
 						<f:facet name="header">
 							<h:outputText value="Gebuchte Slots" />
 						</f:facet>
@@ -82,16 +78,26 @@
 							</h:outputText>
 						</p:column>
 						<p:column>
-							<p:commandButton action="#{userViewBean.deleteReservation(slot)}"
-								icon="ui-icon-cancel" title="Anmeldung stornieren" update="@all" />
+							<p:commandButton id="btnUnregister" title="Anmeldung stornieren" icon="ui-icon-cancel"
+								action="#{userViewBean.deleteReservation(slot)}" process="@this @form:accSlots"
+								update="@form">
+								<p:confirm header="Anmeldung stornieren"
+									message="Bist du dir sicher, dass du die Anmeldung stornieren möchtest?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+								<p:commandButton id="btnCancel" value="Abbrechen" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+								<p:commandButton id="btnOk" value="OK" type="button" styleClass="ui-confirmdialog-yes"
+									icon="ui-icon-check" />
+							</p:confirmDialog>
 						</p:column>
 					</p:dataTable>
 				</p:column>
 
 			</p:panelGrid>
 
-			<p:messages id="messages" showDetail="false" autoUpdate="true"
-				closable="true" />
+			<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
 		</h:form>
 
 	</ui:define>

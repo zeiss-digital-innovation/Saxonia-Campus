@@ -2,6 +2,8 @@ package de.saxsys.campus.rest.resource;
 
 import java.net.URI;
 
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJBException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -12,9 +14,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -27,7 +31,6 @@ import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.business.UserManager;
 import de.saxsys.campus.domain.Slot;
 import de.saxsys.campus.domain.User;
-import de.saxsys.campus.rest.auth.AuthenticationContext;
 import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 import de.saxsys.campus.rest.mapping.SlotMapper;
@@ -53,13 +56,17 @@ public class SlotResource {
 	@Context
 	private UriInfo uriInfo;
 
-	@Inject
-	private AuthenticationContext authContext;
+	@Context
+	private SecurityContext securityContext;
 
 	@GET
 	@Produces(HalMediaTypes.HAL_JSON)
-	public Representation getSlots() {
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slotManager.allSlots());
+	public Representation getSlots(@QueryParam("currentUser") boolean forCurrentUser) {
+		if (forCurrentUser) {
+			return slotMapper.createRepresentation(uriInfo, getCurrentUser().getSlotList(), true);
+		} else {
+			return slotMapper.createRepresentation(uriInfo, slotManager.allSlots(), false);
+		}
 	}
 
 	@GET
@@ -76,7 +83,8 @@ public class SlotResource {
 	@PUT
 	@Path("{id}")
 	@Consumes(HalMediaTypes.HAL_JSON)
-	// @RolesAllowed("admin")
+	@Produces(HalMediaTypes.HAL_JSON)
+	@RolesAllowed("admin")
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
 		Slot slot = slotMapper.toEntity(id, representation);
 		slot = slotManager.updateSlot(slot);
@@ -91,7 +99,7 @@ public class SlotResource {
 	@POST
 	@Consumes(HalMediaTypes.HAL_JSON)
 	@Produces(HalMediaTypes.HAL_JSON)
-	// @RolesAllowed("admin")
+	@RolesAllowed("admin")
 	public Response newSlot(ReadableRepresentation representation) {
 		try {
 			Slot newSlot = slotMapper.toEntity(null, representation);
@@ -108,11 +116,11 @@ public class SlotResource {
 
 	@DELETE
 	@Path("{id}")
-	// @RolesAllowed("admin")
+	@RolesAllowed("admin")
 	public Response deleteSlot(@PathParam("id") int id) {
 		try {
 			slotManager.deleteSlot(id);
-		} catch (IllegalArgumentException e) {
+		} catch (EJBException e) {
 			LOGGER.error("Could not delete slot.", e);
 			throw new WebApplicationException(404);
 		}
@@ -121,6 +129,7 @@ public class SlotResource {
 
 	@GET
 	@Path("{id}/participants")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response getParticipants(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
@@ -133,36 +142,40 @@ public class SlotResource {
 
 	@PUT
 	@Path("{id}/participants/user")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response register(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
 			LOGGER.error("Could not reserve slot.");
 			throw new WebApplicationException(404);
 		}
-		User authUser = authContext.getUser();
-		User user = userManager.findUser(authUser.getUsername());
+		User user = getCurrentUser();
 		slot.addParticipant(user);
 		slotManager.updateSlot(slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
+	private User getCurrentUser() {
+		return userManager.findUser(securityContext.getUserPrincipal().getName());
+	}
+
 	@DELETE
 	@Path("{id}/participants/user")
+	@Produces(HalMediaTypes.HAL_JSON)
 	public Response unregister(@PathParam("id") int id) {
 		Slot slot = slotManager.findSlot(id);
 		if (null == slot) {
 			LOGGER.error("Could not cancel reservation for slot.");
 			throw new WebApplicationException(404);
 		}
-		User authUser = authContext.getUser();
-		User user = userManager.findUser(authUser.getUsername());
+		User user = getCurrentUser();
 		slot.removeParticipant(user);
 		slotManager.updateSlot(slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
 	private Representation createSlotRepresentation(Slot slot) {
-		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true);
+		return slotMapper.createRepresentation(uriInfo.getBaseUri(), slot, true, true);
 	}
 
 	private URI getSelfUri(Representation slotRepresentation) {

@@ -3,7 +3,9 @@ package de.saxsys.campus.jsf;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import de.saxsys.campus.domain.User;
 
@@ -15,7 +17,6 @@ public class UserSessionBean implements Serializable {
 
 	private User user;
 	private String originalUri;
-
 
 	public User getUser() {
 		return user;
@@ -36,8 +37,11 @@ public class UserSessionBean implements Serializable {
 	public String getOriginalUri() {
 		return originalUri;
 	}
-	
+
 	public void logout() {
+		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext()
+				.getSession(false);
+		session.invalidate();
 		user = null;
 	}
 }

@@ -46,12 +46,14 @@ public class Slot implements Serializable {
 	@Column(name = "ID")
 	private Integer id;
 
-	@Size(min = 1, message = "Bitte einen Titel angeben!")
+	@NotNull(message = "Bitte einen Titel angeben!")
+	@Size(max = 255, message = "Titel ist zu lang.")
 	@Basic(optional = false)
 	@Column(name = "TITLE")
 	private String title;
 
 	@Column(name = "DESCRIPTION")
+	@Size(max = 1023, message = "Beschreibung ist zu lang.")
 	private String description;
 
 	@NotNull(message = "Bitte eine Startzeit angeben!")
@@ -66,7 +68,8 @@ public class Slot implements Serializable {
 	@Temporal(TemporalType.TIME)
 	private Date endtime;
 
-	@Size(min = 1, message = "Bitte einen Verantwortlichen angeben!")
+	@NotNull(message = "Bitte einen Verantwortlichen angeben!")
+	@Size(max = 255, message = "Verantwortlicher ist zu lang.")
 	@Basic(optional = false)
 	@Column(name = "SPEAKER")
 	private String speaker;
@@ -133,6 +136,14 @@ public class Slot implements Serializable {
 		this.endtime = endtime;
 	}
 
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
 	@XmlTransient
 	public List<User> getParticipants() {
 		return participants;
@@ -144,10 +155,12 @@ public class Slot implements Serializable {
 
 	public void addParticipant(User user) {
 		participants.add(user);
+		user.getSlotList().add(this);
 	}
 
 	public void removeParticipant(User user) {
 		participants.remove(user);
+		user.getSlotList().remove(this);
 	}
 
 	@XmlTransient
@@ -157,6 +170,10 @@ public class Slot implements Serializable {
 
 	public int getAvailableCapacity() {
 		return capacity - getParticipantCount();
+	}
+
+	public boolean isBookedOut() {
+		return getAvailableCapacity() < 1;
 	}
 
 	public String getSpeaker() {
@@ -173,14 +190,6 @@ public class Slot implements Serializable {
 
 	public void setRoom(Room room) {
 		this.room = room;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
 	}
 
 	@Override
