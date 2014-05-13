@@ -3,14 +3,6 @@
  * 
  * POST
  * 
- {
- "description" : "Workshop x",
- "endtime" : 34200000,
- "speaker" : "Speaker x",
- "starttime" : 30600000,
- "title" : "Title x",
- "room" : 2
- }
  */
 
 var REST_SERVICE_BASE_URL = "http://" + location.host + "/rest/";

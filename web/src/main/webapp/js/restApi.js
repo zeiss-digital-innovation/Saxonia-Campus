@@ -2,7 +2,6 @@
  * Clientside implementation of the REST API.
  */
 
-
 var saxoniaCampusRestApi = {};
 
 saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";

@@ -1,6 +1,7 @@
 /* 
  * Utilities to convert Objects
  */
+
 var saxoniaCampusUtil = {};
 
 saxoniaCampusUtil.convertMillisToTimeStr = function(millis) {
@@ -16,7 +17,7 @@ saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr){
     var date = new Date();
     var splittetStr = timeStr.split(':');
     var hours = splittetStr[0];
-    var minutes = splittetStr[1]
+    var minutes = splittetStr[1];
     
     date.setHours(parseInt(hours));
     date.setMinutes(parseInt(minutes));
