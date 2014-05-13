@@ -34,7 +34,12 @@ var authUserPage = function() {
     var user_success = function(data) {
         console.log(data);
         var userRole = data.role;
-        var userSlots = [1,2,45];
+        var userSlots = [];
+
+        if (data._embedded !== undefined) {
+            console.log("UserSlots definiert.");
+            userSlots = data._embedded.slots;
+        }
 
         if (userRole === saxoniaCampusRestApi.USER_ROLE) {
             saxoniaCampusPersistance.init();
@@ -54,11 +59,11 @@ var authUserPage = function() {
                     console.log("slotID: " + slotID);
                     bookSlot(slotID);
                 };
-                var fail = function(err){
+                var fail = function(err) {
                     console.log("Fehler beim buchen eines Slots");
                 };
-                
-                saxoniaCampusRestApi.addParticipant(slot,success,fail);
+
+                saxoniaCampusRestApi.addParticipant(slot, success, fail);
 
             });
 
@@ -81,9 +86,14 @@ var authUserPage = function() {
 
     saxoniaCampusRestApi.authenticate(auth_success, error);
 };
-var fillBookedListview = function(userSlotIDs){
-    for(var i in userSlotIDs){
-        bookSlot(userSlotIDs[i]);
+var fillBookedListview = function(userSlots) {
+    if (Array.isArray(userSlots)) {
+        for (var i in userSlots) {
+            bookSlot(userSlots[i].id);
+        };
+    } else {
+        //only one slot
+        bookSlot(userSlots.id);
     };
 };
 
