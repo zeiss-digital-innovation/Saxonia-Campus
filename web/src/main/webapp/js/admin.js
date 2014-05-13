@@ -1,6 +1,7 @@
 /*
  * Controller javascript für die Admin-View 
  */
+
 var adminNewSlotEditing = false;
 var currentSlotInWork = -1;
 

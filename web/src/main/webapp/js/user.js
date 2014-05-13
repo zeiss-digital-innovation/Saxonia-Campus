@@ -4,7 +4,7 @@
 
 var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
-}
+};
 
 var fillSlotList = function() {
     var slots = saxoniaCampusPersistance.slots;
@@ -65,12 +65,12 @@ var authUserPage = function() {
             return;
         } else {
             if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-                console.log("ADMIN-Role detected.")
-//                $(location).attr('href', 'index.html');
+                console.log("ADMIN-Role detected.");
+                $(location).attr('href', 'index.html');
             } else {
                 console.log('error occured!');
                 console.error("Falsche Benutzerrolle.");
-//                $(location).attr('href', 'index.html');
+                $(location).attr('href', 'index.html');
             }
         }
     };

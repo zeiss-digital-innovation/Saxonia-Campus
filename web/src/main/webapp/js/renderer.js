@@ -1,3 +1,7 @@
+/**
+ * Renderer für die UI-Elemente der user und adminView 
+ */
+
 var saxoniaCampusRenderer = {};
 
 saxoniaCampusRenderer.generateInnerSlot = function(slot){
@@ -8,7 +12,7 @@ saxoniaCampusRenderer.generateInnerSlot = function(slot){
           + slot.id + '_delete"></a>';
   
     return innerSlot;
-}
+};
 
 saxoniaCampusRenderer.generateAdminViewSlot = function(slot){
   var innerSlot = saxoniaCampusRenderer.generateInnerSlot(slot);
@@ -24,7 +28,7 @@ saxoniaCampusRenderer.renderAdminViewSlot = function(slotListSelector, slot) {
 };
 
 saxoniaCampusRenderer.renderRoomOption = function(roomSelectSelector, room){
-    var option = '<option value="'+room.id+'">'+room.roomnumber+'</option>'
+    var option = '<option value="'+room.id+'">'+room.roomnumber+'</option>';
     
     $(roomSelectSelector).append(option);
 };

@@ -1,6 +1,5 @@
 var USERS_CURRENT = "http://" + location.host + "/rest/users/current";
 
-
 $(function() {
     $("#login_btn").click(function() {
         console.log("LoginButton clicked");
