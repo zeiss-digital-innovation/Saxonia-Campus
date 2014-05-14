@@ -2,6 +2,10 @@
  * Controller javascript für die Admin-View 
  */
 
+//Variable um zu unterscheiden, ob der Slot, der gerade bearbeitet wird ein 
+//neuer Slot ist oder ein bereits vorhandener Slot.
+//Diese Unterscheidung wird benötigt um entweder ein update oder ein save auszulösen.
+//Alternativ dazu könnte man für edit und new jeweils eigene Formulare im HTML anlegen.
 var adminNewSlotEditing = false;
 var currentSlotInWork = -1;
 
@@ -154,7 +158,6 @@ var saveNewSlot = function() {
     newSlot.speaker = slotSpeaker;
     newSlot.capacity = capacity;
 
-
     var success = function(data) {
         console.log("newSlot added successfully.");
         console.log(data);
@@ -215,9 +218,6 @@ var updateExistingSlot = function() {
     };
 
     saxoniaCampusRestApi.updateSlot(slot, success, fail);
-
-
-
 };
 
 $(function() {
