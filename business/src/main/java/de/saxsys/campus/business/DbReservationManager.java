@@ -39,6 +39,7 @@ public class DbReservationManager implements ReservationManager {
 	public void cancelReservation(@NotNull User user, @NotNull Slot slot) {
 		slot.removeParticipant(user);
 		slotManager.updateSlot(slot);
+		userManager.updateUser(user);
 	}
 
 	@Override

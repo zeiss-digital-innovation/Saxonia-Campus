@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
 
+import de.saxsys.campus.business.ReservationManager;
 import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.business.UserManager;
 import de.saxsys.campus.domain.Slot;
@@ -43,6 +44,9 @@ public class SlotResource {
 
 	@Inject
 	private SlotManager slotManager;
+
+	@Inject
+	private ReservationManager reservationManager;
 
 	@Inject
 	private UserManager userManager;
@@ -150,8 +154,7 @@ public class SlotResource {
 			throw new WebApplicationException(404);
 		}
 		User user = getCurrentUser();
-		slot.addParticipant(user);
-		slotManager.updateSlot(slot);
+		slot = reservationManager.createReservation(user, slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
@@ -169,8 +172,7 @@ public class SlotResource {
 			throw new WebApplicationException(404);
 		}
 		User user = getCurrentUser();
-		slot.removeParticipant(user);
-		slotManager.updateSlot(slot);
+		reservationManager.cancelReservation(user, slot);
 		return Response.ok().entity(createSlotRepresentation(slot)).build();
 	}
 
