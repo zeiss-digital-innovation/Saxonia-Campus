@@ -19,4 +19,9 @@ public class DbUserManager implements UserManager {
 		return (User) em.createNamedQuery("User.findByUsername").setParameter("username", username)
 				.getSingleResult();
 	}
+
+	@Override
+	public User updateUser(User user) {
+		return em.merge(user);
+	}
 }

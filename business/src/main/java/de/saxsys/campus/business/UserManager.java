@@ -6,4 +6,6 @@ public interface UserManager {
 
 	User findUser(String username);
 
+	User updateUser(User user);
+
 }

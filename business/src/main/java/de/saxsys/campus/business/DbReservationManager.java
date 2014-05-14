@@ -20,11 +20,16 @@ public class DbReservationManager implements ReservationManager {
 	@Inject
 	private SlotManager slotManager;
 
+	@Inject
+	private UserManager userManager;
+
 	@Override
 	public Slot createReservation(@NotNull User user, @NotNull Slot slot) {
 		if (!slot.isBookedOut()) {
 			slot.addParticipant(user);
-			return slotManager.updateSlot(slot);
+			final Slot updatedSlot = slotManager.updateSlot(slot);
+			userManager.updateUser(user);
+			return updatedSlot;
 		}
 		// TODO error handling
 		return null;
