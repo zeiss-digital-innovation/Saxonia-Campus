@@ -124,3 +124,13 @@ h2 {
     border-width: 2px;
     border-style: solid;
 }
+
+td {
+    padding-right: 8px;
+    padding-bottom: 2px;
+    font-size: 0.8em;
+}
+
+.booked_slot_title {
+    font-size: 0.8em;
+}
