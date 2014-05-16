@@ -51,7 +51,7 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slotListSelector, slot
             + '<tr><td colspan="2">' + slot.description + '</td><td></td></tr>'
             + '<tr><td>Raum:<br>'+slot.room+'</td>'
             + '<td>Speaker:<br>'+slot.speaker+'</td>'
-            + '<td>Freie Plätze: '+slot.participants+'</td>'
+            + '<td>Freie Plätze: <span id="'+slot.id+'_free">' + (slot.capacity - slot.participants) + '</span></td>'
             + '</tr>'
             + '</table>'
             + '</div>';

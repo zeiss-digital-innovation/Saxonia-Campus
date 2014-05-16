@@ -27,6 +27,11 @@ h2 {
     background-color: #ffcccc;
 }
 
+.error_bar {
+    position: absolute;
+    bottom: 4px;
+}
+
 /* definitionen für die Loginseite */
 .login_dialog {
     background-color: #e6e6e6;

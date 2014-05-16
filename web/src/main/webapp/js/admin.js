@@ -223,6 +223,10 @@ var updateExistingSlot = function() {
 $(function() {
     authAdminPage();
 
+    $("#logout_btn").click(function (){
+        $.removeCookie("id");
+    });
+
     // click new slot button
     $("#new_slot_btn").click(function() {
         adminNewSlotEditing = true;
