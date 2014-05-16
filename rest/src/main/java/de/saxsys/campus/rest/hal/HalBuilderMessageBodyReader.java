@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -38,7 +39,7 @@ public class HalBuilderMessageBodyReader implements MessageBodyReader<ReadableRe
 		RepresentationFactory representationFactory = new DefaultRepresentationFactory()
 				.withReader(HAL_JSON, JsonRepresentationReader.class);
 		ReadableRepresentation representation = representationFactory
-				.readRepresentation(new InputStreamReader(entityStream));
+				.readRepresentation(new InputStreamReader(entityStream, Charset.forName("utf-8")));
 		return representation;
 	}
 
