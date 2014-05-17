@@ -25,7 +25,8 @@ $(function() {
             userRole = data.role;
 
             if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-                $(location).attr('href', 'admin.html');
+//                $(location).attr('href', 'admin.html');
+                $(":mobile-pagecontainer").pagecontainer("change", "admin.html");
             } else {
                 if (userRole === saxoniaCampusRestApi.USER_ROLE) {
                     $(location).attr('href', 'user.html');
@@ -50,5 +51,37 @@ $(function() {
 
     $("#cancel_btn").click(function() {
         $("#error_output").html("");
+    });
+
+    $(document).on("pagebeforecreate", "#adminPage", function() {
+        authAdminPage();
+
+        $("#logout_btn").click(function() {
+            $.removeCookie("id");
+        });
+
+        // click new slot button
+        $("#new_slot_btn").click(function() {
+            adminNewSlotEditing = true;
+            console.log("show detailView panel");
+            $("#slot_detail_header").text('Neuer Slot');
+            $("#admin_detail_popup").popup("open");
+        });
+
+        // click save button
+        $("#save_slot_details_btn").click(function() {
+            if (adminNewSlotEditing) {
+                saveNewSlot();
+            } else {
+                updateExistingSlot();
+            }
+            $("#cancel_slot_details_btn").click();
+        });
+
+        // click cancel button
+        $("#cancel_slot_details_btn").click(function() {
+            currentSlotInWork = -1;
+            $("#admin_detail_popup").popup("close");
+        });
     });
 });

@@ -134,7 +134,8 @@ var initAdminview = function() {
         $("#capacity_input").val(slot.capacity);
 
         console.log("show detail view.");
-        $("#admin_detail_view").show();
+        $("#slot_detail_header").text('Slot Bearbeiten');
+        $("#admin_detail_popup").popup("open");
     });
 
     $("#admin_slot_list").listview('refresh');
@@ -220,35 +221,4 @@ var updateExistingSlot = function() {
     saxoniaCampusRestApi.updateSlot(slot, success, fail);
 };
 
-$(function() {
-    authAdminPage();
 
-    $("#logout_btn").click(function (){
-        $.removeCookie("id");
-    });
-
-    // click new slot button
-    $("#new_slot_btn").click(function() {
-        adminNewSlotEditing = true;
-        console.log("show detailView");
-        $("#admin_detail_view").show();
-    });
-
-    // click save button
-    $("#save_slot_details_btn").click(function() {
-
-        if (adminNewSlotEditing) {
-            saveNewSlot();
-        } else {
-            updateExistingSlot();
-        }
-        $("#cancel_btn").click();
-        currentSlotInWork = -1;
-    });
-
-    // click cancel button
-    $("#cancel_btn").click(function() {
-        currentSlotInWork = -1;
-        $("#admin_detail_view").hide();
-    });
-});

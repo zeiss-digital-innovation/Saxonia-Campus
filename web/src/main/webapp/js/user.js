@@ -158,9 +158,9 @@ var bookSlot = function(slotID) {
     initBookedListview();
     //remove bookbutton
     $("#" + slotID + "_book_btn").toggle();
-}
+};
 
-$(function() {
+$(document).on("pagecontainerbeforeshow","#userPage",function() {
     authUserPage();
 
 
