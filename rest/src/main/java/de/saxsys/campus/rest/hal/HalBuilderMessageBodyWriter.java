@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -37,7 +38,8 @@ public class HalBuilderMessageBodyWriter implements MessageBodyWriter<ReadableRe
 			Annotation[] annotations, MediaType mediaType,
 			MultivaluedMap<String, Object> multivaluedMap, OutputStream outputStream)
 			throws IOException, WebApplicationException {
-		representation.toString(mediaType.toString(), new OutputStreamWriter(outputStream));
+		representation.toString(mediaType.toString(),
+				new OutputStreamWriter(outputStream, Charset.forName("utf-8")));
 	}
 
 	private boolean supportsMediaType(MediaType mediaType) {
