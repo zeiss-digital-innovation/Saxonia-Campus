@@ -16,20 +16,29 @@
         <script src="js/user.js" type="text/javascript"></script>
     </head>
     <body>
-        <header>Saxonia Campus 2014 <a id="logout_btn" class="ui-btn-right" data-role="button" href="index.html">Logout</a></header>
-    <main id="user_content">
-        <h2 id="headline">User-View</h2>
-        <div id="slot_overview_label">Slots (alle)</div>
-        <div id="slot_overview_list">
-            <div id="user_solot_container" data-role="collapsibleset" data-mini="true">
+
+        <div id="userPage" data-role="page">
+            <div id="userPageHeader" data-role="header">
+                <h4>Saxonia Campus 2014</h4>
+                <a id="logout_btn_user" class="ui-btn-right" data-icon="arrow-r" data-iconpos="right" data-role="button" data-mini="true" href="index.html">Logout</a>
+            </div>
+            <div id="userPageContent" data-role="content">
+                <h2 id="headline">User-View</h2>
+                <div id="slot_overview_label">Slots (alle)</div>
+                <div id="slot_overview_list">
+                    <div id="user_solot_container" data-role="collapsibleset" data-mini="true">
+                    </div>
+                </div>
+                <div id="booked_slots_label">Slots (gebucht)</div>
+                <div id="booked_slots_list">
+                    <ul id="user_booked_slot_list" data-role="listview" data-split-icon="delete" data-inline="true">
+                    </ul>
+                </div>
+                <div id="error_output" class="error_bar"></div>
+            </div>
+            <div id="userPageFooter" data-role="footer" data-position="fixed">
+                <h5>Marco Dierenfeldt 2014</h5>
             </div>
         </div>
-        <div id="booked_slots_label">Slots (gebucht)</div>
-        <div id="booked_slots_list">
-            <ul id="user_booked_slot_list" data-role="listview" data-split-icon="delete" data-inline="true">
-            </ul>
-        </div>
-    </main>
-    <div id="error_output" class="error_bar"></div>
-</body>
+    </body>
 </html>

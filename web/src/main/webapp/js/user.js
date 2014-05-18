@@ -160,11 +160,3 @@ var bookSlot = function(slotID) {
     $("#" + slotID + "_book_btn").toggle();
 };
 
-$(document).on("pagecontainerbeforeshow","#userPage",function() {
-    authUserPage();
-
-
-    $("#logout_btn").click(function() {
-        $.removeCookie("id");
-    });
-});

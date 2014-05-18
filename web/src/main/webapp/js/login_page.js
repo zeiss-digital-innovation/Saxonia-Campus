@@ -29,7 +29,7 @@ $(function() {
                 $(":mobile-pagecontainer").pagecontainer("change", "admin.html");
             } else {
                 if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-                    $(location).attr('href', 'user.html');
+                    $(":mobile-pagecontainer").pagecontainer("change", 'user.html');
                 } else {
                     console.log('error occured!');
                     $("#error_output").html("Fehler beim verarbeiten der Benutzerinformationen!")
@@ -82,6 +82,15 @@ $(function() {
         $("#cancel_slot_details_btn").click(function() {
             currentSlotInWork = -1;
             $("#admin_detail_popup").popup("close");
+        });
+    });
+
+    $(document).on("pagebeforecreate", "#userPage", function() {
+        authUserPage();
+
+
+        $("#logout_btn_user").click(function() {
+            $.removeCookie("id");
         });
     });
 });
