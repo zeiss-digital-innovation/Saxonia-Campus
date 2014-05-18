@@ -32,3 +32,7 @@ Content-Length: 260
   }
 }
 ```
+
+![User API][rest-api-state-machine-user.png]
+
+![Admin API][rest-api-state-machine-admin.png]
