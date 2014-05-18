@@ -1,5 +1,7 @@
 # Saxonia-Campus Hypermedia API
 
+### Allgemeines
+
 * Einstiegsadresse: *\<serverUrl\>*/rest/
 * Response Media Types: application/hal+json
 * Request Media Types: application/hal+json
@@ -33,6 +35,8 @@ Content-Length: 260
 }
 ```
 
-![User API][rest-api-state-machine-user.png]
+#### User API
+![User API](rest-api-state-machine-user.png)
 
-![Admin API][rest-api-state-machine-admin.png]
+#### Admin API
+![Admin API](rest-api-state-machine-admin.png)
