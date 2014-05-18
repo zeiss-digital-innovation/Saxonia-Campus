@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,6 +32,7 @@ import de.saxsys.campus.domain.annotation.ValidDateRange;
 @Entity
 @Table(name = "slot")
 @XmlRootElement
+@NamedEntityGraph(name = "Slot.participants", attributeNodes = @NamedAttributeNode("participants"))
 @NamedQueries({
 		@NamedQuery(name = "Slot.findAll", query = "SELECT s FROM Slot s"),
 		@NamedQuery(name = "Slot.findById", query = "SELECT s FROM Slot s WHERE s.id = :id"),

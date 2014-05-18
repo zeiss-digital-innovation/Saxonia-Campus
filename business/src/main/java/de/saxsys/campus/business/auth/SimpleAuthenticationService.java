@@ -1,19 +1,19 @@
 package de.saxsys.campus.business.auth;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import de.saxsys.campus.business.UserManager;
 import de.saxsys.campus.domain.User;
 
-@Stateless
 @Named
+@Stateless
 public class SimpleAuthenticationService implements AuthenticationService {
 
 	private static final String DEFAULT_PASSWORD = "campus";
-	
-	@Inject
+
+	@EJB
 	private UserManager userManager;
 
 	@Override

@@ -2,8 +2,8 @@ package de.saxsys.campus.business;
 
 import java.util.List;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -11,7 +11,6 @@ import de.saxsys.campus.domain.Room;
 import de.saxsys.campus.domain.Slot;
 
 @Stateless
-@LocalBean
 @SuppressWarnings("unchecked")
 public class DbSlotManager implements SlotManager {
 
@@ -20,7 +19,10 @@ public class DbSlotManager implements SlotManager {
 
 	@Override
 	public List<Slot> allSlots() {
-		return em.createNamedQuery("Slot.findAll").getResultList();
+		EntityGraph<Slot> includeParticipants = (EntityGraph<Slot>) em
+				.getEntityGraph("Slot.participants");
+		return em.createNamedQuery("Slot.findAll")
+				.setHint("javax.persistence.loadgraph", includeParticipants).getResultList();
 	}
 
 	@Override

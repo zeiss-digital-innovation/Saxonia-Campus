@@ -1,6 +1,5 @@
 package de.saxsys.campus.business;
 
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,7 +7,6 @@ import javax.persistence.PersistenceContext;
 import de.saxsys.campus.domain.User;
 
 @Stateless
-@LocalBean
 public class DbUserManager implements UserManager {
 
 	@PersistenceContext
