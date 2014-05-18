@@ -5,12 +5,31 @@
 var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
 };
+var refreshRoomGrid = function() {
+    var rooms = saxoniaCampusPersistance.rooms;
+
+    for (var i in rooms) {
+        var room = rooms[i];
+        $('#' + room.id + '_room_slotset').collapsibleset("refresh");
+    }
+    ;
+};
+
+var generateRoomGrids = function() {
+    var rooms = saxoniaCampusPersistance.rooms;
+
+    for (var i in rooms) {
+        var room = rooms[i];
+        saxoniaCampusRenderer.renderRoomGrid("#room_grid", room);
+    }
+    ;
+};
 
 var fillSlotList = function() {
     var slots = saxoniaCampusPersistance.slots;
     for (var i in slots) {
         var slot = slots[i];
-        saxoniaCampusRenderer.renderUserViewDetailSlot("#user_solot_container", slot);
+        saxoniaCampusRenderer.renderUserViewDetailSlot(slot);
     }
 };
 
@@ -43,11 +62,13 @@ var authUserPage = function() {
 
         if (userRole === saxoniaCampusRestApi.USER_ROLE) {
             saxoniaCampusPersistance.init();
+            generateRoomGrids();
+
             fillSlotList();
-            $("#user_solot_container").collapsibleset('refresh');
             fillBookedListview(userSlots);
             initBookedListview();
-
+            $("#userPageContent").trigger('create');
+            
             $(".book_slot_btn").click(function() {
 
                 console.log("book-button clicked.");
@@ -96,9 +117,9 @@ var authUserPage = function() {
 var checkBeforeBooking = function(slot) {
     if (slot.capacity < 1) {
         $("#error_output").text('FEHLER: Im Slot "' + slot.title + '" ist kein Platz mehr!');
-        setTimeout(function(){
+        setTimeout(function() {
             $("#error_output").text('');
-        },3000);
+        }, 3000);
         return false;
     } else {
         return true;
@@ -109,7 +130,8 @@ var fillBookedListview = function(userSlots) {
     if (Array.isArray(userSlots)) {
         for (var i in userSlots) {
             bookSlot(userSlots[i].id);
-        };
+        }
+        ;
     } else {
         //only one slot
         bookSlot(userSlots.id);

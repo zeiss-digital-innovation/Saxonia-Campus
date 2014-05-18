@@ -8,7 +8,7 @@
 var REST_SERVICE_BASE_URL = "http://" + location.host + "/rest/";
 var REST_SERVICE_SLOTS_URL = "http://" + location.host + "/rest/slots";
 var REST_SERVICE_ROOMS_URL = "http://" + location.host + "/rest/rooms";
-
+var LOCATION_PROTOCOL = location.protocol;
 
 var Slot = function(slotID, slotTitle) {
     this.id = slotID;

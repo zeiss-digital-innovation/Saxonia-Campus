@@ -88,7 +88,6 @@ $(function() {
     $(document).on("pagebeforecreate", "#userPage", function() {
         authUserPage();
 
-
         $("#logout_btn_user").click(function() {
             $.removeCookie("id");
         });
