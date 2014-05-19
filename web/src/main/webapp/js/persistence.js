@@ -5,9 +5,9 @@
  * 
  */
 
-var REST_SERVICE_BASE_URL = "http://" + location.host + "/rest/";
-var REST_SERVICE_SLOTS_URL = "http://" + location.host + "/rest/slots";
-var REST_SERVICE_ROOMS_URL = "http://" + location.host + "/rest/rooms";
+var REST_SERVICE_BASE_URL = location.protocol+"//" + location.host + "/rest/";
+var REST_SERVICE_SLOTS_URL = location.protocol+"//" + location.host + "/rest/slots";
+var REST_SERVICE_ROOMS_URL = location.protocol+"//" + location.host + "/rest/rooms";
 var LOCATION_PROTOCOL = location.protocol;
 
 var Slot = function(slotID, slotTitle) {
@@ -41,6 +41,8 @@ var SaveSlot = function(slotTitle) {
 };
 
 var saxoniaCampusPersistance = {};
+
+saxoniaCampusPersistance.userSlots = [];
 
 saxoniaCampusPersistance.initSlots = function() {
 //    var slotsWrapper;

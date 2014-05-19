@@ -27,6 +27,11 @@ h2 {
     background-color: #ffcccc;
 }
 
+#user_error_output {
+    color: crimson;
+    background-color: #ffcccc;
+}
+
 .error_bar {
     position: absolute;
     bottom: 4px;

@@ -58,6 +58,7 @@ var authUserPage = function() {
         if (data._embedded !== undefined) {
             console.log("UserSlots definiert.");
             userSlots = data._embedded.slots;
+            saxoniaCampusPersistance.userSlots = data._embedded.slots;
         }
 
         if (userRole === saxoniaCampusRestApi.USER_ROLE) {
@@ -68,7 +69,7 @@ var authUserPage = function() {
             fillBookedListview(userSlots);
             initBookedListview();
             $("#userPageContent").trigger('create');
-            
+
             $(".book_slot_btn").click(function() {
 
                 console.log("book-button clicked.");
@@ -116,14 +117,38 @@ var authUserPage = function() {
 
 var checkBeforeBooking = function(slot) {
     if (slot.capacity < 1) {
-        $("#error_output").text('FEHLER: Im Slot "' + slot.title + '" ist kein Platz mehr!');
+        $("#user_error_output").text('FEHLER: Im Slot "' + slot.title + '" ist kein Platz mehr!');
+        $("#user_error_output").popup("open");
         setTimeout(function() {
-            $("#error_output").text('');
+            $("#user_error_output").popup("close");
         }, 3000);
         return false;
-    } else {
-        return true;
     }
+
+    var bookedSlots = saxoniaCampusPersistance.userSlots;
+
+    console.log("slot.startTime: " + slot.starttime);
+    console.log("slot.endTime: " + slot.endtime);
+    for (var i in bookedSlots) {
+        var currentSlot = saxoniaCampusPersistance.getSlotById(bookedSlots[i].id);
+        console.log("currentSlot.startTime: " + currentSlot.starttime);
+        console.log("currentSlot.endTime: " + currentSlot.endtime);
+
+        var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
+        console.log("collision: " + collision);
+        if (collision) {
+            
+            var error = 'FEHLER: Slot "' + slot.title + '" und Slot "' + currentSlot.title + '" kollidieren!';
+
+            $("#user_error_output").text(error);
+            $("#user_error_output").popup("open");
+            setTimeout(function() {
+                $("#user_error_output").popup("close");
+            }, 3000);
+            return false;
+        }
+    }
+    return true;
 };
 
 var fillBookedListview = function(userSlots) {

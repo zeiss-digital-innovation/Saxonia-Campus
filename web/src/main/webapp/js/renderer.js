@@ -54,7 +54,9 @@ saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot
 saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
     var slotListSelector = '#'+slot.roomId+'_room_slotset';
     var freeCapacity = (slot.capacity - slot.participants);
-    var slotHtml = '<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u">'
+    var slotHtml = '<div data-role="collapsible" data-inset="true" '
+            + 'data-collapsed-icon="carat-d" data-expanded-icon="carat-u" '
+            + 'title="'+slot.title+'">'
             + '<h3>' + slot.title + ' <br> ' + slot.starttime + ' bis ' + slot.endtime + '</h3>'
             + '<table>'
             + '<tr><td colspan="2">Beschreibung: </td>';
@@ -81,13 +83,13 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
 
 saxoniaCampusRenderer.renderRoomGrid = function(gridviewSelector, room) {
     var gridClass = saxoniaCampusRenderer.gridclassArray[room.id];
-    var roomSlotList = saxoniaCampusRenderer.generateRoomSlotList(gridviewSelector, room);
+    var roomSlotList = saxoniaCampusRenderer.generateRoomSlotList(room);
     
     $(gridviewSelector).append('<div id="' + room.id + '_room_grid" class="' 
             + gridClass + '">'+roomSlotList+'</div>');
 };
 
-saxoniaCampusRenderer.generateRoomSlotList = function(gridviewSelector, room) {
+saxoniaCampusRenderer.generateRoomSlotList = function(room) {
     var roomSlotList = '<h4>Raum: ' + room.roomnumber + '</h4>'
             + '<div id="' + room.id + '_room_slotset" '
             + 'data-role="collapsibleset" data-mini="true"></div>';
