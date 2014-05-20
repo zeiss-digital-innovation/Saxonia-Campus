@@ -13,7 +13,7 @@ var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
 }
 
-var fillSlotList = function() {
+var fillAdminSlotList = function() {
     var slots = saxoniaCampusPersistance.slots;
     for (var i in slots) {
         var slot = slots[i];
@@ -51,7 +51,7 @@ var authAdminPage = function() {
 
         if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
             saxoniaCampusPersistance.init();
-            fillSlotList();
+            fillAdminSlotList();
             fillRooms();
             initAdminview();
             return;
