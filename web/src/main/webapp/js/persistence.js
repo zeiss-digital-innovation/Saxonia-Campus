@@ -52,13 +52,13 @@ saxoniaCampusPersistance.initSlots = function() {
     saxoniaCampusPersistance.slots = [];
     var success = function(data) {
         console.log('slots load successfull');
-//        slotsWrapper = data;
         for (var i in data) {
             var currentSlot = data[i];
 
             saxoniaCampusPersistance.slots[currentSlot.id] =
                     saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
         }
+        saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
     };
     var error = function(data) {
         console.log('error occured!');
