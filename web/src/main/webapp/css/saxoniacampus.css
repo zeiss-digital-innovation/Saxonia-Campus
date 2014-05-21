@@ -139,3 +139,8 @@ td {
 .booked_slot_title {
     font-size: 0.8em;
 }
+
+.user_view_detail {
+    position: relative;
+    width: 100%;
+}

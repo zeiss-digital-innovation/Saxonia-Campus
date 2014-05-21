@@ -4,11 +4,11 @@
 
 var saxoniaCampusRestApi = {};
 
-saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";
+saxoniaCampusRestApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
 saxoniaCampusRestApi.CURRENT_USER_URL = "";
 saxoniaCampusRestApi.SLOTS_URL = "";
 saxoniaCampusRestApi.ROOMS_URL = "";
-saxoniaCampusRestApi.BASE_URL = "http://" + location.host + "/rest/";
+saxoniaCampusRestApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
 
 saxoniaCampusRestApi.AUTH_STRING = "";
 saxoniaCampusRestApi.ADMIN_ROLE = "ADMIN";

@@ -1,4 +1,4 @@
-var USERS_CURRENT = "http://" + location.host + "/rest/users/current";
+var USERS_CURRENT = location.protocol + "//" + location.host + "/rest/users/current";
 
 $(function() {
     $("#login_btn").click(function() {

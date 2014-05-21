@@ -58,7 +58,7 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
             + 'data-collapsed-icon="carat-d" data-expanded-icon="carat-u" '
             + 'title="'+slot.title+'">'
             + '<h3>' + slot.title + ' <br> ' + slot.starttime + ' bis ' + slot.endtime + '</h3>'
-            + '<table>'
+            + '<table class="user_view_detail">'
             + '<tr><td colspan="2">Beschreibung: </td>';
 
     //Buchen-Button nur rendern, wenn freie Plätze vorhanden sind
@@ -70,7 +70,7 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
     }
 
     slotHtml = slotHtml + '</tr>'
-            + '<tr><td colspan="2">' + slot.description + '</td><td></td></tr>'
+            + '<tr><td colspan="3"> <textarea id="content_input" readonly="true">' + slot.description + '</textarea></td></tr>'
             + '<tr><td>Raum:<br>' + slot.room + '</td>'
             + '<td>Speaker:<br>' + slot.speaker + '</td>'
             + '<td>Freie Plätze:<br><span id="' + slot.id + '_free">' + freeCapacity + '</span></td>'
