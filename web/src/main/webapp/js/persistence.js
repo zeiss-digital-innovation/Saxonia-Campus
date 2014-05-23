@@ -58,7 +58,7 @@ saxoniaCampusPersistance.initSlots = function() {
             saxoniaCampusPersistance.slots[currentSlot.id] =
                     saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
         }
-        saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
+//         saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
     };
     var error = function(data) {
         console.log('error occured!');
