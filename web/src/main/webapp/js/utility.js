@@ -100,3 +100,8 @@ saxoniaCampusUtil.collisionTest = function(slot1, slot2){
     
     return collision;
 };
+
+saxoniaCampusUtil.slotComparator = function(a,b){
+    var differenz = saxoniaCampusUtil.convertTimeStrToMillis(a.starttime) - saxoniaCampusUtil.convertTimeStrToMillis(b.starttime);
+    return differenz;
+};
