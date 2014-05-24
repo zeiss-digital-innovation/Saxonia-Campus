@@ -5,9 +5,9 @@
  * 
  */
 
-var REST_SERVICE_BASE_URL = location.protocol+"//" + location.host + "/rest/";
-var REST_SERVICE_SLOTS_URL = location.protocol+"//" + location.host + "/rest/slots";
-var REST_SERVICE_ROOMS_URL = location.protocol+"//" + location.host + "/rest/rooms";
+var REST_SERVICE_BASE_URL = location.protocol + "//" + location.host + "/rest/";
+var REST_SERVICE_SLOTS_URL = location.protocol + "//" + location.host + "/rest/slots";
+var REST_SERVICE_ROOMS_URL = location.protocol + "//" + location.host + "/rest/rooms";
 var LOCATION_PROTOCOL = location.protocol;
 
 var Slot = function(slotID, slotTitle) {
@@ -43,6 +43,14 @@ var SaveSlot = function(slotTitle) {
 var saxoniaCampusPersistance = {};
 
 saxoniaCampusPersistance.userSlots = [];
+saxoniaCampusPersistance.sortedSlotIdMapping = [];
+
+saxoniaCampusPersistance.mapSortedSlots = function() {
+    for (var i in saxoniaCampusPersistance.slots) {
+        var slotID = saxoniaCampusPersistance.slots[i].id;
+        saxoniaCampusPersistance.sortedSlotIdMapping[slotID] = i;
+    }
+};
 
 saxoniaCampusPersistance.initSlots = function() {
 //    var slotsWrapper;
@@ -58,7 +66,9 @@ saxoniaCampusPersistance.initSlots = function() {
             saxoniaCampusPersistance.slots[currentSlot.id] =
                     saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
         }
-//         saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
+        saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
+        saxoniaCampusPersistance.mapSortedSlots();
+
     };
     var error = function(data) {
         console.log('error occured!');
@@ -104,17 +114,18 @@ saxoniaCampusPersistance.init = function() {
 
 saxoniaCampusPersistance.getSlotById = function(slotID) {
     console.log("saxoniaCampusPersistance.getSlotById(" + slotID + ") called");
-    return saxoniaCampusPersistance.slots[slotID];
-};
+    var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slotID];
 
-saxoniaCampusPersistance.getNextAvailableSlotId = function() {
-    return saxoniaCampusPersistance.slots.length + 1;
+    return saxoniaCampusPersistance.slots[sortedSlotId];
 };
 
 saxoniaCampusPersistance.addNewSlot = function(slot) {
-    saxoniaCampusPersistance.slots[slot.id] = slot;
+    saxoniaCampusPersistance.slots[saxoniaCampusPersistance.slots.length] = slot;
+    saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
+    saxoniaCampusPersistance.mapSortedSlots();
 };
 
 saxoniaCampusPersistance.updateSlot = function(slot) {
-    saxoniaCampusPersistance.slots[slot.id] = slot;
+    var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slotID];
+    saxoniaCampusPersistance.slots[sortedSlotId] = slot;
 };

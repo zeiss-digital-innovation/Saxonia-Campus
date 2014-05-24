@@ -76,7 +76,7 @@ var authUserPage = function() {
                 console.log("this.id:" + this.id);
 
                 var slotID = extractSlotId(this.id);
-                var slot = saxoniaCampusPersistance.slots[slotID];
+                var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
                 if (checkBeforeBooking(slot)) {
 
@@ -176,7 +176,7 @@ var initBookedListview = function() {
         console.log("slotID: " + slotID);
         console.log("slotSelector: " + slotSelector);
 
-        var slot = saxoniaCampusPersistance.slots[slotID];
+        var slot = saxoniaCampusPersistance.getSlotById(slotID);
         var success = function(data) {
             slot.participants--;
             updateFreeCapacity(slot);
