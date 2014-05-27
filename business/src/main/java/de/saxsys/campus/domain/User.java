@@ -1,6 +1,7 @@
 package de.saxsys.campus.domain;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -98,11 +99,19 @@ public class User implements Serializable {
 
 	@XmlTransient
 	public List<Slot> getSlotList() {
-		return slotList;
+		return Collections.unmodifiableList(slotList);
 	}
 
 	public void setSlotList(List<Slot> slotList) {
 		this.slotList = slotList;
+	}
+
+	public void addSlot(Slot slot) {
+		slotList.add(slot);
+	}
+
+	public void removeSlot(Slot slot) {
+		slotList.remove(slot);
 	}
 
 	@Override

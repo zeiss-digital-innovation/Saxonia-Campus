@@ -1,6 +1,8 @@
 package de.saxsys.campus.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -88,9 +91,11 @@ public class Slot implements Serializable {
 	private List<User> participants;
 
 	public Slot() {
+		participants = new ArrayList<>();
 	}
 
 	public Slot(String title, Date starttime, Date endtime) {
+		this();
 		this.title = title;
 		this.starttime = starttime;
 		this.endtime = endtime;
@@ -146,7 +151,7 @@ public class Slot implements Serializable {
 
 	@XmlTransient
 	public List<User> getParticipants() {
-		return participants;
+		return Collections.unmodifiableList(participants);
 	}
 
 	public void setParticipants(List<User> users) {
@@ -155,12 +160,12 @@ public class Slot implements Serializable {
 
 	public void addParticipant(User user) {
 		participants.add(user);
-		user.getSlotList().add(this);
+		user.addSlot(this);
 	}
 
 	public void removeParticipant(User user) {
 		participants.remove(user);
-		user.getSlotList().remove(this);
+		user.removeSlot(this);
 	}
 
 	@XmlTransient
@@ -174,6 +179,11 @@ public class Slot implements Serializable {
 
 	public boolean isBookedOut() {
 		return getAvailableCapacity() < 1;
+	}
+
+	@AssertFalse(message = "Der Slot ist bereits ausgebucht.")
+	public boolean isOverBooked() {
+		return getAvailableCapacity() < 0;
 	}
 
 	public String getSpeaker() {
@@ -216,4 +226,18 @@ public class Slot implements Serializable {
 		return "de.saxsys.campus.domain.Slot[ id=" + id + " ]";
 	}
 
+	public boolean overlaps(Slot bookedSlot) {
+		boolean overlaps = true;
+		if ((this.getStarttime().before(bookedSlot.getStarttime()))
+				&& (this.getEndtime().equals(bookedSlot.getStarttime()) || this.getEndtime()
+						.before(bookedSlot.getStarttime()))) {
+			overlaps = false;
+		}
+		if ((bookedSlot.getStarttime().before(this.getStarttime()))
+				&& (bookedSlot.getEndtime().equals(this.getStarttime()) || bookedSlot.getEndtime()
+						.before(this.getStarttime()))) {
+			overlaps = false;
+		}
+		return overlaps;
+	}
 }
