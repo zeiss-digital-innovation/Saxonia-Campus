@@ -58,15 +58,15 @@ var authUserPage = function() {
         if (data._embedded !== undefined) {
             console.log("UserSlots definiert.");
             userSlots = data._embedded.slots;
-            saxoniaCampusPersistance.userSlots = data._embedded.slots;
         }
 
         if (userRole === saxoniaCampusRestApi.USER_ROLE) {
             saxoniaCampusPersistance.init();
+            saxoniaCampusPersistance.initUserSlots(userSlots);
             generateRoomGrids();
 
             fillSlotList();
-            fillBookedListview(userSlots);
+            fillBookedListview(saxoniaCampusPersistance.getUserSlots());
             initBookedListview();
             $("#userPageContent").trigger('create');
 
@@ -84,7 +84,9 @@ var authUserPage = function() {
                         slot.participants++;
                         console.log("slotID: " + slotID);
                         updateFreeCapacity(slot);
-                        bookSlot(slotID);
+                        saxoniaCampusPersistance.addUserSlot(slot.id);
+                        fillBookedListview(saxoniaCampusPersistance.getUserSlots());
+                        initBookedListview();
                     };
                     var fail = function(err) {
                         console.log("Fehler beim buchen eines Slots");
@@ -125,7 +127,7 @@ var checkBeforeBooking = function(slot) {
         return false;
     }
 
-    var bookedSlots = saxoniaCampusPersistance.userSlots;
+    var bookedSlots = saxoniaCampusPersistance.getUserSlots();
 
     console.log("slot.startTime: " + slot.starttime);
     console.log("slot.endTime: " + slot.endtime);
@@ -137,7 +139,7 @@ var checkBeforeBooking = function(slot) {
         var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
         console.log("collision: " + collision);
         if (collision) {
-            
+
             var error = 'FEHLER: Slot "' + slot.title + '" und Slot "' + currentSlot.title + '" kollidieren!';
 
             $("#user_error_output").text(error);
@@ -152,16 +154,15 @@ var checkBeforeBooking = function(slot) {
 };
 
 var fillBookedListview = function(userSlots) {
+    $("#user_booked_slot_list").html('');
     if (Array.isArray(userSlots)) {
         for (var i in userSlots) {
             bookSlot(userSlots[i].id);
         }
-        ;
     } else {
         //only one slot
         bookSlot(userSlots.id);
     }
-    ;
 };
 
 var initBookedListview = function() {
@@ -180,6 +181,7 @@ var initBookedListview = function() {
         var success = function(data) {
             slot.participants--;
             updateFreeCapacity(slot);
+            saxoniaCampusPersistance.removeUserSlot(slot.id);
             $(slotSelector).remove();
             $("#user_booked_slot_list").listview("refresh");
             $("#" + slotID + "_book_btn").toggle();
