@@ -84,6 +84,7 @@ saxoniaCampusPersistance.removeUserSlot = function(slotID) {
 };
 
 saxoniaCampusPersistance.initUserSlots = function(userSlots) {
+    saxoniaCampusPersistance.userSlots = [];
     if (Array.isArray(userSlots)) {
         for (var i in userSlots) {
             var slot = saxoniaCampusPersistance.getSlotById(userSlots[i].id);
