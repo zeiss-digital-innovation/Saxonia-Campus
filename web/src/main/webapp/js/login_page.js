@@ -8,7 +8,7 @@ $(function() {
         var password = $("#password")[0].value;
 
         console.log("username: " + username);
-        console.log("password: " + password);
+        //console.log("password: " + password);
 
         var authString = saxoniaCampusUtil.make_base_auth(username, password);
         saxoniaCampusRestApi.AUTH_STRING = authString;
@@ -32,13 +32,13 @@ $(function() {
                     $(":mobile-pagecontainer").pagecontainer("change", 'user.html');
                 } else {
                     console.log('error occured!');
-                    $("#error_output").html("Fehler beim verarbeiten der Benutzerinformationen!")
+                    $("#error_output").html("Fehler beim Verarbeiten der Benutzerinformationen!")
                 }
             }
         };
 
         var auth_success = function(data) {
-            console.log('Server-login successfull');
+            console.log('Server-login successful');
             $.cookie("id", authString);
 
             saxoniaCampusRestApi.getCurrentUser(user_success, error)

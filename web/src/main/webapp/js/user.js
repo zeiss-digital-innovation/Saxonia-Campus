@@ -89,7 +89,7 @@ var authUserPage = function() {
                         initBookedListview();
                     };
                     var fail = function(err) {
-                        console.log("Fehler beim buchen eines Slots");
+                        console.log("Fehler beim Buchen eines Slots");
                     };
 
                     saxoniaCampusRestApi.addParticipant(slot, success, fail);
@@ -140,7 +140,7 @@ var checkBeforeBooking = function(slot) {
         console.log("collision: " + collision);
         if (collision) {
 
-            var error = 'FEHLER: Slot "' + slot.title + '" und Slot "' + currentSlot.title + '" kollidieren!';
+            var error = 'FEHLER: Slot "' + slot.title + '" überschneidet sich zeitlich mit dem Slot "' + currentSlot.title + '"!';
 
             $("#user_error_output").text(error);
             $("#user_error_output").popup("open");
@@ -187,7 +187,7 @@ var initBookedListview = function() {
             $("#" + slotID + "_book_btn").toggle();
         };
         var fail = function(err) {
-            console.log("Fehler beim entfernen eines Teilnehmers.");
+            console.log("Fehler beim Entfernen eines Teilnehmers.");
         };
 
         saxoniaCampusRestApi.delParticipant(slot, success, fail);
