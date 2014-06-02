@@ -135,7 +135,7 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "de.saxsys.campus.domain.User[ id=" + id + " ]";
+		return "User [id=" + id + ", username=" + username + "]";
 	}
 
 }
