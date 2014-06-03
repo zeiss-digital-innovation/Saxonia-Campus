@@ -96,44 +96,26 @@ var initAdminview = function() {
     //edit slot
     $(".edit_slot").click(function() {
         adminNewSlotEditing = false;
-        console.log("edit slot clicked");
-        console.log("this.id:" + this.id);
 
         var slotID = extractSlotId(this.id);
-        console.log("slotID: " + slotID);
-
         currentSlotInWork = slotID;
 
-        console.log("get slot-data from persistence");
         var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
-        console.log("got slot: " + slot);
-        console.log("fill form in detail view.");
-
-        console.log("slot.title: " + slot.title);
         $("#title_input").val(slot.title);
 
-        console.log("slot.description: " + slot.description);
         $("#content_input").val(slot.description);
 
-        console.log("slot.room: " + slot.room);
-        console.log("slot.roomId: " + slot.roomId);
-        $("#room_select option").removeAttr('selected').filter('[value=' + slot.roomId + ']').attr('selected', true);
-        $("#room_select").selectmenu("refresh");
+        $("#room_select").val(slot.roomId).selectmenu('refresh');
 
-        console.log("slot.starttime: " + slot.starttime);
         $("#start_time_input").val(slot.starttime);
 
-        console.log("slot.endtime: " + slot.endtime);
         $("#end_time_input").val(slot.endtime);
 
-        console.log("slot.speaker: " + slot.speaker);
         $("#speaker_input").val(slot.speaker);
 
-        console.log("slot.capacity: " + slot.capacity);
         $("#capacity_input").val(slot.capacity);
 
-        console.log("show detail view.");
         $("#slot_detail_header").text('Slot Bearbeiten');
         $("#admin_detail_popup").popup("open");
     });
