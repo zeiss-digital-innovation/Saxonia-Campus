@@ -46,7 +46,7 @@ saxoniaCampusRenderer.renderRoomOption = function(roomSelectSelector, room) {
 
 saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
     var slotHtml = '<li id="' + slot.id + '_slot"><a><span class="booked_slot_title">' + slot.title + '</span><p>'
-            + slot.starttime + " bis " + slot.endtime + '</p></a><a id="' + slot.id
+            + slot.starttime + " bis " + slot.endtime + ' : Raum '+slot.room+'</p></a><a id="' + slot.id
             + '_delete_slot" class="delete_slot"></a></li>';
     $(slotListSelector).append(slotHtml);
 };
