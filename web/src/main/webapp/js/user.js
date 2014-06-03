@@ -93,9 +93,19 @@ var authUserPage = function() {
                         initBookedListview();
                     };
                     var fail = function(err) {
-//                        console.log("Fehler beim Buchen eines Slots");
+                        console.log("Fehler beim Buchen eines Slots");
+                        //err.responseText.detail
+                        var error = jQuery.parseJSON(err.responseText);
+                        
+                        $("#user_error_output").text('FEHLER: ' + error.detail);
+                        $("#user_error_output").popup("open");
+                        setTimeout(function() {
+                            $("#user_error_output").popup("close");
+                        }, 3000);
+                        
                         //show bookbutton after failed booking
                         $("#" + slotID + "_book_btn").show();
+                        location.reload();
                     };
 
                     saxoniaCampusRestApi.addParticipant(slot, success, fail);
