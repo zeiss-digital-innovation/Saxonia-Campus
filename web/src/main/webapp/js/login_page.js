@@ -102,6 +102,13 @@ $(function() {
             $.removeCookie("id");
         });
     });
+    
+    $("input").keydown(function(event){
+        var keycode = event.which;
+        if(keycode === 13){
+          $("#login_btn").click();  
+        };
+    });
 
     //Prüfe ob Benutzer bereits eingeloggt ist und leite ihn gemäß seiner 
     //Rolle auf die entsprechende Seite weiter
