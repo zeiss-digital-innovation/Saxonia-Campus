@@ -19,8 +19,14 @@ saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr){
     var hours = splittetStr[0];
     var minutes = splittetStr[1];
     
+    date.setYear(2014);
+    date.setMonth(6);
+    date.setDate(3);
     date.setHours(parseInt(hours));
     date.setMinutes(parseInt(minutes));
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    
     return date.getTime();
 };
 
