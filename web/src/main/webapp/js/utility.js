@@ -81,20 +81,20 @@ saxoniaCampusUtil.make_base_auth = function(user, password) {
  */
 saxoniaCampusUtil.collisionTest = function(slot1, slot2){
     var collision = true;
-    console.log("Slot1.start: "+slot1.starttime);
-    console.log("Slot1.ende: "+slot1.endtime);
-    console.log("Slot2.start: "+slot2.starttime);
-    console.log("Slot2.ende: "+slot2.endtime);
+//    console.log("Slot1.start: "+slot1.starttime);
+//    console.log("Slot1.ende: "+slot1.endtime);
+//    console.log("Slot2.start: "+slot2.starttime);
+//    console.log("Slot2.ende: "+slot2.endtime);
     
     var slot1StartMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot1.starttime);
     var slot1EndeMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot1.endtime);
     var slot2StartMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot2.starttime);
     var slot2EndeMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot2.endtime);
     
-    console.log("Slot1.startMillis: "+slot1StartMillis);
-    console.log("Slot1.endeMillis: "+slot1EndeMillis);
-    console.log("Slot2.startMillis: "+slot2StartMillis);
-    console.log("Slot2.endeMillis: "+slot2EndeMillis);
+//    console.log("Slot1.startMillis: "+slot1StartMillis);
+//    console.log("Slot1.endeMillis: "+slot1EndeMillis);
+//    console.log("Slot2.startMillis: "+slot2StartMillis);
+//    console.log("Slot2.endeMillis: "+slot2EndeMillis);
     
     if((slot1StartMillis<slot2StartMillis)&&(slot1EndeMillis<=slot2StartMillis)){
         collision = false;

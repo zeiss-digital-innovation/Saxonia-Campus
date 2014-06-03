@@ -51,7 +51,7 @@ var authUserPage = function() {
     //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
     //wird die seiner Rolle entsprechende Seite geladen.
     var user_success = function(data) {
-        console.log(data);
+//        console.log(data);
         var userRole = data.role;
         var userSlots = [];
 
@@ -72,24 +72,30 @@ var authUserPage = function() {
 
             $(".book_slot_btn").click(function() {
 
-                console.log("book-button clicked.");
-                console.log("this.id:" + this.id);
+//                console.log("book-button clicked.");
+//                console.log("this.id:" + this.id);
 
                 var slotID = extractSlotId(this.id);
+
+                //remove bookbutton
+                $("#" + slotID + "_book_btn").hide();
+
                 var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
                 if (checkBeforeBooking(slot)) {
 
                     var success = function(data) {
                         slot.participants++;
-                        console.log("slotID: " + slotID);
+//                        console.log("slotID: " + slotID);
                         updateFreeCapacity(slot);
                         saxoniaCampusPersistance.addUserSlot(slot.id);
                         fillBookedListview(saxoniaCampusPersistance.getUserSlots());
                         initBookedListview();
                     };
                     var fail = function(err) {
-                        console.log("Fehler beim Buchen eines Slots");
+//                        console.log("Fehler beim Buchen eines Slots");
+                        //show bookbutton after failed booking
+                        $("#" + slotID + "_book_btn").show();
                     };
 
                     saxoniaCampusRestApi.addParticipant(slot, success, fail);
@@ -100,7 +106,7 @@ var authUserPage = function() {
             return;
         } else {
             if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-                console.log("ADMIN-Role detected.");
+//                console.log("ADMIN-Role detected.");
                 $(location).attr('href', 'index.html');
             } else {
                 console.log('error occured!');
@@ -129,17 +135,16 @@ var checkBeforeBooking = function(slot) {
 
     var bookedSlots = saxoniaCampusPersistance.getUserSlots();
 
-    console.log("slot.startTime: " + slot.starttime);
-    console.log("slot.endTime: " + slot.endtime);
+//    console.log("slot.startTime: " + slot.starttime);
+//    console.log("slot.endTime: " + slot.endtime);
     for (var i in bookedSlots) {
         var currentSlot = saxoniaCampusPersistance.getSlotById(bookedSlots[i].id);
-        console.log("currentSlot.startTime: " + currentSlot.starttime);
-        console.log("currentSlot.endTime: " + currentSlot.endtime);
+//        console.log("currentSlot.startTime: " + currentSlot.starttime);
+//        console.log("currentSlot.endTime: " + currentSlot.endtime);
 
         var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
-        console.log("collision: " + collision);
+//        console.log("collision: " + collision);
         if (collision) {
-
             var error = 'FEHLER: Slot "' + slot.title + '" überschneidet sich zeitlich mit dem Slot "' + currentSlot.title + '"!';
 
             $("#user_error_output").text(error);
@@ -168,14 +173,15 @@ var fillBookedListview = function(userSlots) {
 var initBookedListview = function() {
     $(".delete_slot").click(function(event) {
         event.stopImmediatePropagation();
-        console.log("delete slot clicked");
-        console.log("this.id:" + this.id);
+//        console.log("delete slot clicked");
+//        console.log("this.id:" + this.id);
 
         var slotID = extractSlotId(this.id);
         var slotSelector = '#user_booked_slot_list #' + slotID + '_slot';
 
-        console.log("slotID: " + slotID);
-        console.log("slotSelector: " + slotSelector);
+//        console.log("slotID: " + slotID);
+//        console.log("slotSelector: " + slotSelector);
+        $("#" + slotID + "_book_btn").show();
 
         var slot = saxoniaCampusPersistance.getSlotById(slotID);
         var success = function(data) {
@@ -184,10 +190,10 @@ var initBookedListview = function() {
             saxoniaCampusPersistance.removeUserSlot(slot.id);
             $(slotSelector).remove();
             $("#user_booked_slot_list").listview("refresh");
-            $("#" + slotID + "_book_btn").toggle();
         };
         var fail = function(err) {
             console.log("Fehler beim Entfernen eines Teilnehmers.");
+            $("#" + slotID + "_book_btn").hide();
         };
 
         saxoniaCampusRestApi.delParticipant(slot, success, fail);
@@ -205,7 +211,5 @@ var bookSlot = function(slotID) {
     saxoniaCampusRenderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
 
     initBookedListview();
-    //remove bookbutton
-    $("#" + slotID + "_book_btn").toggle();
 };
 

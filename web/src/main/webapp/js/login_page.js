@@ -2,12 +2,13 @@ var USERS_CURRENT = location.protocol + "//" + location.host + "/rest/users/curr
 
 $(function() {
     $("#login_btn").click(function() {
-        console.log("LoginButton clicked");
+        $("#error_output").html=('');
+//        console.log("LoginButton clicked");
 
         var username = $("#username")[0].value;
         var password = $("#password")[0].value;
 
-        console.log("username: " + username);
+//        console.log("username: " + username);
         //console.log("password: " + password);
 
         var authString = saxoniaCampusUtil.make_base_auth(username, password);
@@ -27,14 +28,14 @@ $(function() {
         saxoniaCampusRestApi.AUTH_STRING = authString;
 
         var error = function(data) {
-            console.log('error occured!');
+//            console.log('error occured!');
             $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!")
         };
 
         //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
         //wird die seiner Rolle entsprechende Seite geladen.
         var user_success = function(data) {
-            console.log(data);
+//            console.log(data);
             userRole = data.role;
 
             if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
@@ -73,7 +74,7 @@ $(function() {
         // click new slot button
         $("#new_slot_btn").click(function() {
             adminNewSlotEditing = true;
-            console.log("show detailView panel");
+//            console.log("show detailView panel");
             $("#slot_detail_header").text('Neuer Slot');
             $("#admin_detail_popup").popup("open");
         });
