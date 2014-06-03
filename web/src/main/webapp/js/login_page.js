@@ -11,6 +11,19 @@ $(function() {
         //console.log("password: " + password);
 
         var authString = saxoniaCampusUtil.make_base_auth(username, password);
+        tryLogin(authString);
+    });
+
+    var tryAutoLogin = function() {
+        var authString = $.cookie("id");
+
+        if (authString !== undefined) {
+            tryLogin(authString);
+        }
+
+    };
+
+    var tryLogin = function(authString) {
         saxoniaCampusRestApi.AUTH_STRING = authString;
 
         var error = function(data) {
@@ -43,11 +56,8 @@ $(function() {
 
             saxoniaCampusRestApi.getCurrentUser(user_success, error)
         };
-
-
-
         saxoniaCampusRestApi.authenticate(auth_success, error);
-    });
+    };
 
     $("#cancel_btn").click(function() {
         $("#error_output").html("");
@@ -92,14 +102,15 @@ $(function() {
             $.removeCookie("id");
         });
     });
+    
+    $("input").keydown(function(event){
+        var keycode = event.which;
+        if(keycode === 13){
+          $("#login_btn").click();  
+        };
+    });
 
-    function disableF5(e) {
-        if ((e.which || e.keyCode) == 116 || (e.which || e.keyCode) == 82) {
-            e.preventDefault();
-            console.log(e.keyCode);
-         }
-    }
-    ;
-
-    $(document).on("keydown", disableF5);
+    //Prüfe ob Benutzer bereits eingeloggt ist und leite ihn gemäß seiner 
+    //Rolle auf die entsprechende Seite weiter
+    tryAutoLogin();
 });
