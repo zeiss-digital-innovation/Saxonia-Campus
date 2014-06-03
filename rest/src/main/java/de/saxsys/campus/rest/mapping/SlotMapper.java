@@ -1,7 +1,6 @@
 package de.saxsys.campus.rest.mapping;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,6 +13,7 @@ import com.theoryinpractise.halbuilder.api.Representation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import de.saxsys.campus.business.SlotManager;
+import de.saxsys.campus.business.util.DateUtil;
 import de.saxsys.campus.domain.Slot;
 import de.saxsys.campus.rest.resource.RoomResource;
 import de.saxsys.campus.rest.resource.SlotResource;
@@ -87,8 +87,8 @@ public class SlotMapper {
 		slot.setId(id);
 		slot.setTitle((String) representation.getValue("title"));
 		slot.setDescription((String) representation.getValue("description"));
-		slot.setStarttime(new Date(Long.parseLong((String) representation.getValue("starttime"))));
-		slot.setEndtime(new Date(Long.parseLong((String) representation.getValue("endtime"))));
+		slot.setStarttime(DateUtil.fromEpoch((String) representation.getValue("starttime")));
+		slot.setEndtime(DateUtil.fromEpoch((String) representation.getValue("endtime")));
 		slot.setSpeaker((String) representation.getValue("speaker"));
 		slot.setRoom(slotManager.findRoom(Integer.valueOf((String) representation.getValue("room"))));
 		slot.setCapacity(Integer.parseInt((String) representation.getValue("capacity")));
