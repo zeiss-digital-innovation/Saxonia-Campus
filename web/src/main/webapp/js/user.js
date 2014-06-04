@@ -101,11 +101,8 @@ var authUserPage = function() {
                         $("#user_error_output").popup("open");
                         setTimeout(function() {
                             $("#user_error_output").popup("close");
+                            location.reload();
                         }, 3000);
-
-                        //show bookbutton after failed booking
-                        $("#" + slotID + "_book_btn").show();
-                        location.reload();
                     };
 
                     saxoniaCampusRestApi.addParticipant(slot, success, fail);
