@@ -80,7 +80,8 @@ saxoniaCampusPersistance.addUserSlot = function(slotID) {
 saxoniaCampusPersistance.removeUserSlot = function(slotID) {
     var sortedID = saxoniaCampusPersistance.sortedUserSlotIdMapping[slotID];
     saxoniaCampusPersistance.userSlots.splice(sortedID,1);
-    saxoniaCampusPersistance.sortedUserSlotIdMapping.splice(slotID,1)
+    saxoniaCampusPersistance.sortedUserSlotIdMapping.splice(slotID,1);
+    saxoniaCampusPersistance.initSortedUserSlotIdMapping();
 };
 
 saxoniaCampusPersistance.initUserSlots = function(userSlots) {
