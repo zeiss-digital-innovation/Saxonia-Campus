@@ -30,11 +30,20 @@ h2 {
 #user_error_output {
     color: crimson;
     background-color: #ffcccc;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .error_bar {
     position: absolute;
     bottom: 4px;
+}
+
+#user_info_output{
+    color: #053905;
+    background-color: #66ff66;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 /* definitionen für die Loginseite */

@@ -91,6 +91,10 @@ var authUserPage = function() {
                         saxoniaCampusPersistance.addUserSlot(slot.id);
                         fillBookedListview(saxoniaCampusPersistance.getUserSlots());
                         initBookedListview();
+                        $("#user_info_output").popup("open");
+                        setTimeout(function() {
+                            $("#user_info_output").popup("close");
+                        }, 1500);
                     };
                     var fail = function(err) {
                         console.log("Fehler beim Buchen eines Slots");
