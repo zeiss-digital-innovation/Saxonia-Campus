@@ -165,15 +165,15 @@ var updateExistingSlot = function() {
     var slotID = currentSlotInWork;
     var slotTitle = $("#title_input").val();
     var slotDescription = $("#content_input").val();
-    var slotRoom = $("#room_select").val();
+    var slotRoomId = $("#room_select").val();
     var slotStarttime = $("#start_time_input").val();
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
     var slotCapacity = $("#capacity_input").val();
 
-    var slot = new updateSlot(slotID, slotTitle);
+    var slot = new UpdateSlot(slotID, slotTitle);
     slot.description = slotDescription;
-    slot.room = slotRoom;
+    slot.room = slotRoomId;
     slot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
     slot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
@@ -181,7 +181,7 @@ var updateExistingSlot = function() {
     
     var jsonSlot = new Slot(slotID, slotTitle);
     jsonSlot.description = slotDescription;
-    jsonSlot.room = slotRoom;
+    jsonSlot.roomId = slotRoomId;
     jsonSlot.starttime = slotStarttime;
     jsonSlot.endtime = slotEndtime;
     jsonSlot.speaker = slotSpeaker;

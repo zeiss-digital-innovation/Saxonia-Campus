@@ -21,7 +21,7 @@ var Slot = function(slotID, slotTitle) {
     this.participants = 20;
 };
 
-var updateSlot = function(slotID, slotTitle) {
+var UpdateSlot = function(slotID, slotTitle) {
     this.id = slotID;
     this.title = slotTitle;
     this.description = "Bitte Inhalt eingeben.";
@@ -174,6 +174,6 @@ saxoniaCampusPersistance.addNewSlot = function(slot) {
 };
 
 saxoniaCampusPersistance.updateSlot = function(slot) {
-    var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slotID];
+    var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slot.id];
     saxoniaCampusPersistance.slots[sortedSlotId] = slot;
 };
