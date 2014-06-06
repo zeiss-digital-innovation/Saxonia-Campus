@@ -44,6 +44,12 @@ saxoniaCampusRenderer.renderRoomOption = function(roomSelectSelector, room) {
     $(roomSelectSelector).append(option);
 };
 
+saxoniaCampusRenderer.renderParticipantOption = function(participantsSelectSelector, participant) {
+    var option = '<option value="' + participant.username + '">' + participant.firstname + ' '+participant.lastname+'</option>';
+
+    $(participantsSelectSelector).append(option);
+};
+
 saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
     var slotHtml = '<li id="' + slot.id + '_slot"><a><span class="booked_slot_title">' + slot.title + '</span><p>'
             + slot.starttime + " bis " + slot.endtime + ' : Raum '+slot.room+'</p></a><a id="' + slot.id

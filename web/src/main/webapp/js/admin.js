@@ -84,10 +84,12 @@ var initAdminview = function() {
 
         console.log("slotID: " + slotID);
         console.log("slotSelector: " + slotSelector);
-        
+
         saxoniaCampusRestApi.deleteSlot(
                 saxoniaCampusPersistance.getSlotById(slotID),
-                function (){},function (){});
+                function() {
+                }, function() {
+        });
 
         $(slotSelector).remove();
         $("#admin_slot_list").listview("refresh");
@@ -102,28 +104,62 @@ var initAdminview = function() {
 
         var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
-        $("#title_input").val(slot.title);
+        var participantSuccess = function(data) {
+            fillParticipantSelect(data);
+            fillDetailView(slot)
+        };
 
-        $("#content_input").val(slot.description);
+        var participantFail = function(err) {
+            console.error("adding newSlot failed.");
+            console.error(err);
+        };
 
-        $("#room_select").val(slot.roomId).selectmenu('refresh');
+        if (slot.participants > 0) {
+            saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
+        }else{
+            fillDetailView(slot);
+        }
 
-        $("#participants_output").text(slot.participants);
-
-        $("#start_time_input").val(slot.starttime);
-
-        $("#end_time_input").val(slot.endtime);
-
-        $("#speaker_input").val(slot.speaker);
-
-        $("#capacity_input").val(slot.capacity);
-
-        $("#slot_detail_header").text('Slot Bearbeiten');
-        $("#admin_detail_popup").popup("open");
     });
 
     $("#admin_slot_list").listview('refresh');
     $("#room_select").selectmenu("refresh");
+};
+
+var fillParticipantSelect = function(participants) {
+    console.log("fillParticipantSelect");
+    console.log(participants);
+    
+    //delete content of the selectmenu
+    $("#participant_list").html('');
+    
+    for (var i in participants) {
+        var participant = participants[i];
+        saxoniaCampusRenderer.renderParticipantOption("#participant_list", participant);
+    }
+    
+    $("#participant_list").selectmenu("refresh");
+};
+
+var fillDetailView = function(slot) {
+    $("#title_input").val(slot.title);
+
+    $("#content_input").val(slot.description);
+
+    $("#room_select").val(slot.roomId).selectmenu('refresh');
+
+    $("#free_capacity").text(slot.capacity - slot.participants);
+
+    $("#start_time_input").val(slot.starttime);
+
+    $("#end_time_input").val(slot.endtime);
+
+    $("#speaker_input").val(slot.speaker);
+
+    $("#capacity_input").val(slot.capacity);
+
+    $("#slot_detail_header").text('Slot Bearbeiten');
+    $("#admin_detail_popup").popup("open");
 };
 
 var saveNewSlot = function() {
@@ -180,7 +216,7 @@ var updateExistingSlot = function() {
     slot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
     slot.capacity = slotCapacity;
-    
+
     var jsonSlot = new Slot(slotID, slotTitle);
     jsonSlot.description = slotDescription;
     jsonSlot.roomId = slotRoomId;

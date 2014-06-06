@@ -213,7 +213,16 @@ saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_fun
                 },
                 success: function(data) {
                     console.log('getParticipants successfull');
-                    success_function(data._embedded.participants);
+                    
+                    //Wenn nur ein Element im Ergebnis ist, wird kein Array zurückgegeben.
+                    //Workaround, einzelnes Objekt ebenfalls in Array packen
+                    //-> einheitliches Ergebnishandling
+                    var participants = data._embedded.participants;
+                    if(data.count === 1){
+                        participants = [];
+                        participants[0] = data._embedded.participants;
+                    }
+                    success_function(participants);
                 },
                 error: function(err) {
                     console.log('getParticipants error occured!');
