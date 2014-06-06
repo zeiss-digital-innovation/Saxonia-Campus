@@ -72,7 +72,7 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
     slotHtml = slotHtml + '</tr>'
             + '<tr><td colspan="3"> <textarea id="content_input" readonly="true">' + slot.description + '</textarea></td></tr>'
             + '<tr><td>Raum:<br>' + slot.room + '</td>'
-            + '<td>Speaker:<br>' + slot.speaker + '</td>'
+            + '<td>Verantw./Leiter:<br>' + slot.speaker + '</td>'
             + '<td>Freie Plätze:<br><span id="' + slot.id + '_free">' + freeCapacity + '</span></td>'
             + '</tr>'
             + '</table>'
