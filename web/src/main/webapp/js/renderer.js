@@ -19,9 +19,14 @@ saxoniaCampusRenderer.generateInnerSlot = function(slot) {
     var innerSlot = '<a id="'
             + slot.id + '_edit" class="edit_slot">'
             + slot.title + '<p class="ui-li-aside">' + slot.starttime + " bis "
-            + slot.endtime + '</p>' + '<span class="ui-li-count">'
-            + slot.participants + '</span></a>'
-            + '<a class="delete_slot" id="'
+            + slot.endtime + '</p>';
+    
+    if (slot.participants > 0) {
+        innerSlot = innerSlot + '<span class="ui-li-count">'
+                + slot.participants + '</span>';
+    }
+    
+    innerSlot = innerSlot + '</a><a class="delete_slot" id="'
             + slot.id + '_delete"></a>';
 
     return innerSlot;
@@ -30,11 +35,11 @@ saxoniaCampusRenderer.generateInnerSlot = function(slot) {
 saxoniaCampusRenderer.generateAdminViewSlot = function(slot) {
     var isSlotFull = (slot.capacity - slot.participants) === 0;
     var slotTheme = '';
-    
+
     if (isSlotFull) {
         slotTheme = 'data-theme="c"';
     }
-    
+
     var innerSlot = saxoniaCampusRenderer.generateInnerSlot(slot);
     var slotHtml = '<li id="' + slot.id + '_slot"' + slotTheme + '>' + innerSlot + '</li>';
 
