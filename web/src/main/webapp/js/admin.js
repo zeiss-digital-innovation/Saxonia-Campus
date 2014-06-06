@@ -108,6 +108,8 @@ var initAdminview = function() {
 
         $("#room_select").val(slot.roomId).selectmenu('refresh');
 
+        $("#participants_output").text(slot.participants);
+
         $("#start_time_input").val(slot.starttime);
 
         $("#end_time_input").val(slot.endtime);
