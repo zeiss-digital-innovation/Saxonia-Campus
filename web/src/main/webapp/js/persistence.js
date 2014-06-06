@@ -177,3 +177,9 @@ saxoniaCampusPersistance.updateSlot = function(slot) {
     var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slot.id];
     saxoniaCampusPersistance.slots[sortedSlotId] = slot;
 };
+
+saxoniaCampusPersistance.isSlotBooked = function(slotId){
+  var sortedId = saxoniaCampusPersistance.sortedUserSlotIdMapping[slotId];
+  
+  return sortedId !== undefined;
+};

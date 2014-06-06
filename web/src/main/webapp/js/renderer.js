@@ -53,7 +53,9 @@ saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot
 
 saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
     var slotListSelector = '#'+slot.roomId+'_room_slotset';
+    var isSlotBooked = saxoniaCampusPersistance.isSlotBooked(slot.id);
     var freeCapacity = (slot.capacity - slot.participants);
+    var showBookButton = (freeCapacity > 0) && (isSlotBooked);
     var slotHtml = '<div data-role="collapsible" data-inset="true" '
             + 'data-collapsed-icon="carat-d" data-expanded-icon="carat-u" '
             + 'title="'+slot.title+'">'
@@ -62,7 +64,7 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
             + '<tr><td colspan="2">Beschreibung: </td>';
 
     //Buchen-Button nur rendern, wenn freie Plätze vorhanden sind
-    if (freeCapacity > 0) {
+    if (showBookButton) {
         slotHtml = slotHtml + '<td><button class="book_slot_btn" id="' + slot.id
                 + '_book_btn" data-mini="true" data-inline="true">Buchen</button></td>';
     } else {
