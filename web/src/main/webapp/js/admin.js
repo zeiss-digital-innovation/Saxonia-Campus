@@ -143,21 +143,14 @@ var fillParticipantSelect = function(participants) {
 
 var fillDetailView = function(slot) {
     $("#title_input").val(slot.title);
-
     $("#content_input").val(slot.description);
-
     $("#room_select").val(slot.roomId).selectmenu('refresh');
-
     $("#free_capacity").text(slot.capacity - slot.participants);
-
     $("#start_time_input").val(slot.starttime);
-
     $("#end_time_input").val(slot.endtime);
-
     $("#speaker_input").val(slot.speaker);
-
     $("#capacity_input").val(slot.capacity);
-
+    $("#participants_hidden_input").val(slot.participants);
     $("#slot_detail_header").text('Slot Bearbeiten');
     $("#admin_detail_popup").popup("open");
 };
@@ -208,6 +201,7 @@ var updateExistingSlot = function() {
     var slotEndtime = $("#end_time_input").val();
     var slotSpeaker = $("#speaker_input").val();
     var slotCapacity = $("#capacity_input").val();
+    var slotParticipants = $("#participants_hidden_input").val();
 
     var slot = new UpdateSlot(slotID, slotTitle);
     slot.description = slotDescription;
@@ -224,6 +218,7 @@ var updateExistingSlot = function() {
     jsonSlot.endtime = slotEndtime;
     jsonSlot.speaker = slotSpeaker;
     jsonSlot.capacity = slotCapacity;
+    jsonSlot.participants = slotParticipants;
 
     var success = function(data) {
         console.log("Slot updated successfully.");
