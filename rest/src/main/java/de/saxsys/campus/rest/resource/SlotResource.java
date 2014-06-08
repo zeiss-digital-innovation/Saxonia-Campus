@@ -90,14 +90,15 @@ public class SlotResource {
 	@Produces(HalMediaTypes.HAL_JSON)
 	@RolesAllowed("admin")
 	public Response putSlot(@PathParam("id") int id, ReadableRepresentation representation) {
-		Slot slot = slotMapper.toEntity(id, representation);
+		Slot slot = slotManager.findSlot(id);
+		if (null == slot) {
+			LOGGER.error("Could not update slot.");
+			throw new WebApplicationException(404);
+		}
+		slot = slotMapper.update(slot, representation);
 		slot = slotManager.updateSlot(slot);
 		Representation slotRepresentation = createSlotRepresentation(slot);
-		if (id != slot.getId()) {
-			return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation)
-					.build();
-		}
-		return Response.ok().build();
+		return Response.created(getSelfUri(slotRepresentation)).entity(slotRepresentation).build();
 	}
 
 	@POST

@@ -85,6 +85,10 @@ public class SlotMapper {
 	public Slot toEntity(Integer id, ReadableRepresentation representation) {
 		Slot slot = new Slot();
 		slot.setId(id);
+		return update(slot, representation);
+	}
+
+	public Slot update(Slot slot, ReadableRepresentation representation) {
 		slot.setTitle((String) representation.getValue("title"));
 		slot.setDescription((String) representation.getValue("description"));
 		slot.setStarttime(DateUtil.fromEpoch((String) representation.getValue("starttime")));
