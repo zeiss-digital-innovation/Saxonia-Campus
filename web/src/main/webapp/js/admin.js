@@ -117,6 +117,7 @@ var initAdminview = function() {
         if (slot.participants > 0) {
             saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
         }else{
+            clearParticipantSelect();
             fillDetailView(slot);
         }
 
@@ -124,6 +125,11 @@ var initAdminview = function() {
 
     $("#admin_slot_list").listview('refresh');
     $("#room_select").selectmenu("refresh");
+};
+
+var clearParticipantSelect = function() {
+    $("#participant_list").html("");
+    $("#participant_list").selectmenu("refresh");
 };
 
 var fillParticipantSelect = function(participants) {
@@ -137,7 +143,6 @@ var fillParticipantSelect = function(participants) {
         var participant = participants[i];
         saxoniaCampusRenderer.renderParticipantOption("#participant_list", participant);
     }
-    
     $("#participant_list").selectmenu("refresh");
 };
 
