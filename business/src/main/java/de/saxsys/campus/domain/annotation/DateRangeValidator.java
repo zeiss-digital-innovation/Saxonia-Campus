@@ -1,6 +1,7 @@
 package de.saxsys.campus.domain.annotation;
 
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.validation.ConstraintValidator;
@@ -44,7 +45,7 @@ public class DateRangeValidator implements ConstraintValidator<ValidDateRange, S
 			if (endGetterResult instanceof Date) {
 				endDate = (Date) endGetterResult;
 			}
-			final boolean valid = startDate.before(endDate);
+			final boolean valid = startBeforeEnd(startDate, endDate);
 			// if (!valid) {
 			// context.disableDefaultConstraintViolation();
 			// // In the initialiaze method you get the errorMessage:
@@ -58,6 +59,16 @@ public class DateRangeValidator implements ConstraintValidator<ValidDateRange, S
 		}
 
 		return false;
+	}
+
+	private boolean startBeforeEnd(Date startDate, Date endDate) {
+		Calendar calStart = Calendar.getInstance();
+		calStart.setTime(startDate);
+		calStart.set(2014, Calendar.MAY, 1);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.setTime(endDate);
+		calEnd.set(2014, Calendar.MAY, 1);
+		return calStart.before(calEnd);
 	}
 
 	private String getAccessorMethodName(String property) {
