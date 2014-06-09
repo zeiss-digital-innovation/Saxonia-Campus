@@ -72,15 +72,15 @@ saxoniaCampusPersistance.initSortedUserSlotIdMapping = function() {
 
 saxoniaCampusPersistance.addUserSlot = function(slotID) {
     var tmpSlot = saxoniaCampusPersistance.getSlotById(slotID);
-    saxoniaCampusPersistance.userSlots[saxoniaCampusPersistance.userSlots.length]= tmpSlot;
+    saxoniaCampusPersistance.userSlots[saxoniaCampusPersistance.userSlots.length] = tmpSlot;
     saxoniaCampusPersistance.sortUserSlots();
     saxoniaCampusPersistance.initSortedUserSlotIdMapping();
 };
 
 saxoniaCampusPersistance.removeUserSlot = function(slotID) {
     var sortedID = saxoniaCampusPersistance.sortedUserSlotIdMapping[slotID];
-    saxoniaCampusPersistance.userSlots.splice(sortedID,1);
-    saxoniaCampusPersistance.sortedUserSlotIdMapping.splice(slotID,1);
+    saxoniaCampusPersistance.userSlots.splice(sortedID, 1);
+    saxoniaCampusPersistance.sortedUserSlotIdMapping.splice(slotID, 1);
     saxoniaCampusPersistance.initSortedUserSlotIdMapping();
 };
 
@@ -114,9 +114,7 @@ saxoniaCampusPersistance.initSlots = function() {
             saxoniaCampusPersistance.slots[currentSlot.id] =
                     saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
         }
-        saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
-        saxoniaCampusPersistance.mapSortedSlots();
-
+        saxoniaCampusPersistance.sortAndMapSlots();
     };
     var error = function(data) {
         console.log('error occured!');
@@ -125,6 +123,11 @@ saxoniaCampusPersistance.initSlots = function() {
     saxoniaCampusRestApi.getSlots(success, error);
 
 };
+
+saxoniaCampusPersistance.sortAndMapSlots = function() {
+    saxoniaCampusPersistance.slots.sort(saxoniaCampusUtil.slotComparator);
+    saxoniaCampusPersistance.mapSortedSlots();
+}
 
 saxoniaCampusPersistance.initRooms = function() {
     var roomsWrapper;
@@ -176,10 +179,11 @@ saxoniaCampusPersistance.addNewSlot = function(slot) {
 saxoniaCampusPersistance.updateSlot = function(slot) {
     var sortedSlotId = saxoniaCampusPersistance.sortedSlotIdMapping[slot.id];
     saxoniaCampusPersistance.slots[sortedSlotId] = slot;
+    saxoniaCampusPersistance.sortAndMapSlots();
 };
 
-saxoniaCampusPersistance.isSlotBooked = function(slotId){
-  var sortedId = saxoniaCampusPersistance.sortedUserSlotIdMapping[slotId];
-  
-  return sortedId !== undefined;
+saxoniaCampusPersistance.isSlotBooked = function(slotId) {
+    var sortedId = saxoniaCampusPersistance.sortedUserSlotIdMapping[slotId];
+
+    return sortedId !== undefined;
 };

@@ -13,7 +13,7 @@ saxoniaCampusRenderer.gridclassArray = ["dummy", "ui-block-a", "ui-block-b", "ui
     "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
-    "ui-block-a", "ui-block-b", "ui-block-c", ];
+    "ui-block-a", "ui-block-b", "ui-block-c"];
 
 saxoniaCampusRenderer.generateInnerSlot = function(slot) {
     var innerSlot = '<a id="'

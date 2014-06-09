@@ -155,7 +155,7 @@ saxoniaCampusRestApi.updateSlot = function(slot, success_function, fail_function
                     success_function(data);
                 },
                 error: function(err) {
-                    if (err.status === 200) {
+                    if ((err.status === 200)||(err.status === 201)) {
                         console.log('updateSlot completed');
                         success_function(err);
                     } else {

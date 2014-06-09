@@ -34,6 +34,13 @@ h2 {
     padding-right: 10px;
 }
 
+#admin_error_output {
+    color: crimson;
+    background-color: #ffcccc;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .error_bar {
     position: absolute;
     bottom: 4px;

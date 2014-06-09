@@ -11,10 +11,11 @@ var currentSlotInWork = -1;
 
 var extractSlotId = function(element_id) {
     return element_id.split('_')[0];
-}
+};
 
 var fillAdminSlotList = function() {
     var slots = saxoniaCampusPersistance.slots;
+    $("#admin_slot_list").html('');
     for (var i in slots) {
         var slot = slots[i];
         saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", slot);
@@ -106,7 +107,7 @@ var initAdminview = function() {
 
         var participantSuccess = function(data) {
             fillParticipantSelect(data);
-            fillDetailView(slot)
+            fillDetailView(slot);
         };
 
         var participantFail = function(err) {
@@ -116,7 +117,7 @@ var initAdminview = function() {
 
         if (slot.participants > 0) {
             saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
-        }else{
+        } else {
             clearParticipantSelect();
             fillDetailView(slot);
         }
@@ -135,10 +136,10 @@ var clearParticipantSelect = function() {
 var fillParticipantSelect = function(participants) {
     console.log("fillParticipantSelect");
     console.log(participants);
-    
+
     //delete content of the selectmenu
     $("#participant_list").html('');
-    
+
     for (var i in participants) {
         var participant = participants[i];
         saxoniaCampusRenderer.renderParticipantOption("#participant_list", participant);
@@ -230,12 +231,16 @@ var updateExistingSlot = function() {
         console.log(data);
 
         saxoniaCampusPersistance.updateSlot(jsonSlot);
-        $('#' + jsonSlot.id + '_slot').html(saxoniaCampusRenderer.generateInnerSlot(jsonSlot));
+        fillAdminSlotList();
         initAdminview();
     };
     var fail = function(err) {
-        console.error("updating Slot failed.");
-        console.error(err);
+        var error = jQuery.parseJSON(err.responseText);
+        $("#admin_error_output").text('FEHLER: ' + error.detail);
+        $("#admin_error_output").popup("open");
+        setTimeout(function() {
+            $("#admin_error_output").popup("close");
+        }, 3000);
     };
 
     saxoniaCampusRestApi.updateSlot(slot, success, fail);
