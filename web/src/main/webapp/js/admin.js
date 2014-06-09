@@ -157,7 +157,7 @@ var fillDetailView = function(slot) {
     $("#speaker_input").val(slot.speaker);
     $("#capacity_input").val(slot.capacity);
     $("#participants_hidden_input").val(slot.participants);
-    $("#slot_detail_header").text('Slot Bearbeiten');
+    $("#slot_detail_header").text('Slot bearbeiten');
     $("#admin_detail_popup").popup("open");
 };
 
