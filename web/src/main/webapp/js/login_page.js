@@ -92,17 +92,17 @@ saxsys.campus.init = function() {
         // click save button
         $( "#save_slot_details_btn" ).click(function() {
             if ( saxsys.campus.adminController.adminNewSlotEditing ) {
-                saveNewSlot();
+                saxsys.campus.adminController.saveNewSlot();
             } else {
-                updateExistingSlot();
+                saxsys.campus.adminController.updateExistingSlot();
             }
-            currentSlotInWork = -1;
+            saxsys.campus.adminController.currentSlotInWork = -1;
             $( "#admin_detail_popup" ).popup( "close" );
         });
 
         // click cancel button
         $( "#cancel_slot_details_btn" ).click(function() {
-            currentSlotInWork = -1;
+            saxsys.campus.adminController.currentSlotInWork = -1;
             $( "#admin_detail_popup" ).popup( "close" );
         });
     });

@@ -111,3 +111,7 @@ saxoniaCampusUtil.slotComparator = function(a,b){
     var differenz = saxoniaCampusUtil.convertTimeStrToMillis(a.starttime) - saxoniaCampusUtil.convertTimeStrToMillis(b.starttime);
     return differenz;
 };
+
+saxoniaCampusUtil.extractSlotId = function(element_id) {
+    return element_id.split('_')[0];
+};
