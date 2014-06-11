@@ -1,5 +1,3 @@
-var USERS_CURRENT = location.protocol + "//" + location.host + "/rest/users/current";
-
 var saxsys = saxsys || {};
 
 saxsys.campus = saxsys.campus || {};
@@ -55,7 +53,13 @@ saxsys.campus.tryLogin = function(authString) {
     saxoniaCampusRestApi.authenticate(auth_success, error);
 };
 
+/**
+ * Initialisieren der Anwendung SaxoniaCampus WebApp
+ * @returns {undefined}
+ */
 saxsys.campus.init = function() {
+    
+    //event-binding für den LoginButton im Login Dialog
     $("#login_btn").click(function() {
         $("#error_output").html = ('');
 
@@ -66,18 +70,21 @@ saxsys.campus.init = function() {
         saxsys.campus.tryLogin(authString);
     });
 
+    //event-binding für den CancelButton im Login Dialog
     $("#cancel_btn").click(function() {
         $("#error_output").html("");
     });
 
+    //initialisierung der Administrationsseite
     $(document).on("pagebeforecreate", "#adminPage", function() {
         authAdminPage();
 
+        //click LogoutButton der Adminseite
         $("#logout_btn").click(function() {
             $.removeCookie("id");
         });
 
-        // click new slot button
+        // click new slot button 
         $("#new_slot_btn").click(function() {
             adminNewSlotEditing = true;
             $("#slot_detail_header").text('Neuer Slot');
@@ -101,6 +108,7 @@ saxsys.campus.init = function() {
         });
     });
 
+    //Initialisieren der Userseite
     $(document).on("pagebeforecreate", "#userPage", function() {
         authUserPage();
 
@@ -120,6 +128,7 @@ saxsys.campus.init = function() {
 };
 
 $(function() {
+    //initialisiere die Anwendung
     saxsys.campus.init();
     
     //Prüfe ob Benutzer bereits eingeloggt ist und leite ihn gemäß seiner 
