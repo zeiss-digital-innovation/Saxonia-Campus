@@ -211,5 +211,10 @@ saxsys.campus.adminController.updateExistingSlot = function() {
 
     saxoniaCampusRestApi.updateSlot(slot, success, fail);
 };
-
-
+saxsys.campus.adminController.generateExportCsv = function (){
+    var csvString = "";
+    var slots = saxoniaCampusPersistance.slots;
+    var participants = saxoniaCampusPersistance.getParticipantsBySlot();
+    csvString = saxoniaCampusRenderer.renderCampusCsvExport(slots, participants);
+    return csvString;
+};

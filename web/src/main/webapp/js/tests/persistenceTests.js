@@ -40,3 +40,18 @@ test("Datum Format prüfen", function() {
     equal(timeString, expectedTimeString, "Die beiden Zeitstrings müssen gleich sein.");
 });
 
+test("getParticipantsBySlot",function(){
+     var username = "marco.dierenfeldt";
+    var password = "jax2014";
+    
+    var authString = saxoniaCampusUtil.make_base_auth(username,password);
+    saxoniaCampusRestApi.AUTH_STRING = authString;
+    saxoniaCampusRestApi.SLOTS_URL = "http://localhost:8080/rest/slots";
+    saxoniaCampusPersistance.slots =[];
+    saxoniaCampusPersistance.slots[1]= {id:65,participants:2};
+    saxoniaCampusPersistance.slots[2]= {id:66,participants:2};
+    var participantsArray = saxoniaCampusPersistance.getParticipantsBySlot();
+    
+    ok(participantsArray !== undefined);
+    equal(participantsArray.length,2);
+});

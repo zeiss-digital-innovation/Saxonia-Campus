@@ -13,12 +13,12 @@ saxoniaCampusUtil.convertMillisToTimeStr = function(millis) {
     return timeStr;
 };
 
-saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr){
+saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr) {
     var date = new Date();
     var splittetStr = timeStr.split(':');
     var hours = splittetStr[0];
     var minutes = splittetStr[1];
-    
+
     date.setYear(2014);
     date.setMonth(6);
     date.setDate(3);
@@ -26,7 +26,7 @@ saxoniaCampusUtil.convertTimeStrToMillis = function(timeStr){
     date.setMinutes(parseInt(minutes));
     date.setSeconds(0);
     date.setMilliseconds(0);
-    
+
     return date.getTime();
 };
 
@@ -48,9 +48,9 @@ saxoniaCampusUtil.convertRestSlotToViewSlot = function(restSlot) {
     return slot;
 };
 
-saxoniaCampusUtil.convertJsonSlotToViewSlot = function(jsonSlot){
+saxoniaCampusUtil.convertJsonSlotToViewSlot = function(jsonSlot) {
     var newSlot = JSON.parse(jsonSlot);
-    
+
     return saxoniaCampusUtil.convertRestSlotToViewSlot(newSlot);
 };
 
@@ -79,39 +79,48 @@ saxoniaCampusUtil.make_base_auth = function(user, password) {
  * @param {Slot} slot2 Zweiter zu vergleichender Slot
  * @returns {boolean} true wenn eine Collision besteht, false wenn nicht.
  */
-saxoniaCampusUtil.collisionTest = function(slot1, slot2){
+saxoniaCampusUtil.collisionTest = function(slot1, slot2) {
     var collision = true;
 //    console.log("Slot1.start: "+slot1.starttime);
 //    console.log("Slot1.ende: "+slot1.endtime);
 //    console.log("Slot2.start: "+slot2.starttime);
 //    console.log("Slot2.ende: "+slot2.endtime);
-    
+
     var slot1StartMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot1.starttime);
     var slot1EndeMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot1.endtime);
     var slot2StartMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot2.starttime);
     var slot2EndeMillis = saxoniaCampusUtil.convertTimeStrToMillis(slot2.endtime);
-    
+
 //    console.log("Slot1.startMillis: "+slot1StartMillis);
 //    console.log("Slot1.endeMillis: "+slot1EndeMillis);
 //    console.log("Slot2.startMillis: "+slot2StartMillis);
 //    console.log("Slot2.endeMillis: "+slot2EndeMillis);
-    
-    if((slot1StartMillis<slot2StartMillis)&&(slot1EndeMillis<=slot2StartMillis)){
+
+    if ((slot1StartMillis < slot2StartMillis) && (slot1EndeMillis <= slot2StartMillis)) {
         collision = false;
     }
-    
-    if((slot2StartMillis<slot1StartMillis)&&(slot2EndeMillis<=slot1StartMillis)){
+
+    if ((slot2StartMillis < slot1StartMillis) && (slot2EndeMillis <= slot1StartMillis)) {
         collision = false;
     }
-    
+
     return collision;
 };
 
-saxoniaCampusUtil.slotComparator = function(a,b){
+saxoniaCampusUtil.slotComparator = function(a, b) {
     var differenz = saxoniaCampusUtil.convertTimeStrToMillis(a.starttime) - saxoniaCampusUtil.convertTimeStrToMillis(b.starttime);
     return differenz;
 };
 
 saxoniaCampusUtil.extractSlotId = function(element_id) {
     return element_id.split('_')[0];
+};
+
+saxoniaCampusUtil.startCsvDownload = function(csvString, fileName) {
+    var a = document.createElement("a");
+    a.href = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
+    a.target = "_blank";
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
 };

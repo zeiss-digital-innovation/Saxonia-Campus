@@ -187,3 +187,27 @@ saxoniaCampusPersistance.isSlotBooked = function(slotId) {
 
     return sortedId !== undefined;
 };
+saxoniaCampusPersistance.getParticipantsBySlot = function(){
+  saxoniaCampusPersistance.tmpParticipants = [];
+ 
+    for(var i in saxoniaCampusPersistance.slots){
+      var slot = saxoniaCampusPersistance.slots[i];
+      
+        var participantSuccess = function(data) {
+            saxoniaCampusPersistance.tmpParticipants[slot.id] = data;
+        };
+
+        var participantFail = function(err) {
+            console.error("adding newSlot failed.");
+            console.error(err);
+        };
+
+        if (slot.participants > 0) {
+            saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
+        } else {
+            saxoniaCampusPersistance.tmpParticipants[slot.id] =[];
+        }
+        
+  }
+  return saxoniaCampusPersistance.tmpParticipants;
+};

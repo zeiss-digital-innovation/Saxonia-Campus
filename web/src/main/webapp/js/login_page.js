@@ -105,6 +105,14 @@ saxsys.campus.init = function() {
             saxsys.campus.adminController.currentSlotInWork = -1;
             $( "#admin_detail_popup" ).popup( "close" );
         });
+        
+        $( "#csvExportButton" ).click(function(){
+            var csvFileName = "campusExport.csv";
+            //generiere CSV in admin controller mit Rendererhiilfe
+            var csvString = saxsys.campus.adminController.generateExportCsv();
+            //starte CSV-Download in Utility
+            saxoniaCampusUtil.startCsvDownload(csvString, csvFileName);
+        });
     });
 
     //Initialisieren der Userseite

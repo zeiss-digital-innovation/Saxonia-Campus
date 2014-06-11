@@ -3,6 +3,8 @@
  */
 
 var saxoniaCampusRenderer = {};
+saxoniaCampusRenderer.CSV_SEPERATOR = ";";
+saxoniaCampusRenderer.CSV_LINE_END = "\r\n";
 
 saxoniaCampusRenderer.gridclassArray = ["dummy", "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
@@ -20,12 +22,12 @@ saxoniaCampusRenderer.generateInnerSlot = function(slot) {
             + slot.id + '_edit" class="edit_slot">'
             + slot.title + '<p class="ui-li-aside">' + slot.starttime + " bis "
             + slot.endtime + '</p>';
-    
+
     if (slot.participants > 0) {
         innerSlot = innerSlot + '<span class="ui-li-count">'
                 + slot.participants + '</span>';
     }
-    
+
     innerSlot = innerSlot + '</a><a class="delete_slot" id="'
             + slot.id + '_delete"></a>';
 
@@ -118,3 +120,44 @@ saxoniaCampusRenderer.generateRoomSlotList = function(room) {
             + 'data-role="collapsibleset" data-mini="true"></div>';
     return roomSlotList;
 };
+saxoniaCampusRenderer.renderCampusCsvExport = function(slots, participantsArray) {
+    var csvString = "";
+    for (var i in slots) {
+        var slot = slots[i];
+        var participans = participantsArray[slot.id];
+        csvString = csvString + saxoniaCampusRenderer.renderCampusCsvSlot(slot, participans);
+    }
+    return csvString;
+};
+
+saxoniaCampusRenderer.renderCampusCsvSlot = function(slot, participants) {
+    var csvString = "";
+    csvString = csvString + "SlotID" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + "Raum" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + "Titel" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + "Kapazität" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + "Speaker" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + "Teilnehmerzahl" + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+    
+    csvString = csvString + slot.id + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + slot.room + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + slot.title + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + slot.capacity + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + slot.speaker + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + slot.participants + saxoniaCampusRenderer.CSV_SEPERATOR;
+    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+    for (var i in participants) {
+        var participant = participants[i];
+        csvString = csvString + participant.firstname + ' ' + participant.lastname +saxoniaCampusRenderer.CSV_LINE_END;
+    }
+    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+    return csvString;
+};
+
+
+
+
+
+
+

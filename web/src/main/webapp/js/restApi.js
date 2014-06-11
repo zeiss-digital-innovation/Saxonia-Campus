@@ -204,7 +204,7 @@ saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_fun
                 type: "GET",
                 url: participantsUrl,
                 dataType: 'json',
-                async: true,
+                async: false,
                 data: '',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
