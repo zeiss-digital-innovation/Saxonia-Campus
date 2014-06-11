@@ -1,5 +1,4 @@
 var saxsys = saxsys || {};
-
 saxsys.campus = saxsys.campus || {};
 
 /**
@@ -8,10 +7,10 @@ saxsys.campus = saxsys.campus || {};
  * @returns {undefined}
  */
 saxsys.campus.tryAutoLogin = function() {
-    var authString = $.cookie("id");
+    var authString = $.cookie( "id" );
 
-    if (authString !== undefined) {
-        saxsys.campus.tryLogin(authString);
+    if ( authString !== undefined ) {
+        saxsys.campus.tryLogin( authString );
     }
 };
 
@@ -22,11 +21,11 @@ saxsys.campus.tryAutoLogin = function() {
  * @param {String} authString
  * @returns {undefined}
  */
-saxsys.campus.tryLogin = function(authString) {
+saxsys.campus.tryLogin = function( authString ) {
     saxoniaCampusRestApi.AUTH_STRING = authString;
 
-    var error = function(data) {
-        $("#error_output").html("Bitte überprüfen Sie Benutzername und Passwort!");
+    var error = function( data ) {
+        $( "#error_output" ).text( "Bitte überprüfen Sie Benutzername und Passwort!" );
     };
 
     //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
@@ -34,23 +33,22 @@ saxsys.campus.tryLogin = function(authString) {
     var user_success = function(data) {
         userRole = data.role;
 
-        if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-            $(":mobile-pagecontainer").pagecontainer("change", "admin.html");
+        if ( userRole === saxoniaCampusRestApi.ADMIN_ROLE ) {
+            $( ":mobile-pagecontainer" ).pagecontainer( "change", "admin.html" );
         } else {
-            if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-                $(":mobile-pagecontainer").pagecontainer("change", 'user.html');
+            if ( userRole === saxoniaCampusRestApi.USER_ROLE ) {
+                $( ":mobile-pagecontainer" ).pagecontainer( "change", "user.html" );
             } else {
-                console.log('error occured!');
-                $("#error_output").html("Fehler beim Verarbeiten der Benutzerinformationen!");
+                $( "#error_output" ).text( "Fehler beim Verarbeiten der Benutzerinformationen!" );
             }
         }
     };
 
-    var auth_success = function(data) {
-        $.cookie("id", authString);
-        saxoniaCampusRestApi.getCurrentUser(user_success, error);
+    var auth_success = function( data ) {
+        $.cookie( "id", saxoniaCampusRestApi.AUTH_STRING );
+        saxoniaCampusRestApi.getCurrentUser( user_success , error );
     };
-    saxoniaCampusRestApi.authenticate(auth_success, error);
+    saxoniaCampusRestApi.authenticate( auth_success, error );
 };
 
 /**
@@ -60,67 +58,69 @@ saxsys.campus.tryLogin = function(authString) {
 saxsys.campus.init = function() {
     
     //event-binding für den LoginButton im Login Dialog
-    $("#login_btn").click(function() {
-        $("#error_output").html = ('');
+    $( "#login_btn" ).click(function() {
+        $( "#error_output" ).text( "" );
 
-        var username = $("#username")[0].value;
-        var password = $("#password")[0].value;
+        var username = $( "#username" )[0].value;
+        var password = $( "#password" )[0].value;
 
-        var authString = saxoniaCampusUtil.make_base_auth(username, password);
-        saxsys.campus.tryLogin(authString);
+        var authString = saxoniaCampusUtil.make_base_auth( username, password );
+        saxsys.campus.tryLogin( authString );
     });
 
     //event-binding für den CancelButton im Login Dialog
-    $("#cancel_btn").click(function() {
-        $("#error_output").html("");
+    $( "#cancel_btn" ).click(function() {
+        $( "#error_output" ).text( "" );
     });
 
     //initialisierung der Administrationsseite
-    $(document).on("pagebeforecreate", "#adminPage", function() {
+    $( document ).on( "pagebeforecreate", "#adminPage", function() {
         authAdminPage();
 
         //click LogoutButton der Adminseite
-        $("#logout_btn").click(function() {
-            $.removeCookie("id");
+        $( "#logout_btn" ).click(function() {
+            $.removeCookie( "id" );
         });
 
         // click new slot button 
-        $("#new_slot_btn").click(function() {
+        $( "#new_slot_btn" ).click(function() {
             adminNewSlotEditing = true;
-            $("#slot_detail_header").text('Neuer Slot');
-            $("#admin_detail_popup").popup("open");
+            $( "#slot_detail_header" ).text( "Neuer Slot" );
+            $( "#admin_detail_popup" ).popup( "open" );
         });
 
         // click save button
-        $("#save_slot_details_btn").click(function() {
-            if (adminNewSlotEditing) {
+        $( "#save_slot_details_btn" ).click(function() {
+            if ( adminNewSlotEditing ) {
                 saveNewSlot();
             } else {
                 updateExistingSlot();
             }
-            $("#cancel_slot_details_btn").click();
+            currentSlotInWork = -1;
+            $( "#admin_detail_popup" ).popup( "close" );
         });
 
         // click cancel button
-        $("#cancel_slot_details_btn").click(function() {
+        $( "#cancel_slot_details_btn" ).click(function() {
             currentSlotInWork = -1;
-            $("#admin_detail_popup").popup("close");
+            $( "#admin_detail_popup" ).popup( "close" );
         });
     });
 
     //Initialisieren der Userseite
-    $(document).on("pagebeforecreate", "#userPage", function() {
+    $( document ).on( "pagebeforecreate", "#userPage", function() {
         authUserPage();
 
-        $("#logout_btn_user").click(function() {
-            $.removeCookie("id");
+        $( "#logout_btn_user" ).click(function() {
+            $.removeCookie( "id" );
         });
     });
 
-    $("input").keydown(function(event) {
+    //Abfangen von Enter in den LoginDialogInputfeldern
+    $( ".login_input" ).keydown(function( event ) {
         var keycode = event.which;
         if (keycode === 13) {
-            $("#login_btn").click();
+            $( "#login_btn" ).click();
         }
         ;
     });
