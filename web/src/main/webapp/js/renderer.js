@@ -142,14 +142,14 @@ saxoniaCampusRenderer.renderCampusCsvSlot = function(slot, participants) {
     
 //    csvString = csvString + slot.id + saxoniaCampusRenderer.CSV_SEPERATOR;
     csvString = csvString + slot.title + saxoniaCampusRenderer.CSV_SEPERATOR;
-    csvString = csvString + slot.room + saxoniaCampusRenderer.CSV_SEPERATOR;
+//    csvString = csvString + slot.room + saxoniaCampusRenderer.CSV_SEPERATOR;
 //    csvString = csvString + slot.capacity + saxoniaCampusRenderer.CSV_SEPERATOR;
 //    csvString = csvString + slot.speaker + saxoniaCampusRenderer.CSV_SEPERATOR;
 //    csvString = csvString + slot.participants + saxoniaCampusRenderer.CSV_SEPERATOR;
-    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+//    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
     for (var i in participants) {
         var participant = participants[i];
-        csvString = csvString + participant.firstname + ' ' + participant.lastname +saxoniaCampusRenderer.CSV_LINE_END;
+        csvString = csvString + participant.firstname + ' ' + participant.lastname +saxoniaCampusRenderer.CSV_SEPERATOR;
     }
     csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
     return csvString;
