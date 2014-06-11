@@ -74,8 +74,8 @@ saxsys.campus.init = function() {
     });
 
     //initialisierung der Administrationsseite
-    $( document ).on( "pagebeforecreate", "#adminPage", function() {
-        authAdminPage();
+    $( document ).on( "pagebeforeshow", "#adminPage", function() {
+        saxsys.campus.adminController.init();
 
         //click LogoutButton der Adminseite
         $( "#logout_btn" ).click(function() {
@@ -84,14 +84,14 @@ saxsys.campus.init = function() {
 
         // click new slot button 
         $( "#new_slot_btn" ).click(function() {
-            adminNewSlotEditing = true;
+            saxsys.campus.adminController.adminNewSlotEditing = true;
             $( "#slot_detail_header" ).text( "Neuer Slot" );
             $( "#admin_detail_popup" ).popup( "open" );
         });
 
         // click save button
         $( "#save_slot_details_btn" ).click(function() {
-            if ( adminNewSlotEditing ) {
+            if ( saxsys.campus.adminController.adminNewSlotEditing ) {
                 saveNewSlot();
             } else {
                 updateExistingSlot();

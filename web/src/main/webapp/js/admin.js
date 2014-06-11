@@ -2,11 +2,16 @@
  * Controller javascript für die Admin-View 
  */
 
+var saxsys = saxsys || {};
+saxsys.campus = saxsys.campus || {};
+saxsys.campus.adminController = saxsys.campus.adminController || {};
+saxsys.campus.adminController.adminNewSlotEditing = false;
+
 //Variable um zu unterscheiden, ob der Slot, der gerade bearbeitet wird ein 
 //neuer Slot ist oder ein bereits vorhandener Slot.
 //Diese Unterscheidung wird benötigt um entweder ein update oder ein save auszulösen.
 //Alternativ dazu könnte man für edit und new jeweils eigene Formulare im HTML anlegen.
-var adminNewSlotEditing = false;
+//var adminNewSlotEditing = false;
 var currentSlotInWork = -1;
 
 var extractSlotId = function(element_id) {
@@ -28,6 +33,14 @@ var fillRooms = function() {
         var room = rooms[i];
         saxoniaCampusRenderer.renderRoomOption("#room_select", room);
     }
+};
+
+saxsys.campus.adminController.init = function() {
+    saxoniaCampusPersistance.init();
+    fillAdminSlotList();
+    fillRooms();
+    initAdminview();
+    return;
 };
 
 var authAdminPage = function() {
@@ -98,7 +111,7 @@ var initAdminview = function() {
 
     //edit slot
     $(".edit_slot").click(function() {
-        adminNewSlotEditing = false;
+        saxsys.campus.adminController.adminNewSlotEditing = false;
 
         var slotID = extractSlotId(this.id);
         currentSlotInWork = slotID;
