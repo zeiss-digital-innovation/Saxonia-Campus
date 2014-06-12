@@ -2,9 +2,68 @@
  * Controller javascript für die User-View
  */
 
+var saxsys = saxsys || {};
+saxsys.campus = saxsys.campus || {};
+saxsys.campus.userController = saxsys.campus.userController || {};
+
+saxsys.campus.userController.init = function() {
+    saxoniaCampusPersistance.init();
+    saxoniaCampusPersistance.initUserSlots(saxsys.campus.userController.tmpUserSlots);
+    generateRoomGrids();
+
+    fillSlotList();
+    fillBookedListview(saxoniaCampusPersistance.getUserSlots());
+    initBookedListview();
+    $("#userPageContent").trigger('create');
+
+    $(".book_slot_btn").click(function() {
+
+//                console.log("book-button clicked.");
+        //                console.log("this.id:" + this.id);
+
+        var slotID = saxoniaCampusUtil.extractSlotId(this.id);
+
+        //remove bookbutton
+        $("#" + slotID + "_book_btn").hide();
+
+        var slot = saxoniaCampusPersistance.getSlotById(slotID);
+
+        if (checkBeforeBooking(slot)) {
+
+            var success = function(data) {
+                slot.participants++;
+                //                        console.log("slotID: " + slotID);
+                updateFreeCapacity(slot);
+                saxoniaCampusPersistance.addUserSlot(slot.id);
+                fillBookedListview(saxoniaCampusPersistance.getUserSlots());
+                initBookedListview();
+                $("#user_info_output").popup("open");
+                setTimeout(function() {
+                    $("#user_info_output").popup("close");
+                }, 1500);
+            };
+            var fail = function(err) {
+                console.log("Fehler beim Buchen eines Slots");
+                //err.responseText.detail
+                var error = jQuery.parseJSON(err.responseText);
+
+                $("#user_error_output").text('FEHLER: ' + error.detail);
+                $("#user_error_output").popup("open");
+                setTimeout(function() {
+                    $("#user_error_output").popup("close");
+                    location.reload();
+                }, 3000);
+                $("#" + slotID + "_book_btn").show();
+            };
+
+            saxoniaCampusRestApi.addParticipant(slot, success, fail);
+        }
+        ;
+    });
+};
+
 var refreshRoomGrid = function() {
     var rooms = saxoniaCampusPersistance.rooms;
-
     for (var i in rooms) {
         var room = rooms[i];
         $('#' + room.id + '_room_slotset').collapsibleset("refresh");
@@ -42,13 +101,13 @@ var authUserPage = function() {
 
     var error = function(data) {
         console.log("Error");
-//        $(location).attr('href', 'index.html');
+        //        $(location).attr('href', 'index.html');
     };
 
     //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
     //wird die seiner Rolle entsprechende Seite geladen.
     var user_success = function(data) {
-//        console.log(data);
+        //        console.log(data);
         var userRole = data.role;
         var userSlots = [];
 
@@ -69,13 +128,11 @@ var authUserPage = function() {
 
             $(".book_slot_btn").click(function() {
 
-//                console.log("book-button clicked.");
-//                console.log("this.id:" + this.id);
+                //                console.log("book-button clicked.");
+                //                console.log("this.id:" + this.id);
 
                 var slotID = saxoniaCampusUtil.extractSlotId(this.id);
-
-                //remove bookbutton
-                $("#" + slotID + "_book_btn").hide();
+                //remove bookbutton                 $("#" + slotID + "_book_btn").hide();
 
                 var slot = saxoniaCampusPersistance.getSlotById(slotID);
 
@@ -83,7 +140,7 @@ var authUserPage = function() {
 
                     var success = function(data) {
                         slot.participants++;
-//                        console.log("slotID: " + slotID);
+                        //                        console.log("slotID: " + slotID);
                         updateFreeCapacity(slot);
                         saxoniaCampusPersistance.addUserSlot(slot.id);
                         fillBookedListview(saxoniaCampusPersistance.getUserSlots());
@@ -115,7 +172,7 @@ var authUserPage = function() {
             return;
         } else {
             if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-//                console.log("ADMIN-Role detected.");
+                //                console.log("ADMIN-Role detected.");
                 $(location).attr('href', 'index.html');
             } else {
                 console.log('error occured!');
@@ -131,7 +188,6 @@ var authUserPage = function() {
 
     saxoniaCampusRestApi.authenticate(auth_success, error);
 };
-
 var checkBeforeBooking = function(slot) {
     if (slot.capacity < 1) {
         $("#user_error_output").text('FEHLER: Im Slot "' + slot.title + '" ist kein Platz mehr!');
@@ -144,17 +200,16 @@ var checkBeforeBooking = function(slot) {
 
     var bookedSlots = saxoniaCampusPersistance.getUserSlots();
 
-//    console.log("slot.startTime: " + slot.starttime);
-//    console.log("slot.endTime: " + slot.endtime);
+    //    console.log("slot.startTime: " + slot.starttime);
+    //    console.log("slot.endTime: " + slot.endtime);
     for (var i in bookedSlots) {
         var currentSlot = saxoniaCampusPersistance.getSlotById(bookedSlots[i].id);
-//        console.log("currentSlot.startTime: " + currentSlot.starttime);
-//        console.log("currentSlot.endTime: " + currentSlot.endtime);
-
+        //        console.log("currentSlot.startTime: " + currentSlot.starttime);
+        //        console.log("currentSlot.endTime: " + currentSlot.endtime);
         var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
-//        console.log("collision: " + collision);
+        //        console.log("collision: " + collision);
         if (collision) {
-             $("#" + slot.id + "_book_btn").show();
+            $("#" + slot.id + "_book_btn").show();
             var error = 'FEHLER: Slot "' + slot.title + '" überschneidet sich zeitlich mit dem Slot "' + currentSlot.title + '"!';
 
             $("#user_error_output").text(error);
