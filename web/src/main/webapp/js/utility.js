@@ -124,3 +124,11 @@ saxoniaCampusUtil.startCsvDownload = function(csvString, fileName) {
     document.body.appendChild(a);
     a.click();
 };
+
+saxoniaCampusUtil.displayUserError = function(message, duration) {
+    $("#user_error_output").text(message);
+    $("#user_error_output").popup("open");
+    setTimeout(function() {
+        $("#user_error_output").popup("close");
+    }, duration);
+};
