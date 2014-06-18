@@ -16,7 +16,7 @@ saxsys.campus.adminController.adminNewSlotEditing = false;
 saxsys.campus.adminController.currentSlotInWork = -1;
 
 saxsys.campus.adminController.init = function() {
-    saxoniaCampusPersistance.init();
+    saxsys.campus.persistence.init();
     saxsys.campus.adminController.fillAdminSlotList();
     saxsys.campus.adminController.fillRooms();
     saxsys.campus.adminController.initView();
@@ -24,7 +24,7 @@ saxsys.campus.adminController.init = function() {
 };
 
 saxsys.campus.adminController.fillAdminSlotList = function() {
-    var slots = saxoniaCampusPersistance.slots;
+    var slots = saxsys.campus.persistence.slots;
     $("#admin_slot_list").html('');
     for (var i in slots) {
         var slot = slots[i];
@@ -33,7 +33,7 @@ saxsys.campus.adminController.fillAdminSlotList = function() {
 };
 
 saxsys.campus.adminController.fillRooms = function() {
-    var rooms = saxoniaCampusPersistance.rooms;
+    var rooms = saxsys.campus.persistence.rooms;
     for (var i in rooms) {
         var room = rooms[i];
         saxoniaCampusRenderer.renderRoomOption("#room_select", room);
@@ -53,7 +53,7 @@ saxsys.campus.adminController.initView = function() {
         console.log("slotSelector: " + slotSelector);
 
         saxoniaCampusRestApi.deleteSlot(
-                saxoniaCampusPersistance.getSlotById(slotID),
+                saxsys.campus.persistence.getSlotById(slotID),
                 function() {
                 }, function() {
         });
@@ -69,7 +69,7 @@ saxsys.campus.adminController.initView = function() {
         var slotID = saxoniaCampusUtil.extractSlotId(this.id);
         saxsys.campus.adminController.currentSlotInWork = slotID;
 
-        var slot = saxoniaCampusPersistance.getSlotById(slotID);
+        var slot = saxsys.campus.persistence.getSlotById(slotID);
 
         var participantSuccess = function(data) {
             saxsys.campus.adminController.fillParticipantSelect(data);
@@ -148,7 +148,7 @@ saxsys.campus.adminController.saveNewSlot = function() {
         console.log("newSlot added successfully.");
         console.log(data);
         var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
-        saxoniaCampusPersistance.addNewSlot(jsonSlot);
+        saxsys.campus.persistence.addNewSlot(jsonSlot);
         //insert new slot into slotlist
         saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
         saxsys.campus.adminController.initView();
@@ -196,7 +196,7 @@ saxsys.campus.adminController.updateExistingSlot = function() {
         console.log("Slot updated successfully.");
         console.log(data);
 
-        saxoniaCampusPersistance.updateSlot(jsonSlot);
+        saxsys.campus.persistence.updateSlot(jsonSlot);
         saxsys.campus.adminController.fillAdminSlotList();
         saxsys.campus.adminController.initView();
     };
@@ -213,8 +213,8 @@ saxsys.campus.adminController.updateExistingSlot = function() {
 };
 saxsys.campus.adminController.generateExportCsv = function (){
     var csvString = "";
-    var slots = saxoniaCampusPersistance.slots;
-    var participants = saxoniaCampusPersistance.getParticipantsBySlot();
+    var slots = saxsys.campus.persistence.slots;
+    var participants = saxsys.campus.persistence.getParticipantsBySlot();
     csvString = saxoniaCampusRenderer.renderCampusCsvExport(slots, participants);
     return csvString;
 };

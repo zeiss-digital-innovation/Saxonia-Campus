@@ -7,10 +7,10 @@ saxsys.campus = saxsys.campus || {};
 saxsys.campus.userController = saxsys.campus.userController || {};
 
 saxsys.campus.userController.init = function() {
-    saxoniaCampusPersistance.init();
+    saxsys.campus.persistence.init();
 
     //saxsys.campus.userController.tmpUserSlots wird in login-Controller gesetzt
-    saxoniaCampusPersistance.initUserSlots(saxsys.campus.userController.tmpUserSlots);
+    saxsys.campus.persistence.initUserSlots(saxsys.campus.userController.tmpUserSlots);
     saxsys.campus.userController.generateRoomGrids();
 
     saxsys.campus.userController.fillSlotList();
@@ -25,14 +25,14 @@ saxsys.campus.userController.init = function() {
         //remove bookbutton
         $("#" + slotID + "_book_btn").hide();
 
-        var slot = saxoniaCampusPersistance.getSlotById(slotID);
+        var slot = saxsys.campus.persistence.getSlotById(slotID);
 
         if (saxsys.campus.userController.checkBeforeBooking(slot)) {
 
             var success = function(data) {
                 slot.participants++;
                 saxsys.campus.userController.updateFreeCapacity(slot);
-                saxoniaCampusPersistance.addUserSlot(slot.id);
+                saxsys.campus.persistence.addUserSlot(slot.id);
                 saxsys.campus.userController.fillBookedListview(saxsys.campus.persistence.getUserSlots());
                 saxsys.campus.userController.initBookedListview();
                 
@@ -64,12 +64,12 @@ saxsys.campus.userController.initBookedListview = function() {
 
         $("#" + slotID + "_book_btn").show();
 
-        var slot = saxoniaCampusPersistance.getSlotById(slotID);
+        var slot = saxsys.campus.persistence.getSlotById(slotID);
         
         var success = function(data) {
             slot.participants--;
             saxsys.campus.userController.updateFreeCapacity(slot);
-            saxoniaCampusPersistance.removeUserSlot(slot.id);
+            saxsys.campus.persistence.removeUserSlot(slot.id);
             $(slotSelector).remove();
             $("#user_booked_slot_list").listview("refresh");
         };
@@ -89,7 +89,7 @@ saxsys.campus.userController.initBookedListview = function() {
 };
 
 saxsys.campus.userController.generateRoomGrids = function() {
-    var rooms = saxoniaCampusPersistance.rooms;
+    var rooms = saxsys.campus.persistence.rooms;
 
     for (var i in rooms) {
         var room = rooms[i];
@@ -99,7 +99,7 @@ saxsys.campus.userController.generateRoomGrids = function() {
 };
 
 saxsys.campus.userController.fillSlotList = function() {
-    var slots = saxoniaCampusPersistance.slots;
+    var slots = saxsys.campus.persistence.slots;
 
     for (var i in slots) {
         var slot = slots[i];
@@ -136,7 +136,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
     var bookedSlots = saxsys.campus.persistence.getUserSlots();
 
     for (var i in bookedSlots) {
-        var currentSlot = saxoniaCampusPersistance.getSlotById(bookedSlots[i].id);
+        var currentSlot = saxsys.campus.persistence.getSlotById(bookedSlots[i].id);
         var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
 
         if (collision) {
@@ -155,7 +155,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
 };
 
 saxsys.campus.userController.bookSlot = function(slotID) {
-    var slot = saxoniaCampusPersistance.getSlotById(slotID);
+    var slot = saxsys.campus.persistence.getSlotById(slotID);
     
     saxoniaCampusRenderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
 
