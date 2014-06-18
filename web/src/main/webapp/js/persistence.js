@@ -54,15 +54,15 @@ saxsys.campus.persistence.mapSortedSlots = function() {
     }
 };
 
-saxoniaCampusPersistance.sortUserSlots = function() {
+saxsys.campus.persistence.sortUserSlots = function() {
     saxsys.campus.persistence.userSlots.sort(saxoniaCampusUtil.slotComparator);
 };
 
-saxoniaCampusPersistance.getUserSlots = function() {
+saxsys.campus.persistence.getUserSlots = function() {
     return saxsys.campus.persistence.userSlots;
 };
 
-saxoniaCampusPersistance.initSortedUserSlotIdMapping = function() {
+saxsys.campus.persistence.initSortedUserSlotIdMapping = function() {
     var tmpSlotArray = [];
     for (var i in saxsys.campus.persistence.userSlots) {
         var currentSlot = saxsys.campus.persistence.userSlots[i];
@@ -74,15 +74,15 @@ saxoniaCampusPersistance.initSortedUserSlotIdMapping = function() {
 saxoniaCampusPersistance.addUserSlot = function(slotID) {
     var tmpSlot = saxoniaCampusPersistance.getSlotById(slotID);
     saxsys.campus.persistence.userSlots[saxsys.campus.persistence.userSlots.length] = tmpSlot;
-    saxoniaCampusPersistance.sortUserSlots();
-    saxoniaCampusPersistance.initSortedUserSlotIdMapping();
+    saxsys.campus.persistence.sortUserSlots();
+    saxsys.campus.persistence.initSortedUserSlotIdMapping();
 };
 
 saxoniaCampusPersistance.removeUserSlot = function(slotID) {
     var sortedID = saxsys.campus.persistence.sortedUserSlotIdMapping[slotID];
     saxsys.campus.persistence.userSlots.splice(sortedID, 1);
     saxsys.campus.persistence.sortedUserSlotIdMapping.splice(slotID, 1);
-    saxoniaCampusPersistance.initSortedUserSlotIdMapping();
+    saxsys.campus.persistence.initSortedUserSlotIdMapping();
 };
 
 saxoniaCampusPersistance.initUserSlots = function(userSlots) {
@@ -91,18 +91,18 @@ saxoniaCampusPersistance.initUserSlots = function(userSlots) {
         for (var i in userSlots) {
             var slot = saxoniaCampusPersistance.getSlotById(userSlots[i].id);
             saxsys.campus.persistence.userSlots[saxsys.campus.persistence.userSlots.length] = slot;
-            saxoniaCampusPersistance.sortUserSlots();
+            saxsys.campus.persistence.sortUserSlots();
         }
     } else {
         //only one slot
         var slot = saxoniaCampusPersistance.getSlotById(userSlots.id);
         saxsys.campus.persistence.userSlots[saxsys.campus.persistence.userSlots.length] = slot;
     }
-    saxoniaCampusPersistance.sortUserSlots();
-    saxoniaCampusPersistance.initSortedUserSlotIdMapping();
+    saxsys.campus.persistence.sortUserSlots();
+    saxsys.campus.persistence.initSortedUserSlotIdMapping();
 };
 
-saxoniaCampusPersistance.initSlots = function() {
+saxsys.campus.persistence.initSlots = function() {
     var authString = $.cookie("id");
     console.log("authstring" + authString);
 
