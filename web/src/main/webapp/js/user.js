@@ -20,7 +20,7 @@ saxsys.campus.userController.init = function() {
 
     $(".book_slot_btn").click(function() {
 
-        var slotID = saxoniaCampusUtil.extractSlotId(this.id);
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
 
         //remove bookbutton
         $("#" + slotID + "_book_btn").hide();
@@ -45,7 +45,7 @@ saxsys.campus.userController.init = function() {
                 var error = jQuery.parseJSON(err.responseText);
                 var errorMessage = "FEHLER: " + error.detail;
                 
-                saxoniaCampusUtil.displayUserError(errorMessage, 3000);
+                saxsys.campus.utility.displayUserError(errorMessage, 3000);
                 
                 $("#" + slotID + "_book_btn").show();
             };
@@ -59,7 +59,7 @@ saxsys.campus.userController.initBookedListview = function() {
     $(".delete_slot").click(function(event) {
         event.stopImmediatePropagation();
 
-        var slotID = saxoniaCampusUtil.extractSlotId(this.id);
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
         var slotSelector = "#user_booked_slot_list #" + slotID + "_slot";
 
         $("#" + slotID + "_book_btn").show();
@@ -77,7 +77,7 @@ saxsys.campus.userController.initBookedListview = function() {
             var error = jQuery.parseJSON(err.responseText);
             var errorMessage = "FEHLER: " + error.detail;
             
-            saxoniaCampusUtil.displayUserError( errorMessage, 3000 );
+            saxsys.campus.utility.displayUserError( errorMessage, 3000 );
             
             $("#" + slotID + "_book_btn").hide();
         };
@@ -128,7 +128,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
         var errorMessage = "FEHLER: Im Slot " +
                 '"' + slot.title + '"' + "ist kein Platz mehr!";
 
-        saxoniaCampusUtil.displayUserError(errorMessage, 3000);
+        saxsys.campus.utility.displayUserError(errorMessage, 3000);
 
         return false;
     }
@@ -137,7 +137,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
 
     for (var i in bookedSlots) {
         var currentSlot = saxsys.campus.persistence.getSlotById(bookedSlots[i].id);
-        var collision = saxoniaCampusUtil.collisionTest(slot, currentSlot);
+        var collision = saxsys.campus.utility.collisionTest(slot, currentSlot);
 
         if (collision) {
             $("#" + slot.id + "_book_btn").show();
@@ -146,7 +146,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
                     " überschneidet sich zeitlich mit dem Slot " +
                     '"' + currentSlot.title + '"' + "!";
 
-            saxoniaCampusUtil.displayUserError(errorMessage, 3000);
+            saxsys.campus.utility.displayUserError(errorMessage, 3000);
 
             return false;
         }

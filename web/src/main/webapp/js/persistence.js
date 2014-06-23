@@ -7,9 +7,7 @@ var saxsys = saxsys || {};
 saxsys.campus = saxsys.campus || {};
 saxsys.campus.persistence = saxsys.campus.persistence || {};
 
-
 saxsys.campus.persistence.REST_SERVICE_ROOMS_URL = location.protocol + "//" + location.host + "/rest/rooms";
-var LOCATION_PROTOCOL = location.protocol;
 
 var Slot = function(slotID, slotTitle) {
     this.id = slotID;
@@ -53,7 +51,7 @@ saxsys.campus.persistence.mapSortedSlots = function() {
 };
 
 saxsys.campus.persistence.sortUserSlots = function() {
-    saxsys.campus.persistence.userSlots.sort(saxoniaCampusUtil.slotComparator);
+    saxsys.campus.persistence.userSlots.sort(saxsys.campus.utility.slotComparator);
 };
 
 saxsys.campus.persistence.getUserSlots = function() {
@@ -111,7 +109,7 @@ saxsys.campus.persistence.initSlots = function() {
             var currentSlot = data[i];
 
             saxsys.campus.persistence.slots[currentSlot.id] =
-                    saxoniaCampusUtil.convertRestSlotToViewSlot(currentSlot);
+                    saxsys.campus.utility.convertRestSlotToViewSlot(currentSlot);
         }
         saxsys.campus.persistence.sortAndMapSlots();
     };
@@ -124,7 +122,7 @@ saxsys.campus.persistence.initSlots = function() {
 };
 
 saxsys.campus.persistence.sortAndMapSlots = function() {
-    saxsys.campus.persistence.slots.sort(saxoniaCampusUtil.slotComparator);
+    saxsys.campus.persistence.slots.sort(saxsys.campus.utility.slotComparator);
     saxsys.campus.persistence.mapSortedSlots();
 }
 
@@ -170,7 +168,7 @@ saxsys.campus.persistence.getSlotById = function(slotID) {
 
 saxsys.campus.persistence.addNewSlot = function(slot) {
     saxsys.campus.persistence.slots[saxsys.campus.persistence.slots.length] = slot;
-    saxsys.campus.persistence.slots.sort(saxoniaCampusUtil.slotComparator);
+    saxsys.campus.persistence.slots.sort(saxsys.campus.utility.slotComparator);
     saxsys.campus.persistence.mapSortedSlots();
 };
 

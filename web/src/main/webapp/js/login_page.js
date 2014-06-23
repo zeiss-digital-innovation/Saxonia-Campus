@@ -72,7 +72,7 @@ saxsys.campus.init = function() {
         var username = $("#username")[0].value;
         var password = $("#password")[0].value;
 
-        var authString = saxoniaCampusUtil.make_base_auth(username, password);
+        var authString = saxsys.campus.utility.make_base_auth(username, password);
         saxsys.campus.tryLogin(authString);
     });
 
@@ -119,7 +119,7 @@ saxsys.campus.init = function() {
             //generiere CSV in admin controller mit Rendererhiilfe
             var csvString = saxsys.campus.adminController.generateExportCsv();
             //starte CSV-Download in Utility
-            saxoniaCampusUtil.startCsvDownload(csvString, csvFileName);
+            saxsys.campus.utility.startCsvDownload(csvString, csvFileName);
         });
     });
 

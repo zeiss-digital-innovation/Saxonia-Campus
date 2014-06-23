@@ -46,7 +46,7 @@ saxsys.campus.adminController.initView = function() {
         console.log("delete slot clicked");
         console.log("this.id:" + this.id);
 
-        var slotID = saxoniaCampusUtil.extractSlotId(this.id);
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
         var slotSelector = '#' + slotID + '_slot';
 
         console.log("slotID: " + slotID);
@@ -66,7 +66,7 @@ saxsys.campus.adminController.initView = function() {
     $(".edit_slot").click(function() {
         saxsys.campus.adminController.adminNewSlotEditing = false;
 
-        var slotID = saxoniaCampusUtil.extractSlotId(this.id);
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
         saxsys.campus.adminController.currentSlotInWork = slotID;
 
         var slot = saxsys.campus.persistence.getSlotById(slotID);
@@ -139,15 +139,15 @@ saxsys.campus.adminController.saveNewSlot = function() {
     var newSlot = new SaveSlot(slotTitle);
     newSlot.description = slotDescription;
     newSlot.room = slotRoom;
-    newSlot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
-    newSlot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
+    newSlot.starttime = saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
+    newSlot.endtime = saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
     newSlot.speaker = slotSpeaker;
     newSlot.capacity = capacity;
 
     var success = function(data) {
         console.log("newSlot added successfully.");
         console.log(data);
-        var jsonSlot = saxoniaCampusUtil.convertJsonSlotToViewSlot(data.responseText);
+        var jsonSlot = saxsys.campus.utility.convertJsonSlotToViewSlot(data.responseText);
         saxsys.campus.persistence.addNewSlot(jsonSlot);
         //insert new slot into slotlist
         saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
@@ -178,8 +178,8 @@ saxsys.campus.adminController.updateExistingSlot = function() {
     var slot = new UpdateSlot(slotID, slotTitle);
     slot.description = slotDescription;
     slot.room = slotRoomId;
-    slot.starttime = saxoniaCampusUtil.convertTimeStrToMillis(slotStarttime);
-    slot.endtime = saxoniaCampusUtil.convertTimeStrToMillis(slotEndtime);
+    slot.starttime = saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
+    slot.endtime = saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
     slot.capacity = slotCapacity;
 
