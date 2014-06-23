@@ -23,7 +23,7 @@ saxsys.campus.tryAutoLogin = function() {
  * @returns {undefined}
  */
 saxsys.campus.tryLogin = function(authString) {
-    saxoniaCampusRestApi.AUTH_STRING = authString;
+    saxsys.campus.restApi.AUTH_STRING = authString;
 
     var error = function(data) {
         $("#error_output").text("Bitte überprüfen Sie Benutzername und Passwort!");
@@ -34,10 +34,10 @@ saxsys.campus.tryLogin = function(authString) {
     var user_success = function(data) {
         userRole = data.role;
 
-        if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
+        if (userRole === saxsys.campus.restApi.ADMIN_ROLE) {
             $(":mobile-pagecontainer").pagecontainer("change", "admin.html");
         } else {
-            if (userRole === saxoniaCampusRestApi.USER_ROLE) {
+            if (userRole === saxsys.campus.restApi.USER_ROLE) {
                 saxsys.campus.userController.tmpUserSlots = [];
 
                 if (data._embedded !== undefined) {
@@ -53,10 +53,10 @@ saxsys.campus.tryLogin = function(authString) {
     };
 
     var auth_success = function(data) {
-        $.cookie("id", saxoniaCampusRestApi.AUTH_STRING);
-        saxoniaCampusRestApi.getCurrentUser(user_success, error);
+        $.cookie("id", saxsys.campus.restApi.AUTH_STRING);
+        saxsys.campus.restApi.getCurrentUser(user_success, error);
     };
-    saxoniaCampusRestApi.authenticate(auth_success, error);
+    saxsys.campus.restApi.authenticate(auth_success, error);
 };
 
 /**

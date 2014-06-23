@@ -49,7 +49,7 @@ saxsys.campus.userController.init = function() {
                 
                 $("#" + slotID + "_book_btn").show();
             };
-            saxoniaCampusRestApi.addParticipant(slot, success, fail);
+            saxsys.campus.restApi.addParticipant(slot, success, fail);
         }
         ;
     });
@@ -82,7 +82,7 @@ saxsys.campus.userController.initBookedListview = function() {
             $("#" + slotID + "_book_btn").hide();
         };
 
-        saxoniaCampusRestApi.delParticipant(slot, success, fail);
+        saxsys.campus.restApi.delParticipant(slot, success, fail);
     });
 
     $("#user_booked_slot_list").listview("refresh");

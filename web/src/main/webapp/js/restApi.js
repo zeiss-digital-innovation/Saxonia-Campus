@@ -1,34 +1,35 @@
 /* 
  * Clientside implementation of the REST API.
  */
+var saxsys = saxsys || {};
+saxsys.campus = saxsys.campus || {};
+saxsys.campus.restApi = saxsys.campus.restApi || {};
 
-var saxoniaCampusRestApi = {};
+saxsys.campus.restApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
+saxsys.campus.restApi.CURRENT_USER_URL = "";
+saxsys.campus.restApi.SLOTS_URL = "";
+saxsys.campus.restApi.ROOMS_URL = "";
+saxsys.campus.restApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
 
-saxoniaCampusRestApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
-saxoniaCampusRestApi.CURRENT_USER_URL = "";
-saxoniaCampusRestApi.SLOTS_URL = "";
-saxoniaCampusRestApi.ROOMS_URL = "";
-saxoniaCampusRestApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
+saxsys.campus.restApi.AUTH_STRING = "";
+saxsys.campus.restApi.ADMIN_ROLE = "ADMIN";
+saxsys.campus.restApi.USER_ROLE = "USER";
 
-saxoniaCampusRestApi.AUTH_STRING = "";
-saxoniaCampusRestApi.ADMIN_ROLE = "ADMIN";
-saxoniaCampusRestApi.USER_ROLE = "USER";
-
-saxoniaCampusRestApi.authenticate = function(success_function, fail_function) {
+saxsys.campus.restApi.authenticate = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
-                url: saxoniaCampusRestApi.BASE_URL,
+                url: saxsys.campus.restApi.BASE_URL,
                 dataType: 'json',
                 async: true,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
                     console.log('authentication successfull');
-                    saxoniaCampusRestApi.CURRENT_USER_URL = data._links.currentUser.href;
-                    saxoniaCampusRestApi.SLOTS_URL = data._links.slots.href;
+                    saxsys.campus.restApi.CURRENT_USER_URL = data._links.currentUser.href;
+                    saxsys.campus.restApi.SLOTS_URL = data._links.slots.href;
                     success_function(data);
                 },
                 error: function(err) {
@@ -38,16 +39,16 @@ saxoniaCampusRestApi.authenticate = function(success_function, fail_function) {
             });
 };
 
-saxoniaCampusRestApi.getCurrentUser = function(success_function, fail_function) {
+saxsys.campus.restApi.getCurrentUser = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
-                url: saxoniaCampusRestApi.CURRENT_USER_URL,
+                url: saxsys.campus.restApi.CURRENT_USER_URL,
                 dataType: 'json',
                 async: true,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
                     console.log('getCurrentUser successfull');
@@ -60,20 +61,20 @@ saxoniaCampusRestApi.getCurrentUser = function(success_function, fail_function) 
             });
 };
 
-saxoniaCampusRestApi.getSlots = function(success_function, fail_function) {
+saxsys.campus.restApi.getSlots = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
-                url: saxoniaCampusRestApi.SLOTS_URL,
+                url: saxsys.campus.restApi.SLOTS_URL,
                 dataType: 'json',
                 async: false,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
                     console.log('getSlots successfull');
-                    saxoniaCampusRestApi.ROOMS_URL = data._links.rooms.href;
+                    saxsys.campus.restApi.ROOMS_URL = data._links.rooms.href;
                     success_function(data._embedded.slots);
                 },
                 error: function(err) {
@@ -83,16 +84,16 @@ saxoniaCampusRestApi.getSlots = function(success_function, fail_function) {
             });
 };
 
-saxoniaCampusRestApi.getRooms = function(success_function, fail_function) {
+saxsys.campus.restApi.getRooms = function(success_function, fail_function) {
     $.ajax
             ({
                 type: "GET",
-                url: saxoniaCampusRestApi.ROOMS_URL,
+                url: saxsys.campus.restApi.ROOMS_URL,
                 dataType: 'json',
                 async: true,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
                     console.log('getRooms successfull');
@@ -105,17 +106,17 @@ saxoniaCampusRestApi.getRooms = function(success_function, fail_function) {
             });
 };
 
-saxoniaCampusRestApi.addSlot = function(slot, success_function, fail_function) {
+saxsys.campus.restApi.addSlot = function(slot, success_function, fail_function) {
     var slot_json = JSON.stringify(slot);
     $.ajax
             ({
                 type: "POST",
-                url: saxoniaCampusRestApi.SLOTS_URL,
+                url: saxsys.campus.restApi.SLOTS_URL,
                 dataType: 'hal+json',
                 async: true,
                 data: slot_json,
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
@@ -135,8 +136,8 @@ saxoniaCampusRestApi.addSlot = function(slot, success_function, fail_function) {
             });
 };
 
-saxoniaCampusRestApi.updateSlot = function(slot, success_function, fail_function) {
-    var slotUpdateUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id;
+saxsys.campus.restApi.updateSlot = function(slot, success_function, fail_function) {
+    var slotUpdateUrl = saxsys.campus.restApi.SLOTS_URL + "/" + slot.id;
     var slot_json = JSON.stringify(slot);
     $.ajax
             ({
@@ -146,7 +147,7 @@ saxoniaCampusRestApi.updateSlot = function(slot, success_function, fail_function
                 async: true,
                 data: slot_json,
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
@@ -166,8 +167,8 @@ saxoniaCampusRestApi.updateSlot = function(slot, success_function, fail_function
             });
 };
 
-saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function) {
-    var delete_url = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id;
+saxsys.campus.restApi.deleteSlot = function(slot, success_function, fail_function) {
+    var delete_url = saxsys.campus.restApi.SLOTS_URL + "/" + slot.id;
 
     $.ajax
             ({
@@ -177,7 +178,7 @@ saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function
                 async: true,
                 data: {},
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
@@ -197,8 +198,8 @@ saxoniaCampusRestApi.deleteSlot = function(slot, success_function, fail_function
             });
 };
 
-saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_function) {
-    var participantsUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants";
+saxsys.campus.restApi.getParticipants = function(slot, success_function, fail_function) {
+    var participantsUrl = saxsys.campus.restApi.SLOTS_URL + "/" + slot.id + "/participants";
     $.ajax
             ({
                 type: "GET",
@@ -207,7 +208,7 @@ saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_fun
                 async: false,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
@@ -231,8 +232,8 @@ saxoniaCampusRestApi.getParticipants = function(slot, success_function, fail_fun
             });
 };
 
-saxoniaCampusRestApi.addParticipant = function(slot, success_function, fail_function) {
-    var participantsUserUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants/user";
+saxsys.campus.restApi.addParticipant = function(slot, success_function, fail_function) {
+    var participantsUserUrl = saxsys.campus.restApi.SLOTS_URL + "/" + slot.id + "/participants/user";
     $.ajax
             ({
                 type: "PUT",
@@ -241,7 +242,7 @@ saxoniaCampusRestApi.addParticipant = function(slot, success_function, fail_func
                 async: true,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
@@ -261,8 +262,8 @@ saxoniaCampusRestApi.addParticipant = function(slot, success_function, fail_func
             });
 };
 
-saxoniaCampusRestApi.delParticipant = function(slot, success_function, fail_function) {
-    var participantsUserUrl = saxoniaCampusRestApi.SLOTS_URL + "/" + slot.id + "/participants/user";
+saxsys.campus.restApi.delParticipant = function(slot, success_function, fail_function) {
+    var participantsUserUrl = saxsys.campus.restApi.SLOTS_URL + "/" + slot.id + "/participants/user";
     $.ajax
             ({
                 type: "DELETE",
@@ -271,7 +272,7 @@ saxoniaCampusRestApi.delParticipant = function(slot, success_function, fail_func
                 async: true,
                 data: '',
                 beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Authorization', saxoniaCampusRestApi.AUTH_STRING);
+                    xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                     xhr.setRequestHeader('Accept', 'application/hal+json');
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },

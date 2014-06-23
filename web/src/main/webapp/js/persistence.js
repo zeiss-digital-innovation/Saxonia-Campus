@@ -117,7 +117,7 @@ saxsys.campus.persistence.initSlots = function() {
         console.log('error occured!');
     };
 
-    saxoniaCampusRestApi.getSlots(success, error);
+    saxsys.campus.restApi.getSlots(success, error);
 
 };
 
@@ -199,7 +199,7 @@ saxsys.campus.persistence.getParticipantsBySlot = function(){
         };
 
         if (slot.participants > 0) {
-            saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
+            saxsys.campus.restApi.getParticipants(slot, participantSuccess, participantFail);
         } else {
             saxsys.campus.persistence.tmpParticipants[slot.id] =[];
         }

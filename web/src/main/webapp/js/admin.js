@@ -52,7 +52,7 @@ saxsys.campus.adminController.initView = function() {
         console.log("slotID: " + slotID);
         console.log("slotSelector: " + slotSelector);
 
-        saxoniaCampusRestApi.deleteSlot(
+        saxsys.campus.restApi.deleteSlot(
                 saxsys.campus.persistence.getSlotById(slotID),
                 function() {
                 }, function() {
@@ -82,7 +82,7 @@ saxsys.campus.adminController.initView = function() {
         };
 
         if (slot.participants > 0) {
-            saxoniaCampusRestApi.getParticipants(slot, participantSuccess, participantFail);
+            saxsys.campus.restApi.getParticipants(slot, participantSuccess, participantFail);
         } else {
             saxsys.campus.adminController.clearParticipantSelect();
             saxsys.campus.adminController.fillDetailView(slot);
@@ -158,7 +158,7 @@ saxsys.campus.adminController.saveNewSlot = function() {
         console.error(err);
     };
 
-    saxoniaCampusRestApi.addSlot(newSlot, success, fail);
+    saxsys.campus.restApi.addSlot(newSlot, success, fail);
 
 
 };
@@ -209,7 +209,7 @@ saxsys.campus.adminController.updateExistingSlot = function() {
         }, 3000);
     };
 
-    saxoniaCampusRestApi.updateSlot(slot, success, fail);
+    saxsys.campus.restApi.updateSlot(slot, success, fail);
 };
 saxsys.campus.adminController.generateExportCsv = function (){
     var csvString = "";
