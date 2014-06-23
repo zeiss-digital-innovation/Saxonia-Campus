@@ -1,9 +1,6 @@
 /* 
  * Clientside implementation of the REST API.
  */
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.restApi = saxsys.campus.restApi || {};
 
 saxsys.campus.restApi.BASE_URL = location.protocol + "//" + location.host + "/rest/";
 saxsys.campus.restApi.CURRENT_USER_URL = "";

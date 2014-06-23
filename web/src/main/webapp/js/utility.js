@@ -2,10 +2,6 @@
  * Utilities to convert Objects
  */
 
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.utility = saxsys.campus.utility || {};
-
 saxsys.campus.utility.convertMillisToTimeStr = function(millis) {
     var date = new Date(millis);
     var hourStr = saxsys.campus.utility.leftFillStr("" + date.getHours(), 2, "0");

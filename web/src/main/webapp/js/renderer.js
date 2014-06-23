@@ -1,9 +1,6 @@
 /**
  * Renderer für die UI-Elemente der user und adminView 
  */
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.renderer = saxsys.campus.renderer || {};
 
 saxsys.campus.renderer.CSV_SEPERATOR = ";";
 saxsys.campus.renderer.CSV_LINE_END = "\r\n";

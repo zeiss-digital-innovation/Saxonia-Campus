@@ -3,10 +3,6 @@
  * 
  */
 
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.persistence = saxsys.campus.persistence || {};
-
 saxsys.campus.persistence.REST_SERVICE_ROOMS_URL = location.protocol + "//" + location.host + "/rest/rooms";
 
 var Slot = function(slotID, slotTitle) {

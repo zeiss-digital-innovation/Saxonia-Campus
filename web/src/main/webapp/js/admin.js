@@ -2,10 +2,6 @@
  * Controller javascript für die Admin-View 
  */
 
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.adminController = saxsys.campus.adminController || {};
-
 //Variable um zu unterscheiden, ob der Slot, der gerade bearbeitet wird ein 
 //neuer Slot ist oder ein bereits vorhandener Slot.
 //Diese Unterscheidung wird benötigt um entweder ein update oder ein save auszulösen.

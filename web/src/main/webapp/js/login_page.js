@@ -1,6 +1,11 @@
 var saxsys = saxsys || {};
 saxsys.campus = saxsys.campus || {};
 saxsys.campus.userController = saxsys.campus.userController || {};
+saxsys.campus.adminController = saxsys.campus.adminController || {};
+saxsys.campus.persistence = saxsys.campus.persistence || {};
+saxsys.campus.renderer = saxsys.campus.renderer || {};
+saxsys.campus.utility = saxsys.campus.utility || {};
+saxsys.campus.restApi = saxsys.campus.restApi || {};
 
 /**
  * Versucht einen noch eingeloggten Benutzer (Der Cookie existiert noch) 

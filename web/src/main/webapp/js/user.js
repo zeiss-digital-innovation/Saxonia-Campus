@@ -2,10 +2,6 @@
  * Controller javascript für die User-View
  */
 
-var saxsys = saxsys || {};
-saxsys.campus = saxsys.campus || {};
-saxsys.campus.userController = saxsys.campus.userController || {};
-
 saxsys.campus.userController.init = function() {
     saxsys.campus.persistence.init();
 
@@ -35,7 +31,7 @@ saxsys.campus.userController.init = function() {
                 saxsys.campus.persistence.addUserSlot(slot.id);
                 saxsys.campus.userController.fillBookedListview(saxsys.campus.persistence.getUserSlots());
                 saxsys.campus.userController.initBookedListview();
-                
+
                 $("#user_info_output").popup("open");
                 setTimeout(function() {
                     $("#user_info_output").popup("close");
@@ -44,9 +40,9 @@ saxsys.campus.userController.init = function() {
             var fail = function(err) {
                 var error = jQuery.parseJSON(err.responseText);
                 var errorMessage = "FEHLER: " + error.detail;
-                
+
                 saxsys.campus.utility.displayUserError(errorMessage, 3000);
-                
+
                 $("#" + slotID + "_book_btn").show();
             };
             saxsys.campus.restApi.addParticipant(slot, success, fail);
@@ -65,7 +61,7 @@ saxsys.campus.userController.initBookedListview = function() {
         $("#" + slotID + "_book_btn").show();
 
         var slot = saxsys.campus.persistence.getSlotById(slotID);
-        
+
         var success = function(data) {
             slot.participants--;
             saxsys.campus.userController.updateFreeCapacity(slot);
@@ -76,9 +72,9 @@ saxsys.campus.userController.initBookedListview = function() {
         var fail = function(err) {
             var error = jQuery.parseJSON(err.responseText);
             var errorMessage = "FEHLER: " + error.detail;
-            
-            saxsys.campus.utility.displayUserError( errorMessage, 3000 );
-            
+
+            saxsys.campus.utility.displayUserError(errorMessage, 3000);
+
             $("#" + slotID + "_book_btn").hide();
         };
 
@@ -156,7 +152,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
 
 saxsys.campus.userController.bookSlot = function(slotID) {
     var slot = saxsys.campus.persistence.getSlotById(slotID);
-    
+
     saxsys.campus.renderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
 
     saxsys.campus.userController.initBookedListview();
