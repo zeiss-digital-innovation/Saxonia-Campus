@@ -1,12 +1,14 @@
 /**
  * Renderer für die UI-Elemente der user und adminView 
  */
+var saxsys = saxsys || {};
+saxsys.campus = saxsys.campus || {};
+saxsys.campus.renderer = saxsys.campus.renderer || {};
 
-var saxoniaCampusRenderer = {};
-saxoniaCampusRenderer.CSV_SEPERATOR = ";";
-saxoniaCampusRenderer.CSV_LINE_END = "\r\n";
+saxsys.campus.renderer.CSV_SEPERATOR = ";";
+saxsys.campus.renderer.CSV_LINE_END = "\r\n";
 
-saxoniaCampusRenderer.gridclassArray = ["dummy", "ui-block-a", "ui-block-b", "ui-block-c",
+saxsys.campus.renderer.gridclassArray = ["dummy", "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c",
@@ -17,7 +19,7 @@ saxoniaCampusRenderer.gridclassArray = ["dummy", "ui-block-a", "ui-block-b", "ui
     "ui-block-a", "ui-block-b", "ui-block-c",
     "ui-block-a", "ui-block-b", "ui-block-c"];
 
-saxoniaCampusRenderer.generateInnerSlot = function(slot) {
+saxsys.campus.renderer.generateInnerSlot = function(slot) {
     var innerSlot = '<a id="'
             + slot.id + '_edit" class="edit_slot">'
             + slot.title + '<p class="ui-li-aside">' + slot.starttime + " bis "
@@ -34,7 +36,7 @@ saxoniaCampusRenderer.generateInnerSlot = function(slot) {
     return innerSlot;
 };
 
-saxoniaCampusRenderer.generateAdminViewSlot = function(slot) {
+saxsys.campus.renderer.generateAdminViewSlot = function(slot) {
     var isSlotFull = (slot.capacity - slot.participants) === 0;
     var slotTheme = '';
 
@@ -42,38 +44,38 @@ saxoniaCampusRenderer.generateAdminViewSlot = function(slot) {
         slotTheme = 'data-theme="c"';
     }
 
-    var innerSlot = saxoniaCampusRenderer.generateInnerSlot(slot);
+    var innerSlot = saxsys.campus.renderer.generateInnerSlot(slot);
     var slotHtml = '<li id="' + slot.id + '_slot"' + slotTheme + '>' + innerSlot + '</li>';
 
     return slotHtml;
 };
 
-saxoniaCampusRenderer.renderAdminViewSlot = function(slotListSelector, slot) {
-    var adminViewSlotHtml = saxoniaCampusRenderer.generateAdminViewSlot(slot);
+saxsys.campus.renderer.renderAdminViewSlot = function(slotListSelector, slot) {
+    var adminViewSlotHtml = saxsys.campus.renderer.generateAdminViewSlot(slot);
 
     $(slotListSelector).append(adminViewSlotHtml);
 };
 
-saxoniaCampusRenderer.renderRoomOption = function(roomSelectSelector, room) {
+saxsys.campus.renderer.renderRoomOption = function(roomSelectSelector, room) {
     var option = '<option value="' + room.id + '">' + room.roomnumber + '</option>';
 
     $(roomSelectSelector).append(option);
 };
 
-saxoniaCampusRenderer.renderParticipantOption = function(participantsSelectSelector, participant) {
+saxsys.campus.renderer.renderParticipantOption = function(participantsSelectSelector, participant) {
     var option = '<option value="' + participant.username + '">' + participant.firstname + ' ' + participant.lastname + '</option>';
 
     $(participantsSelectSelector).append(option);
 };
 
-saxoniaCampusRenderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
+saxsys.campus.renderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
     var slotHtml = '<li id="' + slot.id + '_slot"><a><span class="booked_slot_title">' + slot.title + '</span><p>'
             + slot.starttime + " bis " + slot.endtime + ' : Raum ' + slot.room + '</p></a><a id="' + slot.id
             + '_delete_slot" class="delete_slot"></a></li>';
     $(slotListSelector).append(slotHtml);
 };
 
-saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
+saxsys.campus.renderer.renderUserViewDetailSlot = function(slot) {
     var slotListSelector = '#' + slot.roomId + '_room_slotset';
     var isSlotBooked = saxsys.campus.persistence.isSlotBooked(slot.id);
     var freeCapacity = (slot.capacity - slot.participants);
@@ -106,52 +108,52 @@ saxoniaCampusRenderer.renderUserViewDetailSlot = function(slot) {
     $(slotListSelector).append(slotHtml);
 };
 
-saxoniaCampusRenderer.renderRoomGrid = function(gridviewSelector, room) {
-    var gridClass = saxoniaCampusRenderer.gridclassArray[room.id];
-    var roomSlotList = saxoniaCampusRenderer.generateRoomSlotList(room);
+saxsys.campus.renderer.renderRoomGrid = function(gridviewSelector, room) {
+    var gridClass = saxsys.campus.renderer.gridclassArray[room.id];
+    var roomSlotList = saxsys.campus.renderer.generateRoomSlotList(room);
 
     $(gridviewSelector).append('<div id="' + room.id + '_room_grid" class="'
             + gridClass + '">' + roomSlotList + '</div>');
 };
 
-saxoniaCampusRenderer.generateRoomSlotList = function(room) {
+saxsys.campus.renderer.generateRoomSlotList = function(room) {
     var roomSlotList = '<h4>Raum: ' + room.roomnumber + '</h4>'
             + '<div id="' + room.id + '_room_slotset" '
             + 'data-role="collapsibleset" data-mini="true"></div>';
     return roomSlotList;
 };
-saxoniaCampusRenderer.renderCampusCsvExport = function(slots, participantsArray) {
+saxsys.campus.renderer.renderCampusCsvExport = function(slots, participantsArray) {
     var csvString = "";
     for (var i in slots) {
         var slot = slots[i];
         var participans = participantsArray[slot.id];
-        csvString = csvString + saxoniaCampusRenderer.renderCampusCsvSlot(slot, participans);
+        csvString = csvString + saxsys.campus.renderer.renderCampusCsvSlot(slot, participans);
     }
     return csvString;
 };
 
-saxoniaCampusRenderer.renderCampusCsvSlot = function(slot, participants) {
+saxsys.campus.renderer.renderCampusCsvSlot = function(slot, participants) {
     var csvString = "";
-//    csvString = csvString + "SlotID" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + "Raum" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + "Titel" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + "Kapazität" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + "Speaker" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + "Teilnehmerzahl" + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+//    csvString = csvString + "SlotID" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + "Raum" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + "Titel" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + "Kapazität" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + "Speaker" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + "Teilnehmerzahl" + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + saxsys.campus.renderer.CSV_LINE_END;
     
-//    csvString = csvString + slot.id + saxoniaCampusRenderer.CSV_SEPERATOR;
-    csvString = csvString + slot.title + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + slot.room + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + slot.capacity + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + slot.speaker + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + slot.participants + saxoniaCampusRenderer.CSV_SEPERATOR;
-//    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+//    csvString = csvString + slot.id + saxsys.campus.renderer.CSV_SEPERATOR;
+    csvString = csvString + slot.title + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + slot.room + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + slot.capacity + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + slot.speaker + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + slot.participants + saxsys.campus.renderer.CSV_SEPERATOR;
+//    csvString = csvString + saxsys.campus.renderer.CSV_LINE_END;
     for (var i in participants) {
         var participant = participants[i];
-        csvString = csvString + participant.firstname + ' ' + participant.lastname +saxoniaCampusRenderer.CSV_SEPERATOR;
+        csvString = csvString + participant.firstname + ' ' + participant.lastname +saxsys.campus.renderer.CSV_SEPERATOR;
     }
-    csvString = csvString + saxoniaCampusRenderer.CSV_LINE_END;
+    csvString = csvString + saxsys.campus.renderer.CSV_LINE_END;
     return csvString;
 };
 

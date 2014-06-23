@@ -28,7 +28,7 @@ saxsys.campus.adminController.fillAdminSlotList = function() {
     $("#admin_slot_list").html('');
     for (var i in slots) {
         var slot = slots[i];
-        saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", slot);
+        saxsys.campus.renderer.renderAdminViewSlot("#admin_slot_list", slot);
     }
 };
 
@@ -36,7 +36,7 @@ saxsys.campus.adminController.fillRooms = function() {
     var rooms = saxsys.campus.persistence.rooms;
     for (var i in rooms) {
         var room = rooms[i];
-        saxoniaCampusRenderer.renderRoomOption("#room_select", room);
+        saxsys.campus.renderer.renderRoomOption("#room_select", room);
     }
 };
 
@@ -108,7 +108,7 @@ saxsys.campus.adminController.fillParticipantSelect = function(participants) {
 
     for (var i in participants) {
         var participant = participants[i];
-        saxoniaCampusRenderer.renderParticipantOption("#participant_list", participant);
+        saxsys.campus.renderer.renderParticipantOption("#participant_list", participant);
     }
     $("#participant_list").selectmenu("refresh");
 };
@@ -150,7 +150,7 @@ saxsys.campus.adminController.saveNewSlot = function() {
         var jsonSlot = saxsys.campus.utility.convertJsonSlotToViewSlot(data.responseText);
         saxsys.campus.persistence.addNewSlot(jsonSlot);
         //insert new slot into slotlist
-        saxoniaCampusRenderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
+        saxsys.campus.renderer.renderAdminViewSlot("#admin_slot_list", jsonSlot);
         saxsys.campus.adminController.initView();
     };
     var fail = function(err) {
@@ -215,6 +215,6 @@ saxsys.campus.adminController.generateExportCsv = function (){
     var csvString = "";
     var slots = saxsys.campus.persistence.slots;
     var participants = saxsys.campus.persistence.getParticipantsBySlot();
-    csvString = saxoniaCampusRenderer.renderCampusCsvExport(slots, participants);
+    csvString = saxsys.campus.renderer.renderCampusCsvExport(slots, participants);
     return csvString;
 };

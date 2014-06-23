@@ -93,7 +93,7 @@ saxsys.campus.userController.generateRoomGrids = function() {
 
     for (var i in rooms) {
         var room = rooms[i];
-        saxoniaCampusRenderer.renderRoomGrid("#room_grid", room);
+        saxsys.campus.renderer.renderRoomGrid("#room_grid", room);
     }
     ;
 };
@@ -103,7 +103,7 @@ saxsys.campus.userController.fillSlotList = function() {
 
     for (var i in slots) {
         var slot = slots[i];
-        saxoniaCampusRenderer.renderUserViewDetailSlot(slot);
+        saxsys.campus.renderer.renderUserViewDetailSlot(slot);
     }
 };
 
@@ -157,7 +157,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
 saxsys.campus.userController.bookSlot = function(slotID) {
     var slot = saxsys.campus.persistence.getSlotById(slotID);
     
-    saxoniaCampusRenderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
+    saxsys.campus.renderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
 
     saxsys.campus.userController.initBookedListview();
 };
