@@ -107,11 +107,11 @@ saxsys.campus.userController.fillBookedListview = function(userSlots) {
     $("#user_booked_slot_list").html("");
     if (Array.isArray(userSlots)) {
         for (var i in userSlots) {
-            saxsys.campus.userController.bookSlot(userSlots[i].id);
+            saxsys.campus.userController.renderSlotBooked(userSlots[i].id);
         }
     } else {
         //only one slot
-        saxsys.campus.userController.bookSlot(userSlots.id);
+        saxsys.campus.userController.renderSlotBooked(userSlots.id);
     }
 };
 
@@ -150,7 +150,7 @@ saxsys.campus.userController.checkBeforeBooking = function(slot) {
     return true;
 };
 
-saxsys.campus.userController.bookSlot = function(slotID) {
+saxsys.campus.userController.renderSlotBooked = function(slotID) {
     var slot = saxsys.campus.persistence.getSlotById(slotID);
 
     saxsys.campus.renderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
