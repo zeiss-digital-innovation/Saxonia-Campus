@@ -67,8 +67,9 @@ saxsys.campus.renderer.renderParticipantOption = function(participantsSelectSele
 
 saxsys.campus.renderer.renderUserViewBookedSlot = function(slotListSelector, slot) {
     var slotHtml = '<li id="' + slot.id + '_slot"><a><span class="booked_slot_title">' + slot.title + '</span><p>'
-            + slot.starttime + " bis " + slot.endtime + ' : Raum ' + slot.room + '</p></a><a id="' + slot.id
-            + '_delete_slot" class="delete_slot"></a></li>';
+            + slot.starttime + " bis " + slot.endtime + ' : Raum ' + slot.room + '</p></a>'
+//            + '<a id="' + slot.id + '_delete_slot" class="delete_slot"></a>'
+            + '</li>';
     $(slotListSelector).append(slotHtml);
 };
 
@@ -76,7 +77,8 @@ saxsys.campus.renderer.renderUserViewDetailSlot = function(slot) {
     var slotListSelector = '#' + slot.roomId + '_room_slotset';
     var isSlotBooked = saxsys.campus.persistence.isSlotBooked(slot.id);
     var freeCapacity = (slot.capacity - slot.participants);
-    var showBookButton = (freeCapacity > 0) && (!isSlotBooked);
+//    var showBookButton = (freeCapacity > 0) && (!isSlotBooked);
+    var showBookButton = false;
 
     var slotHtml = '<div data-role="collapsible" data-inset="true" '
             + 'data-collapsed-icon="carat-d" data-expanded-icon="carat-u" '
