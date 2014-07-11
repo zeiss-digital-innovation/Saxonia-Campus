@@ -112,7 +112,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	private WebApplicationException authenticationError(String detail) {
 		LOGGER.info(detail);
-		Representation error = errorMapper.createRepresentation("HTTP 403 Forbidden", detail);
-		return new WebApplicationException(Response.status(403).entity(error).build());
+		Representation error = errorMapper.createRepresentation("HTTP 401 Unauthorized", detail);
+		return new WebApplicationException(Response.status(401).entity(error).build());
 	}
 }
