@@ -24,15 +24,21 @@ public class DbReservationManager implements ReservationManager {
 	private UserManager userManager;
 
 	@Override
-	public Slot createReservation(@NotNull User user, @NotNull Slot slot) {
-		if (!slot.isBookedOut()) {
-			slot.addParticipant(user);
-			final Slot updatedSlot = slotManager.updateSlot(slot);
-			userManager.updateUser(user);
-			return updatedSlot;
+	public Slot createReservation(@NotNull User user, @NotNull Slot slot)
+			throws OverlapsReservationException {
+		// if (slot.isBookedOut()) {
+		// throw new AlreadyBookedOutException();
+		// }
+		List<Slot> bookedSlots = user.getSlotList();
+		for (Slot bookedSlot : bookedSlots) {
+			if (slot.overlaps(bookedSlot)) {
+				throw new OverlapsReservationException(bookedSlot);
+			}
 		}
-		// TODO error handling
-		return null;
+		slot.addParticipant(user);
+		final Slot updatedSlot = slotManager.updateSlot(slot);
+		userManager.updateUser(user);
+		return updatedSlot;
 	}
 
 	@Override

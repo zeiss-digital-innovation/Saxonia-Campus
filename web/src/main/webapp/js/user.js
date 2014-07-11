@@ -2,183 +2,158 @@
  * Controller javascript für die User-View
  */
 
-var extractSlotId = function(element_id) {
-    return element_id.split('_')[0];
-};
-var refreshRoomGrid = function() {
-    var rooms = saxoniaCampusPersistance.rooms;
+saxsys.campus.userController.init = function() {
+    saxsys.campus.persistence.init();
 
-    for (var i in rooms) {
-        var room = rooms[i];
-        $('#' + room.id + '_room_slotset').collapsibleset("refresh");
-    }
-    ;
-};
+    //saxsys.campus.userController.tmpUserSlots wird in login-Controller gesetzt
+    saxsys.campus.persistence.initUserSlots(saxsys.campus.userController.tmpUserSlots);
+    saxsys.campus.userController.generateRoomGrids();
 
-var generateRoomGrids = function() {
-    var rooms = saxoniaCampusPersistance.rooms;
+    saxsys.campus.userController.fillSlotList();
+    saxsys.campus.userController.fillBookedListview(saxsys.campus.persistence.getUserSlots());
+    saxsys.campus.userController.initBookedListview();
+    $("#userPageContent").trigger("create");
 
-    for (var i in rooms) {
-        var room = rooms[i];
-        saxoniaCampusRenderer.renderRoomGrid("#room_grid", room);
-    }
-    ;
-};
+    $(".book_slot_btn").click(function() {
 
-var fillSlotList = function() {
-    var slots = saxoniaCampusPersistance.slots;
-    for (var i in slots) {
-        var slot = slots[i];
-        saxoniaCampusRenderer.renderUserViewDetailSlot(slot);
-    }
-};
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
 
-var authUserPage = function() {
-    var authString = $.cookie("id");
+        //remove bookbutton
+        $("#" + slotID + "_book_btn").hide();
 
-    if (authString === undefined) {
-        console.error("Cookie konnte nicht gefunden werden.");
-        $(location).attr('href', 'index.html');
-    } else {
-        saxoniaCampusRestApi.AUTH_STRING = authString;
-    }
+        var slot = saxsys.campus.persistence.getSlotById(slotID);
 
-    var error = function(data) {
-        console.log("Error");
-//        $(location).attr('href', 'index.html');
-    };
+        if (saxsys.campus.userController.checkBeforeBooking(slot)) {
 
-    //Wenn aktueller Benutzer erfolgreich vom Server geholt werden konnte,
-    //wird die seiner Rolle entsprechende Seite geladen.
-    var user_success = function(data) {
-        console.log(data);
-        var userRole = data.role;
-        var userSlots = [];
+            var success = function(data) {
+                slot.participants++;
+                saxsys.campus.userController.updateFreeCapacity(slot);
+                saxsys.campus.persistence.addUserSlot(slot.id);
+                saxsys.campus.userController.fillBookedListview(saxsys.campus.persistence.getUserSlots());
+                saxsys.campus.userController.initBookedListview();
 
-        if (data._embedded !== undefined) {
-            console.log("UserSlots definiert.");
-            userSlots = data._embedded.slots;
-        }
+                $("#user_info_output").popup("open");
+                setTimeout(function() {
+                    $("#user_info_output").popup("close");
+                }, 1500);
+            };
+            var fail = function(err) {
+                var error = jQuery.parseJSON(err.responseText);
+                var errorMessage = "FEHLER: " + error.detail;
 
-        if (userRole === saxoniaCampusRestApi.USER_ROLE) {
-            saxoniaCampusPersistance.init();
-            generateRoomGrids();
+                saxsys.campus.utility.displayUserError(errorMessage, 3000);
 
-            fillSlotList();
-            fillBookedListview(userSlots);
-            initBookedListview();
-            $("#userPageContent").trigger('create');
-            
-            $(".book_slot_btn").click(function() {
-
-                console.log("book-button clicked.");
-                console.log("this.id:" + this.id);
-
-                var slotID = extractSlotId(this.id);
-                var slot = saxoniaCampusPersistance.slots[slotID];
-
-                if (checkBeforeBooking(slot)) {
-
-                    var success = function(data) {
-                        slot.participants++;
-                        console.log("slotID: " + slotID);
-                        updateFreeCapacity(slot);
-                        bookSlot(slotID);
-                    };
-                    var fail = function(err) {
-                        console.log("Fehler beim buchen eines Slots");
-                    };
-
-                    saxoniaCampusRestApi.addParticipant(slot, success, fail);
-                }
-                ;
-            });
-
-            return;
-        } else {
-            if (userRole === saxoniaCampusRestApi.ADMIN_ROLE) {
-                console.log("ADMIN-Role detected.");
-                $(location).attr('href', 'index.html');
-            } else {
-                console.log('error occured!');
-                console.error("Falsche Benutzerrolle.");
-                $(location).attr('href', 'index.html');
-            }
-        }
-    };
-
-    var auth_success = function(data) {
-        saxoniaCampusRestApi.getCurrentUser(user_success, error);
-    };
-
-    saxoniaCampusRestApi.authenticate(auth_success, error);
-};
-
-var checkBeforeBooking = function(slot) {
-    if (slot.capacity < 1) {
-        $("#error_output").text('FEHLER: Im Slot "' + slot.title + '" ist kein Platz mehr!');
-        setTimeout(function() {
-            $("#error_output").text('');
-        }, 3000);
-        return false;
-    } else {
-        return true;
-    }
-};
-
-var fillBookedListview = function(userSlots) {
-    if (Array.isArray(userSlots)) {
-        for (var i in userSlots) {
-            bookSlot(userSlots[i].id);
+                $("#" + slotID + "_book_btn").show();
+            };
+            saxsys.campus.restApi.addParticipant(slot, success, fail);
         }
         ;
-    } else {
-        //only one slot
-        bookSlot(userSlots.id);
-    }
-    ;
+    });
 };
 
-var initBookedListview = function() {
+saxsys.campus.userController.initBookedListview = function() {
     $(".delete_slot").click(function(event) {
         event.stopImmediatePropagation();
-        console.log("delete slot clicked");
-        console.log("this.id:" + this.id);
 
-        var slotID = extractSlotId(this.id);
-        var slotSelector = '#user_booked_slot_list #' + slotID + '_slot';
+        var slotID = saxsys.campus.utility.extractSlotId(this.id);
+        var slotSelector = "#user_booked_slot_list #" + slotID + "_slot";
 
-        console.log("slotID: " + slotID);
-        console.log("slotSelector: " + slotSelector);
+        $("#" + slotID + "_book_btn").show();
 
-        var slot = saxoniaCampusPersistance.slots[slotID];
+        var slot = saxsys.campus.persistence.getSlotById(slotID);
+
         var success = function(data) {
             slot.participants--;
-            updateFreeCapacity(slot);
+            saxsys.campus.userController.updateFreeCapacity(slot);
+            saxsys.campus.persistence.removeUserSlot(slot.id);
             $(slotSelector).remove();
             $("#user_booked_slot_list").listview("refresh");
-            $("#" + slotID + "_book_btn").toggle();
         };
         var fail = function(err) {
-            console.log("Fehler beim entfernen eines Teilnehmers.");
+            var error = jQuery.parseJSON(err.responseText);
+            var errorMessage = "FEHLER: " + error.detail;
+
+            saxsys.campus.utility.displayUserError(errorMessage, 3000);
+
+            $("#" + slotID + "_book_btn").hide();
         };
 
-        saxoniaCampusRestApi.delParticipant(slot, success, fail);
+        saxsys.campus.restApi.delParticipant(slot, success, fail);
     });
 
     $("#user_booked_slot_list").listview("refresh");
 };
 
-var updateFreeCapacity = function(slot) {
-    $('#' + slot.id + '_free').text(slot.capacity - slot.participants);
+saxsys.campus.userController.generateRoomGrids = function() {
+    var rooms = saxsys.campus.persistence.rooms;
+
+    for (var i in rooms) {
+        var room = rooms[i];
+        saxsys.campus.renderer.renderRoomGrid("#room_grid", room);
+    }
+    ;
 };
 
-var bookSlot = function(slotID) {
-    var slot = saxoniaCampusPersistance.getSlotById(slotID);
-    saxoniaCampusRenderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
+saxsys.campus.userController.fillSlotList = function() {
+    var slots = saxsys.campus.persistence.slots;
 
-    initBookedListview();
-    //remove bookbutton
-    $("#" + slotID + "_book_btn").toggle();
+    for (var i in slots) {
+        var slot = slots[i];
+        saxsys.campus.renderer.renderUserViewDetailSlot(slot);
+    }
 };
 
+saxsys.campus.userController.fillBookedListview = function(userSlots) {
+    $("#user_booked_slot_list").html("");
+    if (Array.isArray(userSlots)) {
+        for (var i in userSlots) {
+            saxsys.campus.userController.renderSlotBooked(userSlots[i].id);
+        }
+    } else {
+        //only one slot
+        saxsys.campus.userController.renderSlotBooked(userSlots.id);
+    }
+};
+
+saxsys.campus.userController.updateFreeCapacity = function(slot) {
+    $("#" + slot.id + "_free").text(slot.capacity - slot.participants);
+};
+
+saxsys.campus.userController.checkBeforeBooking = function(slot) {
+    if (slot.capacity < 1) {
+        var errorMessage = "FEHLER: Im Slot " +
+                '"' + slot.title + '"' + "ist kein Platz mehr!";
+
+        saxsys.campus.utility.displayUserError(errorMessage, 3000);
+
+        return false;
+    }
+
+    var bookedSlots = saxsys.campus.persistence.getUserSlots();
+
+    for (var i in bookedSlots) {
+        var currentSlot = saxsys.campus.persistence.getSlotById(bookedSlots[i].id);
+        var collision = saxsys.campus.utility.collisionTest(slot, currentSlot);
+
+        if (collision) {
+            $("#" + slot.id + "_book_btn").show();
+
+            var errorMessage = "FEHLER: Slot " + '"' + slot.title + '"' +
+                    " überschneidet sich zeitlich mit dem Slot " +
+                    '"' + currentSlot.title + '"' + "!";
+
+            saxsys.campus.utility.displayUserError(errorMessage, 3000);
+
+            return false;
+        }
+    }
+    return true;
+};
+
+saxsys.campus.userController.renderSlotBooked = function(slotID) {
+    var slot = saxsys.campus.persistence.getSlotById(slotID);
+
+    saxsys.campus.renderer.renderUserViewBookedSlot("#user_booked_slot_list", slot);
+
+    saxsys.campus.userController.initBookedListview();
+};

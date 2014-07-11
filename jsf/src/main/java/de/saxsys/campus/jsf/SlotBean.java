@@ -15,8 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.saxsys.campus.business.SlotManager;
+import de.saxsys.campus.business.util.ExceptionUtil;
 import de.saxsys.campus.domain.Slot;
-import de.saxsys.campus.jsf.util.ExceptionUtil;
 
 @Named
 @SessionScoped

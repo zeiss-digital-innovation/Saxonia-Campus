@@ -3,26 +3,47 @@
     <head>
         <title>Saxonia Campus User Page</title>
         <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="0; URL=index.html">
     </head>
     <body>
         <div id="userPage" data-role="page">
             <div id="userPageHeader" data-role="header">
                 <h4>Saxonia Campus 2014</h4>
-                <a id="logout_btn_user" class="ui-btn-right" data-icon="arrow-r" data-iconpos="right" data-role="button" data-mini="true" href="index.html">Logout</a>
+                <a id="logout_btn_user" class="ui-btn-right" data-icon="arrow-r" data-iconpos="right" data-role="button" data-mini="true" href="#loginPage">Logout</a>
             </div>
             <div id="userPageContent" data-role="content">
-                <h2 id="headline">User-View</h2>
                
+                <h4> Kurzanleitung</h4>
+                <ul>
+                    <li>Im unteren Bereich befinden sich nach Räumen sortiert die angebotenen Vorträge, Workshops etc.</li>
+                    <li>Details lassen sich ausklappen.</li>
+                    <li>Mit dem jeweiligen Buchen-Button kann der Slot gebucht werden.</li>
+                    <li>Im Bereich <b>Gebuchte Slots</b> werden die bereits gebuchten Slots zeitlich sortiert aufgelistet.</li>
+                    <li>mit einem Klick auf das <a data-role="button" data-icon="delete" data-inline="true" data-iconpos="notext">&nbsp;</a> kann die Buchung des jeweiligen Slot storniert werden.</li>
+                </ul>
+                
+                <h4>Hinweis</h4>
+                <p>
+                    Die Räume der einzelnen Slots können sich noch ändern.<br/>
+                    Eine weitere Übersicht der Slots findet Ihr im
+                    <a href="https://portal.saxsys.de/kt/Themenliste/Saxonia%20Campus%202014/Saxonia-Campus-2014.xlsx">Excel-Dokument im Sharepoint</a>.
+                </p>
+                <hr>
+                
                 <h4>Gebuchte Slots</h4>
                 <ul id="user_booked_slot_list" data-role='listview' data-split-icon="delete" data-inset="true">
                 </ul>
+                <div data-role="popup" id="user_error_output" class="error_bar"></div>
+                <div data-role="popup" id="user_info_output" class="info">
+                    <a data-role="button" data-icon="arrow-u" data-inline="true" data-iconpos="notext">&nbsp;</a>
+                    Slot erfolgreich gebucht.
+                </div>
+                
                 <hr>
+                
                 <div id="room_grid" class="ui-grid-b ui-responsive">
                 </div>
-                <div id="error_output" class="error_bar"></div>
-            </div>
-            <div id="userPageFooter" data-role="footer" data-position="fixed">
-                <h5>Marco Dierenfeldt 2014</h5>
+                
             </div>
         </div>
     </body>
