@@ -21,7 +21,7 @@ public class SimpleAuthenticationService implements AuthenticationService {
 	private static final String DEFAULT_USER_PASSWORD = "162832ab572046b2dd00c343cf5096c7";
 	private static final String DEFAULT_ADMIN_PASSWORD = "4ba90ade801a94093c6bbacbfd6c5bb2";
 
-	@Inject
+	@EJB
 	private UserManager userManager;
 
 	@Override
@@ -56,7 +56,6 @@ public class SimpleAuthenticationService implements AuthenticationService {
 		for (byte b : digest) {
 			sb.append(String.format("%02x", b & 0xff));
 		}
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 }

@@ -1,6 +1,7 @@
 package de.saxsys.campus.rest.resource;
 
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,14 +16,14 @@ import de.saxsys.campus.domain.User;
 import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.UserMapper;
 
-@RequestScoped
+@Stateless
 @Path("/users")
 public class UserResource {
 
 	@Inject
 	private UserMapper userMapper;
 
-	@Inject
+	@EJB
 	private UserManager userManager;
 
 	@Context
