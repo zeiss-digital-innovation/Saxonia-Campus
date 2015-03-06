@@ -15,7 +15,8 @@
 	<name>Saxonia Campus EAR</name>
 
 	<properties>
-		<wildfly.version>8.1.0.CR1</wildfly.version>
+		<wildfly.version>8.2.0.Final</wildfly.version>
+        <mysql.version>5.1.33</mysql.version>
 	</properties>
 
 	<dependencies>
@@ -40,7 +41,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.30</version>
+			<version>${mysql.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -49,7 +50,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.9</version>
+				<version>2.10</version>
 				<configuration>
 					<version>7</version>
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
@@ -87,15 +88,15 @@
 						<configuration>
 							<groupId>mysql</groupId>
 							<artifactId>mysql-connector-java</artifactId>
-							<version>5.1.30</version>
-							<name>mysql-connector-java-5.1.30.jar</name>
+							<version>${mysql.version}</version>
+							<name>mysql-connector-java-${mysql.version}.jar</name>
 						</configuration>
 						<goals>
 							<goal>deploy-artifact</goal>
 						</goals>
 					</execution>
 					<!-- Add a data source -->
-					<execution>
+					<!-- <execution>
 						<id>add-datasource</id>
 						<phase>pre-integration-test</phase>
 						<configuration>
@@ -108,7 +109,7 @@
 										<jta>true</jta>
 										<use-ccm>false</use-ccm>
 										<connection-url>jdbc:mysql://localhost:3306/campus</connection-url>
-										<driver-name>mysql-connector-java-5.1.30.jar_com.mysql.jdbc.Driver_5_1</driver-name>
+										<driver-name>mysql-connector-java-${mysql.version}.jar_com.mysql.jdbc.Driver_5_1</driver-name>
 										<user-name>campus</user-name>
 										<password>campus</password>
 									</properties>
@@ -118,7 +119,7 @@
 						<goals>
 							<goal>add-resource</goal>
 						</goals>
-					</execution>
+					</execution> -->
 					<!-- Deploy the application -->
 					<execution>
 						<id>deploy</id>

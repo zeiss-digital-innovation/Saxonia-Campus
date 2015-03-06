@@ -24,9 +24,9 @@ saxsys.campus.restApi.authenticate = function(success_function, fail_function) {
                     xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
-                    console.log('authentication successfull');
-                    saxsys.campus.restApi.CURRENT_USER_URL = data._links.currentUser.href;
-                    saxsys.campus.restApi.SLOTS_URL = data._links.slots.href;
+                    console.log('authentication successful');
+                    saxsys.campus.restApi.CURRENT_USER_URL = data._links.currentUser[0].href;
+                    saxsys.campus.restApi.SLOTS_URL = data._links.slots[0].href;
                     success_function(data);
                 },
                 error: function(err) {
@@ -48,7 +48,7 @@ saxsys.campus.restApi.getCurrentUser = function(success_function, fail_function)
                     xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
-                    console.log('getCurrentUser successfull');
+                    console.log('getCurrentUser successful');
                     success_function(data);
                 },
                 error: function(err) {
@@ -70,8 +70,8 @@ saxsys.campus.restApi.getSlots = function(success_function, fail_function) {
                     xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
-                    console.log('getSlots successfull');
-                    saxsys.campus.restApi.ROOMS_URL = data._links.rooms.href;
+                    console.log('getSlots successful');
+                    saxsys.campus.restApi.ROOMS_URL = data._links.rooms[0].href;
                     success_function(data._embedded.slots);
                 },
                 error: function(err) {
@@ -93,7 +93,7 @@ saxsys.campus.restApi.getRooms = function(success_function, fail_function) {
                     xhr.setRequestHeader('Authorization', saxsys.campus.restApi.AUTH_STRING);
                 },
                 success: function(data) {
-                    console.log('getRooms successfull');
+                    console.log('getRooms successful');
                     success_function(data._embedded.rooms);
                 },
                 error: function(err) {
@@ -118,7 +118,7 @@ saxsys.campus.restApi.addSlot = function(slot, success_function, fail_function) 
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('addSlot successfull');
+                    console.log('addSlot successful');
                     success_function(data);
                 },
                 error: function(err) {
@@ -149,7 +149,7 @@ saxsys.campus.restApi.updateSlot = function(slot, success_function, fail_functio
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('updateSlot successfull');
+                    console.log('updateSlot successful');
                     success_function(data);
                 },
                 error: function(err) {
@@ -180,7 +180,7 @@ saxsys.campus.restApi.deleteSlot = function(slot, success_function, fail_functio
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('delete slot successfull');
+                    console.log('delete slot successful');
                     success_function(data);
                 },
                 error: function(err) {
@@ -210,16 +210,9 @@ saxsys.campus.restApi.getParticipants = function(slot, success_function, fail_fu
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('getParticipants successfull');
+                    console.log('getParticipants successful');
                     
-                    //Wenn nur ein Element im Ergebnis ist, wird kein Array zurückgegeben.
-                    //Workaround, einzelnes Objekt ebenfalls in Array packen
-                    //-> einheitliches Ergebnishandling
                     var participants = data._embedded.participants;
-                    if(data.count === 1){
-                        participants = [];
-                        participants[0] = data._embedded.participants;
-                    }
                     success_function(participants);
                 },
                 error: function(err) {
@@ -244,7 +237,7 @@ saxsys.campus.restApi.addParticipant = function(slot, success_function, fail_fun
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('addParticipant successfull');
+                    console.log('addParticipant successful');
                     success_function(data);
                 },
                 error: function(err) {
@@ -274,7 +267,7 @@ saxsys.campus.restApi.delParticipant = function(slot, success_function, fail_fun
                     xhr.setRequestHeader('Content-Type', 'application/hal+json');
                 },
                 success: function(data) {
-                    console.log('delParticipant successfull');
+                    console.log('delParticipant successful');
                     success_function(data);
                 },
                 error: function(err) {

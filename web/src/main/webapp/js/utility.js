@@ -37,8 +37,8 @@ saxsys.campus.utility.convertRestSlotToViewSlot = function(restSlot) {
     slot.description = restSlot.description;
     slot.room = room.roomnumber;
     slot.roomId = room.id;
-    slot.starttime = saxsys.campus.utility.convertMillisToTimeStr(restSlot.starttime);
-    slot.endtime = saxsys.campus.utility.convertMillisToTimeStr(restSlot.endtime);
+    slot.starttime = restSlot.starttime; //saxsys.campus.utility.convertMillisToTimeStr(restSlot.starttime);
+    slot.endtime = restSlot.endtime; //saxsys.campus.utility.convertMillisToTimeStr(restSlot.endtime);
     slot.speaker = restSlot.speaker;
     slot.capacity = restSlot.capacity;
     slot.participants = restSlot.participants;
@@ -53,7 +53,7 @@ saxsys.campus.utility.convertJsonSlotToViewSlot = function(jsonSlot) {
 };
 
 saxsys.campus.utility.getRoomFromRestSlot = function(restSlot) {
-    var room = restSlot._embedded.room;
+    var room = restSlot._embedded.room[0];
 
     return room;
 };

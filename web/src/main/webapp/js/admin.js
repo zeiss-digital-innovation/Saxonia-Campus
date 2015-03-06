@@ -135,8 +135,8 @@ saxsys.campus.adminController.saveNewSlot = function() {
     var newSlot = new SaveSlot(slotTitle);
     newSlot.description = slotDescription;
     newSlot.room = slotRoom;
-    newSlot.starttime = saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
-    newSlot.endtime = saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
+    newSlot.starttime = slotStarttime; //saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
+    newSlot.endtime = slotEndtime; //saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
     newSlot.speaker = slotSpeaker;
     newSlot.capacity = capacity;
 
