@@ -1,7 +1,6 @@
-.settings
 target/
 .project
 .classpath
-web-js/nbproject/private/private.properties
-web-js/nbproject/private/private.xml
-web/nb-configuration.xml
+.settings/*
+!.settings/.jsdtscope
+.tern-project

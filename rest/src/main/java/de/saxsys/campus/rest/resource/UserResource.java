@@ -1,8 +1,8 @@
 package de.saxsys.campus.rest.resource;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -16,27 +16,27 @@ import de.saxsys.campus.domain.User;
 import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.UserMapper;
 
-@Stateless
 @Path("/users")
+@Transactional
 public class UserResource {
 
-	@Inject
-	private UserMapper userMapper;
+    @Inject
+    private UserMapper userMapper;
 
-	@EJB
-	private UserManager userManager;
+    @EJB
+    private UserManager userManager;
 
-	@Context
-	private UriInfo uriInfo;
+    @Context
+    private UriInfo uriInfo;
 
-	@Context
-	private SecurityContext securityContext;
+    @Context
+    private SecurityContext securityContext;
 
-	@GET
-	@Path("current")
-	@Produces(HalMediaTypes.HAL_JSON)
-	public Response getCurrentUser() {
-		User user = userManager.findUser(securityContext.getUserPrincipal().getName());
-		return Response.ok(userMapper.createRepresentation(uriInfo.getBaseUri(), user)).build();
-	}
+    @GET
+    @Path("current")
+    @Produces(HalMediaTypes.HAL_JSON)
+    public Response getCurrentUser() {
+        User user = userManager.findUser(securityContext.getUserPrincipal().getName());
+        return Response.ok(userMapper.createRepresentation(uriInfo.getBaseUri(), user)).build();
+    }
 }

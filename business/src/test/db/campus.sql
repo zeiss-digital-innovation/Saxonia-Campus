@@ -151,7 +151,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'stefan.heinze',0,'Stefan','Heinze'),(2,'marco.dierenfeldt',1,'Marco','Dierenfeldt'),(3,'stefan.bley',1,'Stefan','Bley'),(4,'matthias.baumgart',0,'Matthias','Baumgart');
+INSERT INTO `user` VALUES (1,'stefan.heinze',0,'Stefan','Heinze'),(2,'sven.hoffmann',0,'Sven','Hoffmann'),(3,'stefan.bley',0,'Stefan','Bley'),(4,'admin.sb',1,'Stefan','Bley'),(5,'admin.sh',1,'Sven','Hoffmann');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

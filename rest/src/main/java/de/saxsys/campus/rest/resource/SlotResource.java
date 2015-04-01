@@ -6,8 +6,8 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,9 +38,9 @@ import de.saxsys.campus.rest.hal.HalMediaTypes;
 import de.saxsys.campus.rest.mapping.ErrorMapper;
 import de.saxsys.campus.rest.mapping.SlotMapper;
 
-@Stateless
 @Path("/slots")
 @PermitAll
+@Transactional
 public class SlotResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SlotResource.class);
@@ -113,6 +113,7 @@ public class SlotResource {
             Slot newSlot = slotMapper.toEntity(null, representation);
             slotManager.addSlot(newSlot);
             Representation slotRepresentation = createSlotRepresentation(newSlot);
+            LOGGER.info("Slot '{}' added.", newSlot.getTitle());
             return Response.created(getSelfUri(slotRepresentation))
                     .entity(slotRepresentation)
                     .build();
@@ -130,6 +131,7 @@ public class SlotResource {
     public Response deleteSlot(@PathParam("id") int id) {
         try {
             slotManager.deleteSlot(id);
+            LOGGER.info("Slot {} deleted.", id);
         } catch (EJBException e) {
             LOGGER.error("Could not delete slot.", e);
             throw new WebApplicationException(404);

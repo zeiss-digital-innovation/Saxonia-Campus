@@ -19,37 +19,22 @@ import de.saxsys.campus.rest.resource.UserResource;
 @ApplicationPath("/")
 public class CampusApplication extends Application {
 
-	public CampusApplication() {
-		// TODO delete jersey stuff [SB]
-		// packages("de.saxsys.campus.rest.resource");
-		// register(HalBuilderMessageBodyReader.class);
-		// register(HalBuilderMessageBodyWriter.class);
-		// register(RolesAllowedDynamicFeature.class);
-		// register(AuthenticationFilter.class);
-		// register(WebApplicationExceptionMapper.class);
-		// register(DefaultExceptionMapper.class);
-	}
+    public CampusApplication() {
+    }
 
-	@Override
-	public Set<Class<?>> getClasses() {
-		Set<Class<?>> classes = new HashSet<>();
-		classes.add(HomeResource.class);
-		classes.add(SlotResource.class);
-		classes.add(RoomResource.class);
-		classes.add(UserResource.class);
-		classes.add(HalBuilderMessageBodyReader.class);
-		classes.add(HalBuilderMessageBodyWriter.class);
-		classes.add(AuthenticationFilter.class);
-		classes.add(WebApplicationExceptionMapper.class);
-		classes.add(DefaultExceptionMapper.class);
-		// classes.add(RolesAllowedDynamicFeature.class);
-		return classes;
-	}
-
-	@Override
-	public Set<Object> getSingletons() {
-		// TODO Auto-generated method stub
-		return super.getSingletons();
-	}
+    @Override
+    public Set<Class<?>> getClasses() {
+        Set<Class<?>> classes = new HashSet<>();
+        classes.add(HomeResource.class);
+        classes.add(SlotResource.class);
+        classes.add(RoomResource.class);
+        classes.add(UserResource.class);
+        classes.add(HalBuilderMessageBodyReader.class);
+        classes.add(HalBuilderMessageBodyWriter.class);
+        classes.add(AuthenticationFilter.class);
+        classes.add(WebApplicationExceptionMapper.class);
+        classes.add(DefaultExceptionMapper.class);
+        return classes;
+    }
 
 }
