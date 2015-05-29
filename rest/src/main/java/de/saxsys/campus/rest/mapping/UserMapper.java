@@ -21,33 +21,41 @@ import de.saxsys.campus.rest.resource.UserResource;
 @Stateless
 public class UserMapper {
 
-	private static final String SLOTS = "slots";
+    private static final String SLOTS = "slots";
 
-	@Inject
-	private RepresentationFactory representationFactory;
+    @Inject
+    private RepresentationFactory representationFactory;
 
-	@Inject
-	private SlotMapper slotMapper;
+    @Inject
+    private SlotMapper slotMapper;
 
-	public Representation createRepresentation(URI baseUri, User user) {
-		Representation r = representationFactory
-				.newRepresentation(
-						UriBuilder.fromUri(baseUri).path(UserResource.class)
-								.path(UserResource.class, "getCurrentUser").build())
-				.withProperty("id", user.getId()).withProperty("username", user.getUsername())
-				.withProperty("role", user.getRole());
-		final List<Slot> slots = user.getSlotList();
-		for (Slot slot : slots) {
-			r.withRepresentation(SLOTS, createSlotRepresentation(baseUri, slot));
-		}
-		r.withLink(SLOTS,
-				UriBuilder.fromUri(baseUri).path(SlotResource.class)
-						.queryParam("currentUser", true).build());
-		return r;
-	}
+    public Representation createRepresentation(URI baseUri, User user) {
+        Representation r =
+                representationFactory.newRepresentation(
+                        UriBuilder.fromUri(baseUri)
+                                .path(UserResource.class)
+                                .path(UserResource.class, "getCurrentUser")
+                                .build())
+                        .withProperty("id", user.getId())
+                        .withProperty("username", user.getUsername())
+                        .withProperty("firstname", user.getFirstname())
+                        .withProperty("lastname", user.getLastname())
+                        .withProperty("role", user.getRole());
+        final List<Slot> slots = user.getSlotList();
+        for (Slot slot : slots) {
+            r.withRepresentation(SLOTS, createSlotRepresentation(baseUri, slot));
+        }
+        r.withLink(SLOTS,
+                UriBuilder.fromUri(baseUri)
+                        .path(SlotResource.class)
+                        .queryParam("currentUser", true)
+                        .build());
+        return r;
+    }
 
-	private ReadableRepresentation createSlotRepresentation(URI baseUri, Slot slot) {
-		return representationFactory.newRepresentation(slotMapper.createUri(baseUri, slot))
-				.withProperty("id", slot.getId()).withProperty("title", slot.getTitle());
-	}
+    private ReadableRepresentation createSlotRepresentation(URI baseUri, Slot slot) {
+        return representationFactory.newRepresentation(slotMapper.createUri(baseUri, slot))
+                .withProperty("id", slot.getId())
+                .withProperty("title", slot.getTitle());
+    }
 }

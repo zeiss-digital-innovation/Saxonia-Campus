@@ -7,9 +7,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+
+import com.theoryinpractise.halbuilder.api.Representation;
 
 import de.saxsys.campus.business.UserManager;
 import de.saxsys.campus.domain.User;
@@ -37,6 +40,7 @@ public class UserResource {
     @Produces(HalMediaTypes.HAL_JSON)
     public Response getCurrentUser() {
         User user = userManager.findUser(securityContext.getUserPrincipal().getName());
-        return Response.ok(userMapper.createRepresentation(uriInfo.getBaseUri(), user)).build();
+        Representation rep = userMapper.createRepresentation(uriInfo.getBaseUri(), user);
+        return Response.ok(rep).tag(EntityTag.valueOf(String.valueOf(rep.hashCode()))).build();
     }
 }
