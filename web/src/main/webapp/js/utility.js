@@ -116,7 +116,7 @@ saxsys.campus.utility.extractSlotId = function(element_id) {
 
 saxsys.campus.utility.startCsvDownload = function(csvString, fileName) {
     var a = document.createElement("a");
-    a.href = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
+    a.href = "data:application/csv;charset=utf-8," + encodeURIComponent("\ufeff" + csvString);
     a.target = "_blank";
     a.download = fileName;
     document.body.appendChild(a);
