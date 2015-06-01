@@ -93,7 +93,7 @@
                         <artifactId>maven-ear-plugin</artifactId>
                         <version>2.10</version>
                         <configuration>
-                            <outputDirectory>../deployments</outputDirectory>
+                            <outputDirectory>deployments</outputDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
