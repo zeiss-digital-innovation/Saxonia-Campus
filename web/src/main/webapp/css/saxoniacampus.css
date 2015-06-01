@@ -8,6 +8,8 @@ Style Informationen für das SaxoniaCampus Portal
 
 /* Allgemeine definitionen für alle Seiten */
 
+@charset "utf-8";
+
 header {
     padding: 10px;
     font-weight: bold;
@@ -48,7 +50,7 @@ h2 {
 
 #user_info_output{
     color: #053905;
-    background-color: #66ff66;
+    background-color: #99ffaa;
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -71,7 +73,7 @@ h2 {
     padding-right: 10px;
 }
 
-/* definitionen für die Adminseite */
+/* Definitionen für die Adminseite */
 #admin_menu {
     position:absolute;
     top: 140px;
@@ -108,7 +110,7 @@ h2 {
     border-style: solid;
 }
 
-/* definitionen für die Userseite */
+/* Definitionen für die Userseite */
 #slot_overview_label {
     position: absolute;
     top: 140px;
