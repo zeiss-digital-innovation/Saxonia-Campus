@@ -11,6 +11,6 @@ public class RepresentationFactoryProducer {
 
 	@Produces
 	public RepresentationFactory jsonRepresentationFactory() {
-		return new JsonRepresentationFactory().withFlag(RepresentationFactory.PRETTY_PRINT);
+		return new JsonRepresentationFactory().withFlag(RepresentationFactory.PRETTY_PRINT).withFlag(RepresentationFactory.COALESCE_ARRAYS);
 	}
 }

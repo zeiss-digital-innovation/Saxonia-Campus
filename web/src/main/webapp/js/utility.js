@@ -53,7 +53,7 @@ saxsys.campus.utility.convertJsonSlotToViewSlot = function(jsonSlot) {
 };
 
 saxsys.campus.utility.getRoomFromRestSlot = function(restSlot) {
-    var room = restSlot._embedded.room[0];
+    var room = restSlot._embedded.room;
 
     return room;
 };

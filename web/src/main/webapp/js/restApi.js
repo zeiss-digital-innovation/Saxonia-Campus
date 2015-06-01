@@ -25,8 +25,8 @@ saxsys.campus.restApi.authenticate = function(success_function, fail_function) {
                 },
                 success: function(data) {
                     console.log('authentication successful');
-                    saxsys.campus.restApi.CURRENT_USER_URL = data._links.currentUser[0].href;
-                    saxsys.campus.restApi.SLOTS_URL = data._links.slots[0].href;
+                    saxsys.campus.restApi.CURRENT_USER_URL = data._links.currentUser.href;
+                    saxsys.campus.restApi.SLOTS_URL = data._links.slots.href;
                     success_function(data);
                 },
                 error: function(err) {
@@ -71,7 +71,7 @@ saxsys.campus.restApi.getSlots = function(success_function, fail_function) {
                 },
                 success: function(data) {
                     console.log('getSlots successful');
-                    saxsys.campus.restApi.ROOMS_URL = data._links.rooms[0].href;
+                    saxsys.campus.restApi.ROOMS_URL = data._links.rooms.href;
                     success_function(data._embedded.slots);
                 },
                 error: function(err) {
@@ -213,6 +213,9 @@ saxsys.campus.restApi.getParticipants = function(slot, success_function, fail_fu
                     console.log('getParticipants successful');
                     
                     var participants = data._embedded.participants;
+                    if (!Array.isArray(participants)) {
+                        participants = [participants];
+                    }
                     success_function(participants);
                 },
                 error: function(err) {
