@@ -174,8 +174,8 @@ saxsys.campus.adminController.updateExistingSlot = function() {
     var slot = new UpdateSlot(slotID, slotTitle);
     slot.description = slotDescription;
     slot.room = slotRoomId;
-    slot.starttime = saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
-    slot.endtime = saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
+    slot.starttime = slotStarttime;//saxsys.campus.utility.convertTimeStrToMillis(slotStarttime);
+    slot.endtime = slotEndtime;//saxsys.campus.utility.convertTimeStrToMillis(slotEndtime);
     slot.speaker = slotSpeaker;
     slot.capacity = slotCapacity;
 
