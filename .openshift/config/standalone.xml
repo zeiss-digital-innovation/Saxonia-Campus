@@ -194,13 +194,9 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:ejb3:2.0">
             <session-bean>
-                <stateful default-access-timeout="5000" cache-ref="distributable" passivation-disabled-cache-ref="simple"/>
+                <stateful default-access-timeout="5000" cache-ref="simple" passivation-disabled-cache-ref="simple"/>
                 <singleton default-access-timeout="5000"/>
             </session-bean>
-            <mdb>
-                <resource-adapter-ref resource-adapter-name="${ejb.resource-adapter-name:hornetq-ra.rar}"/>
-                <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
-            </mdb>
             <pools>
                 <bean-instance-pools>
                     <!-- A sample strict max pool configuration -->
@@ -237,23 +233,21 @@
             <buffer-pool name="default"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:infinispan:2.0">
-            <cache-container name="server" aliases="singleton cluster" default-cache="default" module="org.wildfly.clustering.server">
-                <transport lock-timeout="60000"/>
-                <replicated-cache name="default" mode="SYNC" batching="true">
-                    <locking isolation="REPEATABLE_READ"/>
-                </replicated-cache>
+            <cache-container name="web" default-cache="passivation" module="org.wildfly.clustering.web.infinispan">
+                <local-cache name="passivation" batching="true">
+                    <file-store passivation="true" purge="false"/>
+                </local-cache>
+                <local-cache name="persistent" batching="true">
+                    <file-store passivation="false" purge="false"/>
+                </local-cache>
             </cache-container>
-            <cache-container name="web" default-cache="dist" module="org.wildfly.clustering.web.infinispan">
-                <transport lock-timeout="60000"/>
-                <distributed-cache name="dist" mode="ASYNC" batching="true" l1-lifespan="0" owners="2">
-                    <file-store/>
-                </distributed-cache>
-            </cache-container>
-            <cache-container name="ejb" aliases="sfsb" default-cache="dist" module="org.wildfly.clustering.ejb.infinispan">
-                <transport lock-timeout="60000"/>
-                <distributed-cache name="dist" mode="ASYNC" batching="true" l1-lifespan="0" owners="2">
-                    <file-store/>
-                </distributed-cache>
+            <cache-container name="ejb" default-cache="passivation" module="org.wildfly.clustering.ejb.infinispan" aliases="sfsb">
+                <local-cache name="passivation" batching="true">
+                    <file-store passivation="true" purge="false"/>
+                </local-cache>
+                <local-cache name="persistent" batching="true">
+                    <file-store passivation="false" purge="false"/>
+                </local-cache>
             </cache-container>
             <cache-container name="hibernate" default-cache="local-query" module="org.hibernate">
                 <transport lock-timeout="60000"/>
