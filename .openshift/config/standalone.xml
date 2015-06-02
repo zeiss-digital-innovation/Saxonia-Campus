@@ -250,7 +250,6 @@
                 </local-cache>
             </cache-container>
             <cache-container name="hibernate" default-cache="local-query" module="org.hibernate">
-                <transport lock-timeout="60000"/>
                 <local-cache name="local-query">
                     <transaction mode="NONE"/>
                     <eviction strategy="LRU" max-entries="10000"/>
