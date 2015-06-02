@@ -1,5 +1,7 @@
 package de.saxsys.campus.rest.auth;
 
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
+
 import java.io.IOException;
 import java.security.Principal;
 
@@ -13,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 
-import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +89,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 		authentication = authentication.substring("Basic ".length());
 
-		final String[] values = Base64.decodeAsString(authentication).split(":", 2);
+		final String[] values = new String(decodeBase64(authentication)).split(":", 2);
 		if (values.length < 2) {
 			throw authenticationError("Authorization header invalid.");
 		}
@@ -111,7 +112,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
 	private WebApplicationException authenticationError(String detail) {
 		LOGGER.info(detail);
-		Representation error = errorMapper.createRepresentation("HTTP 403 Forbidden", detail);
-		return new WebApplicationException(Response.status(403).entity(error).build());
+		Representation error = errorMapper.createRepresentation("HTTP 401 Unauthorized", detail);
+		return new WebApplicationException(Response.status(401).entity(error).build());
 	}
 }

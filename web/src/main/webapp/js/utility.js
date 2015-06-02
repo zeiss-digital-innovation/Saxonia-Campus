@@ -37,8 +37,8 @@ saxsys.campus.utility.convertRestSlotToViewSlot = function(restSlot) {
     slot.description = restSlot.description;
     slot.room = room.roomnumber;
     slot.roomId = room.id;
-    slot.starttime = saxsys.campus.utility.convertMillisToTimeStr(restSlot.starttime);
-    slot.endtime = saxsys.campus.utility.convertMillisToTimeStr(restSlot.endtime);
+    slot.starttime = restSlot.starttime; //saxsys.campus.utility.convertMillisToTimeStr(restSlot.starttime);
+    slot.endtime = restSlot.endtime; //saxsys.campus.utility.convertMillisToTimeStr(restSlot.endtime);
     slot.speaker = restSlot.speaker;
     slot.capacity = restSlot.capacity;
     slot.participants = restSlot.participants;
@@ -116,7 +116,7 @@ saxsys.campus.utility.extractSlotId = function(element_id) {
 
 saxsys.campus.utility.startCsvDownload = function(csvString, fileName) {
     var a = document.createElement("a");
-    a.href = "data:application/csv;charset=utf-8," + encodeURIComponent(csvString);
+    a.href = "data:application/csv;charset=utf-8," + encodeURIComponent("\ufeff" + csvString);
     a.target = "_blank";
     a.download = fileName;
     document.body.appendChild(a);

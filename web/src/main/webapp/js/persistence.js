@@ -100,7 +100,7 @@ saxsys.campus.persistence.initSlots = function() {
 
     saxsys.campus.persistence.slots = [];
     var success = function(data) {
-        console.log('slots load successfull');
+        console.log('slots load successful');
         for (var i in data) {
             var currentSlot = data[i];
 
@@ -137,7 +137,7 @@ saxsys.campus.persistence.initRooms = function() {
                     xhr.setRequestHeader('Authorization', authString);
                 },
                 success: function(data) {
-                    console.log('slots load successfull');
+                    console.log('slots load successful');
                     saxsys.campus.persistence.rooms = data._embedded.rooms;
                 },
                 error: function() {

@@ -25,25 +25,27 @@ import com.theoryinpractise.halbuilder.json.JsonRepresentationReader;
 @Provider
 public class HalBuilderMessageBodyReader implements MessageBodyReader<ReadableRepresentation> {
 
-	@Override
-	public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations,
-			MediaType mediaType) {
-		return ReadableRepresentation.class.isAssignableFrom(type) && supportsMediaType(mediaType);
-	}
+    @Override
+    public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations,
+            MediaType mediaType) {
+        return ReadableRepresentation.class.isAssignableFrom(type) && supportsMediaType(mediaType);
+    }
 
-	@Override
-	public ReadableRepresentation readFrom(Class<ReadableRepresentation> type, Type genericType,
-			Annotation[] annotations, MediaType mediaType,
-			MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-			throws IOException, WebApplicationException {
-		RepresentationFactory representationFactory = new DefaultRepresentationFactory()
-				.withReader(HAL_JSON, JsonRepresentationReader.class);
-		ReadableRepresentation representation = representationFactory
-				.readRepresentation(new InputStreamReader(entityStream, Charset.forName("utf-8")));
-		return representation;
-	}
+    @Override
+    public ReadableRepresentation readFrom(Class<ReadableRepresentation> type, Type genericType,
+            Annotation[] annotations, MediaType mediaType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+        throws IOException, WebApplicationException {
+        RepresentationFactory representationFactory =
+                new DefaultRepresentationFactory().withReader(HAL_JSON,
+                        JsonRepresentationReader.class);
+        ReadableRepresentation representation =
+                representationFactory.readRepresentation(HAL_JSON, new InputStreamReader(
+                        entityStream, Charset.forName("utf-8")));
+        return representation;
+    }
 
-	private boolean supportsMediaType(MediaType mediaType) {
-		return mediaType.isCompatible(HAL_JSON_TYPE) || mediaType.isCompatible(HAL_XML_TYPE);
-	}
+    private boolean supportsMediaType(MediaType mediaType) {
+        return mediaType.isCompatible(HAL_JSON_TYPE) || mediaType.isCompatible(HAL_XML_TYPE);
+    }
 }

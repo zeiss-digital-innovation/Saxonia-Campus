@@ -1,76 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>de.saxsys.campus</groupId>
-		<artifactId>parent</artifactId>
-		<version>1.0.0</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.saxsys.campus</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-	<artifactId>ear</artifactId>
-	<packaging>ear</packaging>
+    <artifactId>campus-ear</artifactId>
+    <packaging>ear</packaging>
 
-	<name>Saxonia Campus EAR</name>
+    <name>Saxonia Campus EAR</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>business</artifactId>
-			<version>${project.version}</version>
-			<type>ejb</type>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>jsf</artifactId>
-			<version>${project.version}</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rest</artifactId>
-			<version>${project.version}</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>web</artifactId>
-			<version>${project.version}</version>
-			<type>war</type>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-ear-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<version>7</version>
-					<defaultLibBundleDir>lib</defaultLibBundleDir>
-					<skinnyWars>true</skinnyWars>
-					<modules>
-						<ejbModule>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>business</artifactId>
-						</ejbModule>
-					</modules>
-					<modules>
-						<webModule>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>jsf</artifactId>
-						</webModule>
-					</modules>
-					<modules>
-						<webModule>
-							<groupId>${project.groupId}</groupId>
-							<artifactId>rest</artifactId>
-						</webModule>
-					</modules>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>campus-business</artifactId>
+            <version>${project.version}</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>campus-rest</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>campus-web</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <version>7</version>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <skinnyWars>true</skinnyWars>
+                    <modules>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>campus-web</artifactId>
+                            <contextRoot>web</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>campus-rest</artifactId>
+                            <contextRoot>rest</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+            <!-- The WildFly plugin deploys your ear to a local WildFly container -->
+            <!-- Due to Maven's lack of intelligence with EARs we need to 
+                configure the wildfly maven plugin to skip deployment for all modules. We 
+                then enable it specifically in the ear module. -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <!-- When built in OpenShift the 'openshift' profile will be 
+                used when invoking mvn. -->
+            <!-- Use this profile for any OpenShift specific customization 
+                your app will need. -->
+            <!-- By default that is to put the resulting archive into the 
+                'deployments' folder. -->
+            <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+            <id>openshift</id>
+            <build>
+                <finalName>campustest</finalName>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-ear-plugin</artifactId>
+                        <version>2.10</version>
+                        <configuration>
+                            <outputDirectory>deployments</outputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
