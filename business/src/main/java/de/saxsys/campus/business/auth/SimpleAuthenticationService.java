@@ -18,8 +18,8 @@ import de.saxsys.campus.domain.User;
 @Stateless
 public class SimpleAuthenticationService implements AuthenticationService {
 
-    private static final String DEFAULT_USER_PASSWORD = "162832ab572046b2dd00c343cf5096c7";
-    private static final String DEFAULT_ADMIN_PASSWORD = "21232f297a57a5a743894a0e4a801fc3";
+    private static final String DEFAULT_USER_PASSWORD = "d5913c313a8888eccb542dfd5bf6f54e"; // c...5
+    private static final String DEFAULT_ADMIN_PASSWORD = "4e5c147a028d51762085a2db86ef3549"; // s....e
 
     @EJB
     private UserManager userManager;
