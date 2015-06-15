@@ -14,44 +14,45 @@ import de.saxsys.campus.domain.Slot;
 @SuppressWarnings("unchecked")
 public class DbSlotManager implements SlotManager {
 
-	@PersistenceContext
-	private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-	@Override
-	public List<Slot> allSlots() {
-		EntityGraph<Slot> includeParticipants = (EntityGraph<Slot>) em
-				.getEntityGraph("Slot.participants");
-		return em.createNamedQuery("Slot.findAll")
-				.setHint("javax.persistence.loadgraph", includeParticipants).getResultList();
-	}
+    @Override
+    public List<Slot> allSlots() {
+        EntityGraph<Slot> includeParticipants =
+                (EntityGraph<Slot>) em.getEntityGraph("Slot.participants");
+        return em.createNamedQuery("Slot.findAll")
+                .setHint("javax.persistence.loadgraph", includeParticipants)
+                .getResultList();
+    }
 
-	@Override
-	public void addSlot(final Slot slot) {
-		em.persist(slot);
-	}
+    @Override
+    public void addSlot(final Slot slot) {
+        em.persist(slot);
+    }
 
-	@Override
-	public Slot updateSlot(final Slot slot) {
-		return em.merge(slot);
-	}
+    @Override
+    public Slot updateSlot(final Slot slot) {
+        return em.merge(slot);
+    }
 
-	@Override
-	public List<Room> allRooms() {
-		return em.createNamedQuery("Room.findAll").getResultList();
-	}
+    @Override
+    public List<Room> allRooms() {
+        return em.createNamedQuery("Room.findAll").getResultList();
+    }
 
-	@Override
-	public Room findRoom(int roomId) {
-		return em.find(Room.class, roomId);
-	}
+    @Override
+    public Room findRoom(int roomId) {
+        return em.find(Room.class, roomId);
+    }
 
-	@Override
-	public void deleteSlot(int slotId) {
-		em.remove(em.find(Slot.class, slotId));
-	}
+    @Override
+    public void deleteSlot(int slotId) {
+        em.remove(em.find(Slot.class, slotId));
+    }
 
-	@Override
-	public Slot findSlot(int slotId) {
-		return em.find(Slot.class, slotId);
-	}
+    @Override
+    public Slot findSlot(int slotId) {
+        return em.find(Slot.class, slotId);
+    }
 }

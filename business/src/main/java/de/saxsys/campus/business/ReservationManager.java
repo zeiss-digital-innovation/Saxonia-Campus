@@ -9,10 +9,10 @@ import de.saxsys.campus.domain.User;
 
 public interface ReservationManager {
 
-	Slot createReservation(@NotNull User user, @NotNull Slot slot)
-			throws OverlapsReservationException;
+    Slot createReservation(@NotNull User user, @NotNull Slot slot)
+        throws OverlapsReservationException, AlreadyBookedOutException;
 
-	void cancelReservation(@NotNull User user, @NotNull Slot slot);
+    void cancelReservation(@NotNull User user, @NotNull Slot slot);
 
-	List<Slot> getReservations(@NotNull User user);
+    List<Slot> getReservations(@NotNull User user);
 }

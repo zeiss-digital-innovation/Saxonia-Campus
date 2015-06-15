@@ -29,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.Representation;
 
+import de.saxsys.campus.business.AlreadyBookedOutException;
+import de.saxsys.campus.business.OverlapsReservationException;
 import de.saxsys.campus.business.ReservationManager;
 import de.saxsys.campus.business.SlotManager;
 import de.saxsys.campus.business.UserManager;
@@ -162,8 +164,14 @@ public class SlotResource {
             throw new WebApplicationException(404);
         }
         User user = getCurrentUser();
-        slot = reservationManager.createReservation(user, slot);
-        return Response.ok().entity(createSlotRepresentation(slot)).build();
+        try {
+            slot = reservationManager.createReservation(user, slot);
+            return Response.ok().entity(createSlotRepresentation(slot)).build();
+        } catch (AlreadyBookedOutException | OverlapsReservationException e) {
+            throw new WebApplicationException(Response.status(400)
+                    .entity(errorMapper.createRepresentation("Could not reserve slot.", e))
+                    .build());
+        }
     }
 
     private User getCurrentUser() {
